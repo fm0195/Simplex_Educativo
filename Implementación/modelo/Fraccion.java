@@ -1,4 +1,4 @@
-package Modelo;
+package modelo;
 
 /**
  *
@@ -6,6 +6,10 @@ package Modelo;
  */
 public class Fraccion extends AbstractFraccion {
 
+    public Fraccion() {
+        super(0, 1);
+    }
+    
     public Fraccion(double numerador, double denominador) {
         super(numerador, denominador);
     }

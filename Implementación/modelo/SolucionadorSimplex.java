@@ -1,4 +1,4 @@
-package Modelo;
+package modelo;
 
 /**
  *
@@ -21,7 +21,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex{
 
     @Override
     public AbstractFraccion[] calcularRadio(DtoSimplex dto, int columna) {
-        return obtenerRadios(dto.getFraccion(), columna);
+        return obtenerRadios(dto.getMatriz(), columna);
     }
     
     /**
