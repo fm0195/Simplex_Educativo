@@ -17,6 +17,7 @@ import java.awt.event.MouseListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -38,31 +39,40 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     AbstractFraccion[][] matrizFracciones;
     AbstractFraccion nuevaFraccion;
     JLabel[][] matrizLabels;
+    JLabel[] matrizRadios;
     JPanel panelTabla;
+    JPanel panelRadios;
     final Point casillaSeleccionada;
     final int ANCHO_CASILLA = 50;
     final int ALTO_CASILLA = 20;
     final int POSICION_TABLA_X = 50;
     final int POSICION_TABLA_Y = 50;
+    int POSICION_RADIOS_X;
+    int POSICION_RADIOS_Y;
     KeyListener keyboardListener;
     final StringBuilder keyBuffer;
+    private int ESPACIO_TABLAS = 10;
     
     public PantallaPasoIntermedio() {
         initComponents();
         panelTabla = new JPanel();
+        panelRadios = new JPanel();
         keyBuffer = new StringBuilder();
         this.setLayout(null);
         casillaSeleccionada = new Point();
         AbstractFraccion[][] fracciones = 
         {
-                {new Fraccion(1),new Fraccion(2),new Fraccion(3)},
-                {new Fraccion(4),new Fraccion(5),new Fraccion(6)},
-                {new Fraccion(7),new Fraccion(8),new Fraccion(9)},
+                {new Fraccion(1),new Fraccion(2),new Fraccion(3),new Fraccion(3)},
+                {new Fraccion(4),new Fraccion(5),new Fraccion(6),new Fraccion(3)},
+                {new Fraccion(7),new Fraccion(8),new Fraccion(9),new Fraccion(3)},
+                {new Fraccion(7),new Fraccion(8),new Fraccion(9),new Fraccion(3)},
         };
-        String[] nombreColumnas = {"i", "BVS", "x1","x2","RHS"};
-        String[] nombreFilas = {"z","s1","s2"};
+        String[] nombreColumnas = {"i", "BVS", "x1","x2", "x3","RHS"};
+        String[] nombreFilas = {"z","s1","s2","s3"};
+        AbstractFraccion[] listaRadios = 
+                {new Fraccion(2),new Fraccion(3), new Fraccion(4)};
         Point p = new Point (0,2);
-        DtoSimplex dto = new DtoSimplex(fracciones, nombreColumnas, nombreFilas, p);
+        DtoSimplex dto = new DtoSimplex(fracciones, nombreColumnas, nombreFilas, p, listaRadios);
         mostrarMatriz(dto);
     }
     
@@ -71,24 +81,39 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         String[] nombresColumnas = dto.getNombreColumnas();
         String[] nombresFilas = dto.getNombreFilas();
         Point coordenada = dto.getCoordenadaPivote();
+        AbstractFraccion[] listaRadios = dto.getListaRadios();
         this.matrizFracciones = dto.getMatriz();
         int cantFilas = matriz.length + 1;
         int cantColumnas = matriz[0].length + 2;
         
         panelTabla.setLayout(new GridLayout(cantFilas,cantColumnas));
+        panelRadios.setLayout(new GridLayout(cantFilas, 1));
         panelTabla.setBackground(Color.WHITE);
         
         this.setSize(600, 400);//debe ser dinamico
         //inicializa la matriz de labels
         initMatriz(cantFilas, cantColumnas);
+        //inicializa la tabla de radios
+        initRadios(listaRadios.length);
         //rellena la matriz con los valores
         rellenarMatriz(matriz, nombresColumnas, nombresFilas);
         //pinta casilla seleccionada
         seleccionarCasilla(coordenada);
-        
-        panelTabla.setBounds(POSICION_TABLA_X, POSICION_TABLA_X, ANCHO_CASILLA * cantFilas, ALTO_CASILLA * cantColumnas);
+        //rellena la tabla con los radios
+        rellenarRadios(listaRadios);
+        int anchoTablaNumeros = ANCHO_CASILLA * cantColumnas;
+        int altoTablaNumeros = ALTO_CASILLA * cantFilas;
+        panelTabla.setBounds(POSICION_TABLA_X, POSICION_TABLA_Y, anchoTablaNumeros, altoTablaNumeros);
+        int posicionRadiosX1 = POSICION_TABLA_X + anchoTablaNumeros + ESPACIO_TABLAS;
+        int posicionRadiosY1 = POSICION_TABLA_Y;
+        int anchoTablaRadios = ANCHO_CASILLA;
+        int altoTablaRadios = altoTablaNumeros;
+        panelRadios.setBounds(posicionRadiosX1, posicionRadiosY1, anchoTablaRadios, altoTablaRadios);
+        panelRadios.setBackground(Color.white);
+        panelRadios.setVisible(true);
         panelTabla.setVisible(true);
         this.add(panelTabla);
+        this.add(panelRadios);
         this.validate();
         this.repaint();
         this.setVisible(true);
@@ -351,4 +376,32 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+    private void rellenarRadios(AbstractFraccion[] listaRadios) {
+        for (int i = 0; i < listaRadios.length; i++) {
+            matrizRadios[i].setText(listaRadios[i].toString());
+        }
+    }
+
+    private void initRadios(int cantRestricciones) {
+        matrizRadios = new JLabel[cantRestricciones];
+        JLabel label = new JLabel("Radios");
+        label.setBorder(BorderFactory.createLineBorder(Color.black));
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        panelRadios.add(label);
+        label = new JLabel("-");
+        label.setBorder(BorderFactory.createLineBorder(Color.black));
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        panelRadios.add(label);
+        for (int i = 0; i < cantRestricciones; i++) {
+            label = new JLabel();
+            label.setBorder(BorderFactory.createLineBorder(Color.black));
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            label.setVerticalAlignment(SwingConstants.CENTER);
+            matrizRadios[i] = label;
+            panelRadios.add(label);
+        }
+    }
 }
