@@ -18,10 +18,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import modelo.AbstractFraccion;
 import modelo.DtoSimplex;
@@ -40,12 +43,24 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     AbstractFraccion nuevaFraccion;
     JLabel[][] matrizLabels;
     JLabel[] matrizRadios;
+    JTextPane labelResumen;
+    JScrollPane scrollResumen;
+    JPanel pestanaResumen;
+    JPanel pestanaMatriz;
     JPanel panelTabla;
     JPanel panelRadios;
+    JPanel panelBotonesMatriz;
+    JPanel panelBotonesResumen;
+    JButton botonSiguienteMatriz;
+    JButton botonAnteriorMatriz;
+    JButton botonSiguienteResumen;
+    JButton botonAnteriorResumen;
+    JButton botonCopiarTodo;
+    JButton botonCopiarPaso;
     final Point casillaSeleccionada;
     final int ANCHO_CASILLA = 50;
     final int ALTO_CASILLA = 20;
-    final int POSICION_TABLA_X = 50;
+    final int POSICION_TABLA_X = 20;
     final int POSICION_TABLA_Y = 50;
     int POSICION_RADIOS_X;
     int POSICION_RADIOS_Y;
@@ -57,8 +72,45 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         initComponents();
         panelTabla = new JPanel();
         panelRadios = new JPanel();
+        panelBotonesMatriz = new JPanel();
+        panelBotonesResumen = new JPanel();
+        pestanaResumen = new JPanel(null);
+        pestanaMatriz = new JPanel(null);
         keyBuffer = new StringBuilder();
-        this.setLayout(null);
+        labelResumen = new JTextPane();
+        scrollResumen = new JScrollPane(labelResumen);
+        scrollResumen.setBounds(0, 0, 290, 200);
+        scrollResumen.setBackground(Color.red);
+        botonSiguienteMatriz = new JButton("Siguiente");
+        botonAnteriorMatriz = new JButton("Atras");
+        botonSiguienteResumen = new JButton("Siguiente");
+        botonAnteriorResumen = new JButton("Atras");
+        botonCopiarPaso = new JButton("Copiar Paso");
+        botonCopiarTodo = new JButton("Copiar Todo");
+        panelTabla.setBackground(Color.WHITE);
+        botonAnteriorMatriz.setFocusable(false);
+        botonSiguienteMatriz.setFocusable(false);
+        
+        panelBotonesMatriz.add(botonAnteriorMatriz);
+        panelBotonesMatriz.add(botonSiguienteMatriz);
+        
+        panelBotonesResumen.add(botonSiguienteResumen);
+        panelBotonesResumen.add(botonAnteriorResumen);
+        panelBotonesResumen.add(botonCopiarPaso);
+        panelBotonesResumen.add(botonCopiarTodo);
+        panelBotonesResumen.setBounds(300, 20, 100, 140);
+
+        panelPestana.addTab("Matriz", pestanaMatriz);
+        panelPestana.addTab("Resumen", pestanaResumen);
+        
+        pestanaMatriz.add(panelTabla);
+        pestanaMatriz.add(panelRadios);
+        pestanaMatriz.add(panelBotonesMatriz);
+        
+        pestanaResumen.add(scrollResumen);
+        pestanaResumen.add(panelBotonesResumen);
+        
+        
         casillaSeleccionada = new Point();
         AbstractFraccion[][] fracciones = 
         {
@@ -88,9 +140,8 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         
         panelTabla.setLayout(new GridLayout(cantFilas,cantColumnas));
         panelRadios.setLayout(new GridLayout(cantFilas, 1));
-        panelTabla.setBackground(Color.WHITE);
         
-        this.setSize(600, 400);//debe ser dinamico
+        this.setSize(450, 300);//debe ser dinamico
         //inicializa la matriz de labels
         initMatriz(cantFilas, cantColumnas);
         //inicializa la tabla de radios
@@ -110,12 +161,10 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         int altoTablaRadios = altoTablaNumeros;
         panelRadios.setBounds(posicionRadiosX1, posicionRadiosY1, anchoTablaRadios, altoTablaRadios);
         panelRadios.setBackground(Color.white);
-        panelRadios.setVisible(true);
-        panelTabla.setVisible(true);
-        this.add(panelTabla);
-        this.add(panelRadios);
-        this.validate();
-        this.repaint();
+        panelBotonesMatriz.setBounds(POSICION_TABLA_X - 32, POSICION_TABLA_Y + altoTablaRadios, 200,40);
+
+        panelTabla.validate();
+        panelTabla.repaint();
         this.setVisible(true);
     }
 
@@ -134,12 +183,21 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 791, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 467, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        panelPestana.getAccessibleContext().setAccessibleName("");
+        panelPestana.getAccessibleContext().setAccessibleDescription("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -181,6 +239,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     }
 
     private void initMatriz(int cantFilas, int cantColumnas) {
+        panelTabla.removeAll();
         this.matrizLabels = new JLabel[cantFilas][cantColumnas];
         //crear matriz de labels
         for (int i = 0; i < cantFilas; i++) {
@@ -213,6 +272,9 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         keyboardListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent ke) {
+                if (panelPestana.getSelectedIndex() == 1) {
+                    return;
+                }
                 char tecla = ke.getKeyChar();
                 switch(tecla){
                     case '0':
@@ -304,7 +366,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
                 return string.matches("-?[0-9]*\\.[0-9]+");
             }
         };
-        this.addKeyListener(keyboardListener);
+        panelPestana.addKeyListener(keyboardListener);
         label.setOpaque(true);
     }
     
@@ -320,9 +382,9 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         label.setOpaque(false);
         matrizLabels[fila][columna].setText(matrizFracciones[coordenada.y][coordenada.x].toString());
         keyBuffer.setLength(0);
-        this.removeKeyListener(keyboardListener);
-        this.validate();
-        this.repaint();
+        panelPestana.removeKeyListener(keyboardListener);
+        panelPestana.validate();
+        panelPestana.repaint();
     }
     
     private void rellenarMatriz(AbstractFraccion[][] matriz, String[] nombresColumnas, String[] nombresFilas){
@@ -347,15 +409,16 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
                 matrizLabels[i][j].addMouseListener(new MouseListener() {
                     @Override
                     public void mouseClicked(MouseEvent me) {
+                        
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent me) {
                         if(me.getButton() == MouseEvent.BUTTON1){
                             me.consume();
                             despintarCasilla();
                             seleccionarCasilla(coordenada);
                         }
-                    }
-
-                    @Override
-                    public void mousePressed(MouseEvent me) {
                     }
 
                     @Override
@@ -375,6 +438,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private final javax.swing.JTabbedPane panelPestana = new javax.swing.JTabbedPane();
     // End of variables declaration//GEN-END:variables
 
     private void rellenarRadios(AbstractFraccion[] listaRadios) {
@@ -384,6 +448,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     }
 
     private void initRadios(int cantRestricciones) {
+        panelRadios.removeAll();
         matrizRadios = new JLabel[cantRestricciones];
         JLabel label = new JLabel("Radios");
         label.setBorder(BorderFactory.createLineBorder(Color.black));
