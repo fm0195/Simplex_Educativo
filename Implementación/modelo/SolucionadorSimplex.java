@@ -133,7 +133,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             nombreFilas = agregarNombreW(nombreFilas);
             dto.setNombreFilas(nombreFilas);
             dto.setOperaciones(siguientesOperacionesInicioDosfases(artificiales));
-        }else{
+        } else {
             dto.setCoordenadaPivote(siguientePivoteo(dto));
             dto = siguientesOperaciones(dto);
         }
@@ -152,7 +152,6 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         AbstractFraccion[][] matriz = dto.getMatriz();
         Point siguientePivote = dto.getCoordenadaPivote();
         AbstractFraccion coeficiente = matriz[siguientePivote.y][siguientePivote.x].clonar();
-        coeficiente = coeficiente.obtenerInverso();
         String[] operaciones = new String[matriz.length];
         int indice1;
         if (dto.esDosfases()) {
@@ -230,9 +229,16 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      */
     private String generarOperacion(AbstractFraccion coeficiente, int fila1,
             boolean fraccional) {
-        String resultado = coeficiente.toString(fraccional);
-        resultado += " * F" + fila1;
-        resultado += " -> F" + fila1;
+        AbstractFraccion cero = new Fraccion(0);
+        String resultado;
+        if (coeficiente.iguales(cero)) {
+            resultado = "F" + fila1 + " + 1 -> F" + fila1;
+        } else {
+            coeficiente = coeficiente.obtenerInverso();
+            resultado = coeficiente.toString(fraccional);
+            resultado += " * F" + fila1;
+            resultado += " -> F" + fila1;
+        }
         return resultado;
     }
 
@@ -392,9 +398,16 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         AbstractFraccion elementoFila;
         AbstractFraccion[] resultado = new AbstractFraccion[fila.length];
         AbstractFraccion elemento = fila[indiceElemento];
+        AbstractFraccion cero = new Fraccion(0);
+        AbstractFraccion uno = new Fraccion(1);
         for (int contador = 0; contador < fila.length; contador++) {
-            elementoFila = fila[contador];
-            resultado[contador] = elementoFila.dividir(elemento);
+            if (elemento.iguales(cero)) {
+                elementoFila = fila[contador];
+                resultado[contador] = elementoFila.sumar(uno);
+            } else {
+                elementoFila = fila[contador];
+                resultado[contador] = elementoFila.dividir(elemento);
+            }
         }
         return resultado;
     }
