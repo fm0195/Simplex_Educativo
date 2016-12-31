@@ -1,5 +1,8 @@
 package modelo;
 
+import modelo.AbstractFraccion;
+
+
 /**
  *
  * @author Yordan Jiménez
@@ -9,7 +12,7 @@ public class Fraccion extends AbstractFraccion {
     public Fraccion() {
         super(0, 1);
     }
-    
+
     public Fraccion(double numerador, double denominador) {
         super(numerador, denominador);
     }
@@ -71,13 +74,40 @@ public class Fraccion extends AbstractFraccion {
         }
         return (int) numero1;
     }
+
     /**
      * Valida si la fracción indicada es cero.
+     *
      * @param fraccion Fracción a validar si es cero.
      * @return Valor booleano que indica si es cero.
      */
     private boolean esCero(AbstractFraccion fraccion) {
         AbstractFraccion cero = new Fraccion(0, 1);
         return fraccion.iguales(cero);
+    }
+
+    @Override
+    public AbstractFraccion clonar() {
+        return new Fraccion(getNumerador(), getDenominador());
+    }
+
+    @Override
+    public String toString() {
+        return getNumerador() + "/" + getDenominador();
+    }
+
+    @Override
+    public AbstractFraccion obtenerInverso() {
+        return new Fraccion(getDenominador(), getNumerador());
+    }
+
+    @Override
+    public String toString(boolean fraccional) {
+       if(fraccional && getNumerador() != 0 
+               && getDenominador() != 1){
+           return toString();
+       }else{
+           return String.valueOf(getNumerador() / getDenominador());
+       }
     }
 }

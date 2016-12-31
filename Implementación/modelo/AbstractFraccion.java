@@ -147,10 +147,20 @@ public abstract class AbstractFraccion {
     }
 
     /**
+     * Clona la fracción, crea un nuevo objeto AbstractFraccion identico al
+     * original.
+     *
+     * @return Clon del objeto.
+     */
+    public abstract AbstractFraccion clonar();
+
+    /**
      * Niega el valorde una fracción,cambiando el signo que posee.
      */
     public void hacerNegativa() {
-        this.numerador *= -1;
+        if (numerador != 0) {
+            this.numerador *= -1;
+        }
     }
 
     /**
@@ -170,6 +180,11 @@ public abstract class AbstractFraccion {
     public double getDenominador() {
         return denominador;
     }
+    /**
+     * Genera el inverso multiplicativo de una fracción.
+     * @return Fracción con numerador y denominador intercambiados.
+     */
+    public abstract AbstractFraccion obtenerInverso();
 
     /**
      * Valida los signos dejando el signo negativo en el numerador.
@@ -181,4 +196,20 @@ public abstract class AbstractFraccion {
             this.denominador *= -1;
         }
     }
+
+    /**
+     * Restorn el string con el siguiente formato.
+     *          nuemrador/denominador
+     * @return String con formato Fraccional.
+     */
+    public abstract String toString();
+    
+    /**
+     * Retorna el String de la fracción indicando si desea el formato decimal o 
+     * el fraccional
+     * @param fraccional Indica el formato de salida.
+     * @return String con el formato indicado
+     */
+    public abstract String toString(boolean fraccional);
+
 }
