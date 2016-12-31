@@ -22,22 +22,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             dto = dto.clonarProfundo();
             dto = siguientePaso(dto);
             imprimir(dto);
-            if (validarSimplexTerminado(dto.getMatriz()[0])) {
-                if (dto.esDosfases()) {
-                    dto = eliminarFilaW(dto);
-                    dto = eliminarColumnasArtificiales(dto);
-                    dto.setDosfases(false);
-                    dto.setCoordenadaPivote(siguientePivoteo(dto));
-                    continuar = !validarSimplexTerminado(dto.getMatriz()[0]);
-                    dto.setFinalizado(!continuar);
-                    dto = siguientesOperaciones(dto);
-                    imprimir(dto);
-                    resultado.add(dto);
-                } else {
-                    continuar = false;
-                    dto.setFinalizado(!continuar);
-                }
-            }
+            continuar = !dto.esFinalizado();
             continuar &= dto.esAcotado() && dto.esFactible();
             resultado.add(dto);
         }
@@ -741,6 +726,8 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             dto.setCoordenadaPivote(siguientePivoteo(dto));
             if (!validarSimplexTerminado(dto.getMatriz()[0])) {
                 dto = siguientesOperaciones(dto);
+            } else {
+                dto.setFinalizado(true);
             }
             dto.setMatriz(matriz);
             String nombreColumna = dto.getNombreColumna(columna);
@@ -763,14 +750,21 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      */
     private DtoSimplex siguientePasoDosFases(DtoSimplex dto) {
         if (verificarFactibilidad(dto.getMatriz()[0])) {
-            if (dto.esBloqueoDosFases()) {
-                dto = eliminarArtificiales(dto);
-            } else {
-                dto = siguientePasoSimplex(dto);
-            }
-            if (!validarSimplexTerminado(dto.getMatriz()[0])) {
-                dto = siguientesOperaciones(dto);
+            boolean terminado = validarSimplexTerminado(dto.getMatriz()[0]);
+            if (terminado && !dto.esBloqueoDosFases()) {
+                dto = eliminarFilaW(dto);
+                dto = eliminarColumnasArtificiales(dto);
+                dto.setDosfases(false);
                 dto.setCoordenadaPivote(siguientePivoteo(dto));
+                dto = siguientesOperaciones(dto);
+            } else{ 
+                if (dto.esBloqueoDosFases()) {
+                    dto = eliminarArtificiales(dto);
+                    dto = siguientesOperaciones(dto);
+                } else {
+                    dto = siguientePasoSimplex(dto);
+                    dto.setFinalizado(false);
+                }
             }
             dto.setFactible(verificarFactibilidad(dto.getMatriz()[0]));
             return dto;
