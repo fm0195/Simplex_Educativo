@@ -75,29 +75,51 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     KeyListener keyboardListener;
     final StringBuilder keyBuffer;
     private int ESPACIO_TABLAS = 10;
+    boolean esPrimeraFase = false;
+    
+
     
     public PantallaPasoIntermedio(AbstractSimplexControlador controlador) {
         initComponents();
         this.setVisible(true);
         this.controlador = controlador;
+        this.keyBuffer = new StringBuilder();
+        this.casillaSeleccionada = new Point();
+        initVariables();
+        agregarActionListeners();
+        agregarComponentes();
+    }
+    
+    public void initVariables(){
         panelTabla = new JPanel();
         panelRadios = new JPanel();
         panelBotonesMatriz = new JPanel();
         panelBotonesResumen = new JPanel();
+        panelBotonesResumen.setBounds(380, 20, 120, 140);
         pestanaResumen = new JPanel(null);
         pestanaMatriz = new JPanel(null);
         labelOperaciones = new JTextArea();
         labelOperaciones.setEditable(false);
         labelOperaciones.setLineWrap(true);
         labelOperaciones.setBorder(null);
-        labelOperaciones.setFocusable(false);
-        keyBuffer = new StringBuilder();
+        labelOperaciones.setFocusable(false);     
         labelResumen = new JTextArea();
         labelResumen.setEditable(false);
         labelResumen.setLineWrap(false);
         scrollResumen = new JScrollPane(labelResumen);
         scrollResumen.setBounds(0, 0, 350, 200);
         botonSiguienteMatriz = new JButton("Siguiente Paso");
+        botonAnteriorMatriz = new JButton("Paso Anterior");
+        botonSiguienteResumen = new JButton("Siguiente Paso");
+        botonAnteriorResumen = new JButton("Paso Anterior");
+        botonCopiarPaso = new JButton("Copiar Paso");
+        botonCopiarTodo = new JButton("Copiar Todo");
+        panelTabla.setBackground(Color.WHITE);
+        botonAnteriorMatriz.setFocusable(false);
+        botonSiguienteMatriz.setFocusable(false);
+    }
+    
+    public void agregarActionListeners(){
         botonSiguienteMatriz.addActionListener(new ActionListener() {
 
             @Override
@@ -105,7 +127,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
                 controlador.siguientePasoSimplex();
             }
         });
-        botonAnteriorMatriz = new JButton("Paso Anterior");
+        
         botonAnteriorMatriz.addActionListener(new ActionListener() {
 
             @Override
@@ -113,7 +135,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
                 controlador.anteriorPasoSimplex();
             }
         });
-        botonSiguienteResumen = new JButton("Siguiente Paso");
+        
         botonSiguienteResumen.addActionListener(new ActionListener() {
 
             @Override
@@ -121,7 +143,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
                 controlador.siguientePasoSimplex();
             }
         });
-        botonAnteriorResumen = new JButton("Paso Anterior");
+        
         botonAnteriorResumen.addActionListener(new ActionListener() {
 
             @Override
@@ -129,38 +151,24 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
                 controlador.anteriorPasoSimplex();
             }
         });
-        botonCopiarPaso = new JButton("Copiar Paso");
-        botonCopiarTodo = new JButton("Copiar Todo");
-        panelTabla.setBackground(Color.WHITE);
-        botonAnteriorMatriz.setFocusable(false);
-        botonSiguienteMatriz.setFocusable(false);
-        
+    }
+    
+    public void agregarComponentes(){
         panelBotonesMatriz.add(botonAnteriorMatriz);
         panelBotonesMatriz.add(botonSiguienteMatriz);
-        
         panelBotonesResumen.add(botonSiguienteResumen);
         panelBotonesResumen.add(botonAnteriorResumen);
         panelBotonesResumen.add(botonCopiarPaso);
         panelBotonesResumen.add(botonCopiarTodo);
-        panelBotonesResumen.setBounds(380, 20, 120, 140);
-
         panelPestana.addTab("Matriz", pestanaMatriz);
         panelPestana.addTab("Resumen", pestanaResumen);
-        
         pestanaMatriz.add(panelTabla);
         pestanaMatriz.add(panelRadios);
         pestanaMatriz.add(panelBotonesMatriz);
         pestanaMatriz.add(labelOperaciones);
-        
-        
-        
         pestanaResumen.add(scrollResumen);
         pestanaResumen.add(panelBotonesResumen);
-        
-        
-        casillaSeleccionada = new Point();
     }
-    
     public void siguientePaso() {
         controlador.siguientePasoSimplex();
     }
@@ -169,7 +177,29 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         labelOperaciones.setText("Siguientes operaciones:\n"+operacion);
     }
     
+    public void configurarLayout(int cantFilas, int cantColumnas) {
+        panelTabla.setLayout(new GridLayout(cantFilas,cantColumnas));
+        panelRadios.setLayout(new GridLayout(cantFilas, 1));
+    }
+    
+    public void colocarComponentes(int cantFilas, int cantColumnas){
+        int anchoTablaNumeros = ANCHO_CASILLA * cantColumnas;
+        int altoTablaNumeros = ALTO_CASILLA * cantFilas;
+        panelTabla.setBounds(POSICION_TABLA_X, POSICION_TABLA_Y, anchoTablaNumeros, altoTablaNumeros);
+        int posicionRadiosX1 = POSICION_TABLA_X + anchoTablaNumeros + ESPACIO_TABLAS;
+        int posicionRadiosY1 = POSICION_TABLA_Y;
+        int anchoTablaRadios = ANCHO_CASILLA;
+        int altoTablaRadios = altoTablaNumeros;
+        panelRadios.setBounds(posicionRadiosX1, posicionRadiosY1, anchoTablaRadios, altoTablaRadios);
+        panelRadios.setBackground(Color.white);
+        panelBotonesMatriz.setBounds(POSICION_TABLA_X - 32, POSICION_TABLA_Y + altoTablaRadios, 275,40);
+        labelOperaciones.setBounds(POSICION_TABLA_X + 245, POSICION_TABLA_Y + altoTablaRadios + 5, 250,100);
+        labelOperaciones.setBackground(new Color(214, 217, 223));
+        this.setSize(anchoTablaNumeros + anchoTablaRadios + 100, altoTablaNumeros * 2 + 100);
+    }
+    
     public void mostrarMatriz(DtoSimplex dto){
+        this.esPrimeraFase = dto.esDosfases();
         String[][] matriz = dto.getMatrizString();
         String[] nombresColumnas = dto.getNombreColumnas();
         String[] nombresFilas = dto.getNombreFilas();
@@ -179,8 +209,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         int cantFilas = matriz.length + 1;
         int cantColumnas = matriz[0].length + 2;
         
-        panelTabla.setLayout(new GridLayout(cantFilas,cantColumnas));
-        panelRadios.setLayout(new GridLayout(cantFilas, 1));
+        configurarLayout(cantFilas, cantColumnas);
         
         //inicializa la matriz de labels
         initMatriz(cantFilas, cantColumnas);
@@ -196,19 +225,8 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         rellenarResumen(controlador.generarResumen());
         //muestra las proximas operaciones basadas en el pivote actual. 
         mostrarOperacion(dto.getOperaciones());
-        int anchoTablaNumeros = ANCHO_CASILLA * cantColumnas;
-        int altoTablaNumeros = ALTO_CASILLA * cantFilas;
-        panelTabla.setBounds(POSICION_TABLA_X, POSICION_TABLA_Y, anchoTablaNumeros, altoTablaNumeros);
-        int posicionRadiosX1 = POSICION_TABLA_X + anchoTablaNumeros + ESPACIO_TABLAS;
-        int posicionRadiosY1 = POSICION_TABLA_Y;
-        int anchoTablaRadios = ANCHO_CASILLA;
-        int altoTablaRadios = altoTablaNumeros;
-        panelRadios.setBounds(posicionRadiosX1, posicionRadiosY1, anchoTablaRadios, altoTablaRadios);
-        panelRadios.setBackground(Color.white);
-        panelBotonesMatriz.setBounds(POSICION_TABLA_X - 32, POSICION_TABLA_Y + altoTablaRadios, 275,40);
-        labelOperaciones.setBounds(POSICION_TABLA_X + 245, POSICION_TABLA_Y + altoTablaRadios + 5, 250,100);
-        labelOperaciones.setBackground(new Color(214, 217, 223));
-        this.setSize(anchoTablaNumeros + anchoTablaRadios + 100, altoTablaNumeros * 2 + 100);
+        //colocar los componentes en sus respectivas posiciones.
+        colocarComponentes(cantFilas, cantColumnas);
 
         panelTabla.validate();
         panelTabla.repaint();
@@ -267,6 +285,11 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     }
 
     private void seleccionarCasilla(Point coordenada) {
+        if (coordenada.x < 0 && coordenada.y < 0) {
+            coordenada.x = -1;
+            coordenada.y = 0;
+            //return;
+        }
         panelPestana.removeKeyListener(keyboardListener);
         this.casillaSeleccionada.x = coordenada.x;
         this.casillaSeleccionada.y = coordenada.y;
@@ -358,7 +381,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "El numero ingresado no tiene formato valido.", "Error", JOptionPane.ERROR_MESSAGE);
                             keyBuffer.setLength(0);
                         }
-                } 
+                }
                 mostrarOperacion(controlador.siguientesOperaciones(coordenada));
                 if(keyBuffer.length() > 0)
                     labelNumero.setText(keyBuffer.toString());
@@ -373,7 +396,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
             }
 
             private boolean esNumeroEntero(String string) {
-                return string.matches("-?[1-9][0-9]*");
+                return string.matches("-?[0-9]*");
             }
             private boolean esFraccion(String string) {
                 return string.matches("-?[1-9][0-9]*/[1-9][0-9]*");
@@ -396,7 +419,11 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         label.setOpaque(false);
         label = matrizLabels[fila][0];
         label.setOpaque(false);
-        matrizLabels[fila][columna].setText(matrizFracciones[coordenada.y][coordenada.x].toString());
+        if (coordenada.x == -1) {
+            matrizLabels[fila][columna].setText("-w");
+        } else {
+            matrizLabels[fila][columna].setText(matrizFracciones[coordenada.y][coordenada.x]);
+        }
         keyBuffer.setLength(0);
         panelPestana.removeKeyListener(keyboardListener);
         panelPestana.validate();
@@ -404,21 +431,31 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     }
     
     private void rellenarMatriz(String[][] matriz, String[] nombresColumnas, String[] nombresFilas){
+        int i;
         //rellenar la primera fila (nombres de variables)
-        for (int i = 0; i < nombresColumnas.length ; i++) {
+        for (i = 0; i < nombresColumnas.length ; i++) {
             matrizLabels[0][i+2].setText(nombresColumnas[i]);
         }
         matrizLabels[0][matrizLabels[0].length-1].setText("RHS");
         //rellenar la primera columna (numero de restriccion)
-        for (int i = 1; i < matriz.length+1; i++) {
-            matrizLabels[i][0].setText(String.valueOf(i-1));
+        if (esPrimeraFase) {
+            i = 0;
+            matrizLabels[1][0].setText("0'");
+            for (i=1; i < matriz.length; i++) {
+                matrizLabels[i+1][0].setText(String.valueOf(i-1));
+            }
+        }else{
+            for (i=1; i <= matriz.length; i++) {
+                matrizLabels[i][0].setText(String.valueOf(i-1));
+            }
         }
+        
         //rellenar la segunda columna (Variabls basicas)
-        for (int i = 1; i <= nombresFilas.length ; i++) {
+        for (i = 1; i <= nombresFilas.length ; i++) {
             matrizLabels[i][1].setText(nombresFilas[i-1]);
         }
         //rellenar los valores numericos
-        for (int i = 1; i < matriz.length + 1; i++) {
+        for (i = 1; i < matriz.length + 1; i++) {
             for (int j = 2; j < matriz[0].length + 2; j++) {
                 final Point coordenada = new Point(j-2,i-1);
                 String fraccion = matriz[i-1][j-2];
@@ -436,6 +473,8 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
                             despintarCasilla();
                             seleccionarCasilla(coordenada);
                             mostrarOperacion(controlador.siguientesOperaciones(coordenada));
+                            String[] listaRadios = controlador.generarRadios(coordenada.x);
+                            rellenarRadios(listaRadios);
                         }
                     }
 
@@ -482,7 +521,15 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
             panelRadios.add(label);
         }
     }
-
+    
+    public void mostrarMensajeError(String mensaje, String encabezado){
+        JOptionPane.showMessageDialog(null, mensaje, encabezado, JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public void mostrarMensajeInformacion(String mensaje, String encabezado){
+        JOptionPane.showMessageDialog(null, mensaje, encabezado, JOptionPane.INFORMATION_MESSAGE);
+    }
+    
     private void rellenarResumen(String resumen) {
         labelResumen.setText(resumen);
     }

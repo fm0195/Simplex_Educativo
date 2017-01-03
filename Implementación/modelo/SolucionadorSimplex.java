@@ -118,12 +118,13 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             nombreFilas = agregarNombreW(nombreFilas);
             dto.setNombreFilas(nombreFilas);
             dto.setOperaciones(siguientesOperacionesInicioDosfases(artificiales));
+            dto.setCoordenadaPivote(new Point (-1,-1));
         } else {
             dto.setCoordenadaPivote(siguientePivoteo(dto));
             dto = siguientesOperaciones(dto);
+            dto.setCoordenadaPivote(siguientePivoteo(dto));
         }
         dto.setMatriz(matriz);
-        dto.setCoordenadaPivote(siguientePivoteo(dto));
         return dto;
     }
 
@@ -610,7 +611,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
     }
 
     /**
-     * Genera automaticamente la fila y columna que serán entrante en la
+     * Genera automaticamente la fila y columna que serán entrantes en la
      * siguiente iteración, se generan los radios y se obtiene el menor, de
      * igual manera se busca la posición más pequeña dentro de los coeficientes
      * de la función objetivo del problema.
@@ -761,6 +762,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 dto = eliminarFilaW(dto);
                 dto = eliminarColumnasArtificiales(dto);
                 dto.setDosfases(false);
+                dto.setFinalizado(validarSimplexTerminado(dto.getMatriz()[0]));
                 dto.setCoordenadaPivote(siguientePivoteo(dto));
                 dto = siguientesOperaciones(dto);
             } else{ 
@@ -771,8 +773,8 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                     dto = siguientePasoSimplex(dto);
                     dto.setFinalizado(false);
                 }
+                dto.setFactible(verificarFactibilidad(dto.getMatriz()[0]));
             }
-            dto.setFactible(verificarFactibilidad(dto.getMatriz()[0]));
             return dto;
         } else {
             dto.setFactible(false);

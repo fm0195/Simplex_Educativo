@@ -257,9 +257,9 @@ public class DtoSimplex {
      * @return Nueva referencia del objeto.
      */
     public DtoSimplex clonarProfundo() {
-        return new DtoSimplex(clonarMatriz(), nombreColumnas, nombreFilas, listaDesigualdades,
+        return new DtoSimplex(clonarMatriz(), (String[]) nombreColumnas.clone(), (String[]) nombreFilas.clone(), listaDesigualdades,
                 maximizacion, variablesBasicas, variablesHolgura, dosfases, acotado,
-                factible, finalizado, bloqueoDosFases, formatoFraccional,coordenadaPivote);
+                factible, finalizado, bloqueoDosFases, formatoFraccional,(Point) coordenadaPivote.clone());
     }
 
     /**

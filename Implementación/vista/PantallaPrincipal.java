@@ -49,9 +49,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         areaTexto = new javax.swing.JTextArea();
-        botonSimplex = new javax.swing.JButton();
-        botonSolucionEntera = new javax.swing.JButton();
-        botonBorrar = new javax.swing.JButton();
+        labelFormato1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        labelFormato2 = new javax.swing.JLabel();
         labelFormato = new javax.swing.JLabel();
         radioFraccion = new javax.swing.JRadioButton();
         radioDecimal = new javax.swing.JRadioButton();
@@ -61,6 +62,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         radioMostrarPasos = new javax.swing.JRadioButton();
         radioSolucionDirecta = new javax.swing.JRadioButton();
+        botonBorrar = new javax.swing.JButton();
+        botonSolucionEntera = new javax.swing.JButton();
+        botonSimplex = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -80,22 +84,24 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         areaTexto.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         areaTexto.setRows(5);
         areaTexto.setTabSize(4);
-        areaTexto.setText("(0) max z = 15 x1 + 10 x2\n(1)            x1          <= 2\n(2)                    x2  <= 3\n(3)            x1 +    x2   = 4");
         areaTexto.setToolTipText("");
         areaTexto.setWrapStyleWord(true);
         areaTexto.setInheritsPopupMenu(true);
         jScrollPane1.setViewportView(areaTexto);
 
-        botonSimplex.setText("Simplex");
-        botonSimplex.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonSimplexActionPerformed(evt);
-            }
-        });
+        labelFormato1.setFont(new java.awt.Font("Verdana", 1, 24)); // NOI18N
+        labelFormato1.setText("Simplex Educativo");
 
-        botonSolucionEntera.setLabel("Solucion Entera");
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(214, 217, 223));
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("Ejemplo:\n(0) max z = 15 x1 + 10 x2\n(1)            x1          <= 2\n(2)                    x2  >= 3\n(3)            x1 +    x2   = 4");
+        jTextArea1.setBorder(null);
+        jTextArea1.setCaretColor(new java.awt.Color(214, 217, 223));
+        jScrollPane2.setViewportView(jTextArea1);
 
-        botonBorrar.setLabel("Borrar");
+        labelFormato2.setText("Por favor ingrese un problema:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -103,30 +109,28 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(botonSimplex)
-                        .addGap(18, 18, 18)
-                        .addComponent(botonSolucionEntera)
-                        .addGap(18, 18, 18)
-                        .addComponent(botonBorrar)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelFormato1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                    .addComponent(labelFormato2)
+                    .addComponent(jScrollPane2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonSimplex)
-                    .addComponent(botonSolucionEntera)
-                    .addComponent(botonBorrar))
-                .addGap(25, 25, 25))
+                .addComponent(labelFormato1)
+                .addGap(8, 8, 8)
+                .addComponent(labelFormato2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                .addGap(19, 19, 19))
         );
 
-        labelFormato.setText("Formato Numérico");
+        labelFormato.setText("Escoja el formato numérico");
 
         grupoFormato.add(radioFraccion);
         radioFraccion.setSelected(true);
@@ -145,7 +149,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        labelEntero.setText("Solucion Entera");
+        labelEntero.setText("Escoja el metodo para solucion entera");
 
         grupoSolucion.add(radioGomory);
         radioGomory.setSelected(true);
@@ -164,7 +168,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Pasos Intermedios");
+        jLabel1.setText("¿Desea mostrar los pasos intermedios?");
 
         grupoPasos.add(radioMostrarPasos);
         radioMostrarPasos.setSelected(true);
@@ -183,14 +187,31 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        botonBorrar.setLabel("Borrar");
+        botonBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonBorrarActionPerformed(evt);
+            }
+        });
+
+        botonSolucionEntera.setLabel("Solucion Entera");
+
+        botonSimplex.setText("Simplex");
+        botonSimplex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonSimplexActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonSolucionEntera)
                     .addComponent(labelFormato)
                     .addComponent(labelEntero)
                     .addComponent(jLabel1)
@@ -202,8 +223,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                             .addComponent(radioGomory)
                             .addComponent(radioBB)
                             .addComponent(radioMostrarPasos)
-                            .addComponent(radioSolucionDirecta))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                            .addComponent(radioSolucionDirecta)))
+                    .addComponent(botonSimplex)
+                    .addComponent(botonBorrar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,7 +250,13 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 .addComponent(radioMostrarPasos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radioSolucionDirecta)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonSimplex)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonSolucionEntera)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonBorrar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -268,6 +297,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_botonSimplexActionPerformed
+
+    private void botonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarActionPerformed
+        areaTexto.setText("");
+    }//GEN-LAST:event_botonBorrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -332,8 +365,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel labelEntero;
     private javax.swing.JLabel labelFormato;
+    private javax.swing.JLabel labelFormato1;
+    private javax.swing.JLabel labelFormato2;
     private javax.swing.JRadioButton radioBB;
     private javax.swing.JRadioButton radioDecimal;
     private javax.swing.JRadioButton radioFraccion;

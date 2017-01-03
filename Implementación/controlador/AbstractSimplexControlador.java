@@ -47,8 +47,11 @@ public abstract class AbstractSimplexControlador {
      * @param problema el string del problema por resolver
      */
     public void siguientePasoSimplex(String problema) {
-        listaPasos = solucionarSimplex(problema);
+        DtoSimplex dto = parser.parse(problema);
+        dto = solucionador.completarProblema(dto);
         pasoActual = 0;
+        listaPasos = new ArrayList<>();
+        listaPasos.add(dto);
         vista.mostrarMatriz(listaPasos.get(pasoActual));
     }
     
@@ -58,9 +61,29 @@ public abstract class AbstractSimplexControlador {
      *
      */
     public void siguientePasoSimplex() {
-        if(pasoActual == listaPasos.size()-1)
-            listaPasos.add(solucionador.siguientePaso(listaPasos.get(pasoActual)));
-        vista.mostrarMatriz(listaPasos.get(++pasoActual));
+        DtoSimplex problemaActual = listaPasos.get(pasoActual).clonarProfundo();
+        DtoSimplex siguientePaso = solucionador.siguientePaso(problemaActual);
+        if(pasoActual == listaPasos.size()-1){
+            listaPasos.add(siguientePaso);
+        }
+        else{
+            listaPasos.set(pasoActual+1, siguientePaso);
+        }
+        pasoActual++;
+        vista.mostrarMatriz(listaPasos.get(pasoActual));
+        
+        if (!listaPasos.get(pasoActual).esFactible()) {
+            vista.mostrarMensajeError("El problema no es factible. ", "Infactibilidad");
+        }
+        else{
+            if (!listaPasos.get(pasoActual).esAcotado()) {
+                vista.mostrarMensajeError("El problema no esta acotado. ", "No acotado");
+            }else{
+                if (listaPasos.get(pasoActual).esFinalizado()) {
+                    vista.mostrarMensajeInformacion("Problema finalizado. ", "Finalizado");
+                }
+            }
+        }
     }
     
     /**
@@ -72,7 +95,11 @@ public abstract class AbstractSimplexControlador {
      */
     public void anteriorPasoSimplex() {
         if (pasoActual < listaPasos.size() && pasoActual > 0) {
-            vista.mostrarMatriz(listaPasos.get(--pasoActual));
+            DtoSimplex anterior = listaPasos.get(pasoActual-1);
+            DtoSimplex actual = listaPasos.get(pasoActual);
+            DtoSimplex siguiente = pasoActual+1 < listaPasos.size() ? listaPasos.get(pasoActual+1) : null;
+            DtoSimplex rem = listaPasos.remove(pasoActual--);
+            vista.mostrarMatriz(listaPasos.get(pasoActual));
         }
     }
 
@@ -88,8 +115,12 @@ public abstract class AbstractSimplexControlador {
      * lineal.
      */
     public String siguientesOperaciones(Point coordenadas) {
-        listaPasos.get(pasoActual).setCoordenadaPivote(coordenadas);
-        return solucionador.siguientesOperaciones(listaPasos.get(pasoActual)).getOperaciones();
+        String resultado = listaPasos.get(pasoActual).getOperaciones();
+        if (!listaPasos.get(pasoActual).esBloqueoDosFases()) {
+            listaPasos.get(pasoActual).setCoordenadaPivote(coordenadas);
+            resultado = solucionador.siguientesOperaciones(listaPasos.get(pasoActual)).getOperaciones();
+        }
+        return resultado;
     }
 
     /**
@@ -103,8 +134,18 @@ public abstract class AbstractSimplexControlador {
      * @param columna Indice de la columna a generar el radio.
      * @return Arreglo con el valor de los radios.
      */
-    public String[] generarRadios(int columna) {
-        String[] resultado = solucionador.calcularRadio(listaPasos.get(pasoActual), columna);
+    public String[] generarRadios(int columna) {   
+        String[] resultado;
+        if(columna == -1){
+            int cantRadios = solucionador.calcularRadio(listaPasos.get(pasoActual), 0).length;
+            resultado = new String[cantRadios];
+            for (int i = 0; i < cantRadios; i++) {
+                resultado[i] = "-";
+            }
+            return resultado;
+        }
+        resultado = solucionador.calcularRadio(listaPasos.get(pasoActual), columna);
+         
         for (int i = 0; i < resultado.length; i++) {
             if (resultado[i].compareTo(String.valueOf(Integer.MIN_VALUE)) == 0) {
                 resultado[i] = "-oo";
