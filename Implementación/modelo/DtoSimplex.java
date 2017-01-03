@@ -58,6 +58,7 @@ public class DtoSimplex {
         this.nombreColumnas = nombreColumnas;
         this.listaDesigualdades = listaDesigualdades;
         this.maximizacion = maximizacion;
+        this.variablesBasicas = nombreColumnas.length;
     }
 
     /**
@@ -222,8 +223,12 @@ public class DtoSimplex {
         nombreFilas[indice] = nombreVariable;
     }
 
-    public String[] getOperaciones() {
-        return operaciones;
+    public String getOperaciones() {
+        String resultado = "";
+        for (int i = 0; i < operaciones.length; i++) {
+            resultado += operaciones[i] + "\n";
+        }
+        return resultado;
     }
 
     public void setOperaciones(String[] operaciones) {
@@ -271,5 +276,47 @@ public class DtoSimplex {
             }
         }
         return resultado;
+    }
+
+    public String[][] getMatrizString() {
+        String[][] resultado = new String[matriz.length][matriz[0].length];
+        for (int contadorFila = 0; contadorFila < resultado.length; contadorFila++) {
+            for (int contadorColumna = 0; contadorColumna < resultado[0].length; contadorColumna++) {
+                resultado[contadorFila][contadorColumna] = matriz[contadorFila][contadorColumna].toString(formatoFraccional);
+            }
+        }
+        return resultado;
+    }
+    
+    public String toString() {
+        AbstractFraccion[][] m = getMatriz();
+        String c = "";
+        String[] f = getNombreFilas();
+        String[] col = getNombreColumnas();
+        String s = "";
+        s += getOperaciones();
+        s += '\n';
+        c += s;
+        s = "      ";
+        for (int contador = 0; contador < col.length; contador++) {
+            s += col[contador];
+            s += "      ";
+        }
+        s += "RHS\n";
+        c += s;
+        for (int contadorFila = 0; contadorFila < m.length; contadorFila++) {
+            s = "";
+            s += f[contadorFila];
+            s += "  ";
+            for (int contadorColumna = 0; contadorColumna < m[0].length; contadorColumna++) {
+                String numero = m[contadorFila][contadorColumna].toString(formatoFraccional);
+                s += numero;
+                s += "        ".substring(numero.length(),8);
+            }
+            s += "\n";
+            c += s;
+        }
+        c+="\n\n------------------------------\n\n";
+        return (c);
     }
 }

@@ -5,16 +5,31 @@
  */
 package vista;
 
+import controlador.AbstractSimplexControlador;
+import controlador.SimplexControlador;
+import java.util.ArrayList;
+import modelo.AbstractSolucionadorSimplex;
+import modelo.DtoSimplex;
+import modelo.SolucionadorSimplex;
+import modelo.parser.IParser;
+import modelo.parser.Parser;
+
 /**
  *
  * @author fm010
  */
 public class PantallaPrincipal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PantallaPrincipal
-     */
+    private boolean fraccionario;
+    private boolean gomory;
+    private boolean solucionDirecta; 
+    AbstractSimplexControlador controlador;
+    
     public PantallaPrincipal() {
+        this.solucionDirecta = false;
+        this.fraccionario = true;
+        this.gomory = true;
+        this.controlador = new SimplexControlador();
         initComponents();
     }
 
@@ -30,6 +45,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         grupoFormato = new javax.swing.ButtonGroup();
         grupoSolucion = new javax.swing.ButtonGroup();
+        grupoPasos = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         areaTexto = new javax.swing.JTextArea();
@@ -60,16 +76,22 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        areaTexto.setColumns(16);
+        areaTexto.setColumns(12);
         areaTexto.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         areaTexto.setRows(5);
         areaTexto.setTabSize(4);
+        areaTexto.setText("(0) max z = 15 x1 + 10 x2\n(1)            x1          <= 2\n(2)                    x2  <= 3\n(3)            x1 +    x2   = 4");
         areaTexto.setToolTipText("");
         areaTexto.setWrapStyleWord(true);
         areaTexto.setInheritsPopupMenu(true);
         jScrollPane1.setViewportView(areaTexto);
 
         botonSimplex.setText("Simplex");
+        botonSimplex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonSimplexActionPerformed(evt);
+            }
+        });
 
         botonSolucionEntera.setLabel("Solucion Entera");
 
@@ -109,25 +131,57 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         grupoFormato.add(radioFraccion);
         radioFraccion.setSelected(true);
         radioFraccion.setText("Fracción");
+        radioFraccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioFraccionActionPerformed(evt);
+            }
+        });
 
         grupoFormato.add(radioDecimal);
         radioDecimal.setText("Decimal");
+        radioDecimal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioDecimalActionPerformed(evt);
+            }
+        });
 
         labelEntero.setText("Solucion Entera");
 
         grupoSolucion.add(radioGomory);
         radioGomory.setSelected(true);
         radioGomory.setText("Cortes de Gomory");
+        radioGomory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioGomoryActionPerformed(evt);
+            }
+        });
 
         grupoSolucion.add(radioBB);
         radioBB.setText("Branch and Bound");
+        radioBB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioBBActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Pasos Intermedios");
 
+        grupoPasos.add(radioMostrarPasos);
         radioMostrarPasos.setSelected(true);
         radioMostrarPasos.setText("Mostrar Pasos");
+        radioMostrarPasos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioMostrarPasosActionPerformed(evt);
+            }
+        });
 
+        grupoPasos.add(radioSolucionDirecta);
         radioSolucionDirecta.setText("Solucion Directa");
+        radioSolucionDirecta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioSolucionDirectaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -179,6 +233,42 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void radioFraccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioFraccionActionPerformed
+        fraccionario = true;
+    }//GEN-LAST:event_radioFraccionActionPerformed
+
+    private void radioDecimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioDecimalActionPerformed
+        fraccionario = false;
+    }//GEN-LAST:event_radioDecimalActionPerformed
+
+    private void radioGomoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioGomoryActionPerformed
+        gomory = true;
+    }//GEN-LAST:event_radioGomoryActionPerformed
+
+    private void radioBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioBBActionPerformed
+        gomory = false;
+    }//GEN-LAST:event_radioBBActionPerformed
+
+    private void radioMostrarPasosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMostrarPasosActionPerformed
+        solucionDirecta = false;
+    }//GEN-LAST:event_radioMostrarPasosActionPerformed
+
+    private void radioSolucionDirectaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioSolucionDirectaActionPerformed
+        solucionDirecta = true;
+    }//GEN-LAST:event_radioSolucionDirectaActionPerformed
+
+    private void botonSimplexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSimplexActionPerformed
+        if (solucionDirecta) {
+            controlador.setVista(new PantallaPasoIntermedio(controlador));
+            controlador.solucionarSimplex(areaTexto.getText());
+            this.dispose();
+        }else {
+            controlador.setVista(new PantallaPasoIntermedio(controlador));
+            controlador.siguientePasoSimplex(areaTexto.getText());
+            this.dispose();
+        }
+    }//GEN-LAST:event_botonSimplexActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -206,6 +296,22 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+       /* IParser parser = new Parser();
+        DtoSimplex res = parser.parse("(0) max z = 15 x1 + 10 x2\n" +
+"(1)            x1         <= 2\n" +
+"(2)                    x2 <= 3\n" +
+"(3)            x1 +    x2  = 4");
+        System.out.println(res);
+        
+        res.setVariablesBasicas();
+        AbstractSolucionadorSimplex s = new SolucionadorSimplex();
+        res = s.completarProblema(res);
+        ArrayList<DtoSimplex> r = s.solucionar(res);
+        int t = r.size()-1;
+        System.out.println("factible: "+r.get(t).esFactible());
+        System.out.println("acotado: "+r.get(t).esAcotado());*/
+        
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -220,6 +326,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botonSimplex;
     private javax.swing.JButton botonSolucionEntera;
     private javax.swing.ButtonGroup grupoFormato;
+    private javax.swing.ButtonGroup grupoPasos;
     private javax.swing.ButtonGroup grupoSolucion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

@@ -17,11 +17,11 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         boolean continuar = dto.esAcotado() && dto.esFactible();
         ArrayList<DtoSimplex> resultado = new ArrayList<>();
         resultado.add(dto);
-        imprimir(dto);
+        //imprimir(dto);
         while (continuar) {
             dto = dto.clonarProfundo();
             dto = siguientePaso(dto);
-            imprimir(dto);
+            //imprimir(dto);
             continuar = !dto.esFinalizado();
             continuar &= dto.esAcotado() && dto.esFactible();
             resultado.add(dto);
@@ -128,8 +128,14 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
     }
 
     @Override
-    public AbstractFraccion[] calcularRadio(DtoSimplex dto, int columna) {
-        return obtenerRadios(dto.getMatriz(), columna);
+    public String[] calcularRadio(DtoSimplex dto, int columna) {
+        AbstractFraccion[] radios = obtenerRadios(dto.getMatriz(), columna);
+        String[] resultado = new String[radios.length];
+        for (int i = 0; i < resultado.length; i++) {
+            resultado[i] = radios[i].toString(dto.esFormatoFraccional());
+            
+        }
+        return resultado;
     }
 
     @Override
@@ -920,39 +926,5 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             resultado[contador] = "-1 F" + indice + " + F0' -> F0'";
         }
         return resultado;
-    }
-
-    void imprimir(DtoSimplex dto) {
-        AbstractFraccion[][] m = dto.getMatriz();
-        String c = "";
-        String[] f = dto.getNombreFilas();
-        String[] col = dto.getNombreColumnas();
-        String s = "";
-        String[] of = dto.getOperaciones();
-        for (int i = 0; i < of.length; i++) {
-            String string = of[i];
-            s += string + "\n";
-        }
-        s += '\n';
-        c += s;
-        s = "     ";
-        for (int contador = 0; contador < col.length; contador++) {
-            s += col[contador];
-            s += "     ";
-        }
-        s += "\n";
-        c += s;
-        for (int contadorFila = 0; contadorFila < m.length; contadorFila++) {
-            s = "";
-            s += f[contadorFila];
-            s += "     ";
-            for (int contadorColumna = 0; contadorColumna < m[0].length; contadorColumna++) {
-                s += m[contadorFila][contadorColumna].toString();
-                s += "     ";
-            }
-            s += "\n";
-            c += s;
-        }
-        System.out.println(c);
     }
 }

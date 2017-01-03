@@ -21,6 +21,8 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="grupoSolucion">
     </Component>
+    <Component class="javax.swing.ButtonGroup" name="grupoPasos">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -143,12 +145,13 @@
           <SubComponents>
             <Component class="javax.swing.JTextArea" name="areaTexto">
               <Properties>
-                <Property name="columns" type="int" value="16"/>
+                <Property name="columns" type="int" value="12"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Leelawadee UI" size="18" style="0"/>
                 </Property>
                 <Property name="rows" type="int" value="5"/>
                 <Property name="tabSize" type="int" value="4"/>
+                <Property name="text" type="java.lang.String" value="(0) max z = 15 x1 + 10 x2&#xa;(1)            x1          &lt;= 2&#xa;(2)                    x2  &lt;= 3&#xa;(3)            x1 +    x2   = 4"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="wrapStyleWord" type="boolean" value="true"/>
                 <Property name="inheritsPopupMenu" type="boolean" value="true"/>
@@ -160,6 +163,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Simplex"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonSimplexActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botonSolucionEntera">
           <Properties>
@@ -186,6 +192,9 @@
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Fracci&#xf3;n"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioFraccionActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="radioDecimal">
       <Properties>
@@ -194,6 +203,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Decimal"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioDecimalActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="labelEntero">
       <Properties>
@@ -208,6 +220,9 @@
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Cortes de Gomory"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioGomoryActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="radioBB">
       <Properties>
@@ -216,6 +231,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Branch and Bound"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioBBActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
@@ -224,14 +242,26 @@
     </Component>
     <Component class="javax.swing.JRadioButton" name="radioMostrarPasos">
       <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="grupoPasos"/>
+        </Property>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Mostrar Pasos"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioMostrarPasosActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="radioSolucionDirecta">
       <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="grupoPasos"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Solucion Directa"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioSolucionDirectaActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

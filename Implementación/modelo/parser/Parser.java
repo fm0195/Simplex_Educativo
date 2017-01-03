@@ -237,7 +237,9 @@ class CUP$Parser$actions {
                         desigualdades[i] = listaDesigualdades.get(i);
                     }
                     String[] listaVariables = conjuntoVariables.toArray(new String[conjuntoVariables.size()]);
-                    RESULT = new DtoSimplex(matriz, listaVariables, desigualdades);
+                    DtoSimplex resultado = new DtoSimplex(matriz, listaVariables, desigualdades, esMaximizacion);
+                    resultado.setVariablesBasicas();
+                    RESULT = resultado;
                     
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("problemaSimplex",0, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }

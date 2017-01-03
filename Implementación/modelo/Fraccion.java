@@ -93,7 +93,7 @@ public class Fraccion extends AbstractFraccion {
 
     @Override
     public String toString() {
-        return getNumerador() + "/" + getDenominador();
+        return (int) getNumerador() + "/" + (int) getDenominador();
     }
 
     @Override
@@ -107,7 +107,7 @@ public class Fraccion extends AbstractFraccion {
                && getDenominador() != 1){
            return toString();
        }else{
-           return String.valueOf(getNumerador() / getDenominador());
+           return String.valueOf((int)getNumerador() / (int)getDenominador());
        }
     }
 }
