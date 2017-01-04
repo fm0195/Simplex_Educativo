@@ -743,12 +743,12 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             if (!validarSimplexTerminado(dto.getMatriz()[0])) {
                 dto = siguientesOperaciones(dto);
                 dto.setMensaje("Se realizaron las operaciones fila indicadas en el paso anterior.");
-            } else if(!dto.esDosfases()){
+            } else if (!dto.esDosfases()) {
                 dto.setSolucion(obtenerSolucion(dto));
                 dto.setMensaje("Se ha finalizado logrando llegar a un estado óptimo para "
                         + "el problema de programación lineal ingresado.");
                 dto.setFinalizado(true);
-            }else{
+            } else {
                 dto.setMensaje("Se realizaron las operaciones fila indicadas en el paso anterior.");
             }
             return dto;
@@ -792,6 +792,10 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             if (dto.esDosfases()) {
                 boolean factible = verificarFactibilidad(dto.getMatriz()[0]);
                 dto.setFactible(factible);
+                if (!factible) {
+                    dto.setMensaje("Se ha detectado que el problema de programación lineal, no posee "
+                            + "una solución optima factible.");
+                }
             }
             return dto;
         } else {
@@ -965,14 +969,14 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         String resultado = "";
         String[] nombreFilas = dto.getNombreFilas();
         String[] nombreColumnas = dto.getNombreColumnas();
-       String nombre0 = nombreFilas[0];
+        String nombre0 = nombreFilas[0];
         AbstractFraccion valorZ = dto.getMatriz()[0][dto.getMatriz()[0].length - 1].clonar();
-        if(!dto.esMaximización()){
+        if (!dto.esMaximización()) {
             valorZ.hacerNegativa();
             nombre0 = "z";
         }
-        resultado += nombre0 + " = "+ valorZ.toString(dto.esFormatoFraccional()) + "\n";
-        for (int contador = 0; contador < dto.getVariablesHolgura() - 1; contador++) {
+        resultado += nombre0 + " = " + valorZ.toString(dto.esFormatoFraccional()) + "\n";
+        for (int contador = 0; contador < dto.getVariablesBasicas() - 1; contador++) {
             String columna = nombreColumnas[contador];
             int indice = buscarIndice(nombreFilas, columna);
             if (indice == -1) {
@@ -1002,7 +1006,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         c += " Dos fases: " + dto.esDosfases() + "\n";
         c += " Bloqueo: " + dto.esBloqueoDosFases() + "\n";
         c += " punto: " + dto.getCoordenadaPivote() + "\n";
-        c += dto.getMensaje()+"\n";
+        c += dto.getMensaje() + "\n";
         s = "     ";
         for (int contador = 0; contador < col.length; contador++) {
             s += col[contador];
