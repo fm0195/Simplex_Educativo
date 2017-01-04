@@ -47,7 +47,7 @@ public abstract class AbstractSolucionadorSimplex {
      * @return Arreglo de fracciones que representan los radios por cada fila
      * del problema de programación lineal.
      */
-    public abstract String[] calcularRadio(DtoSimplex dto, int columna) ;
+    public abstract String[] calcularRadio(DtoSimplex dto, int columna);
 
     /**
      * Agrega las variables artificiales y de holgura a la matriz de
@@ -70,4 +70,5 @@ public abstract class AbstractSolucionadorSimplex {
      * @return Objeto de tranferencia de datos con las operaciones siguientes.
      */
     public abstract DtoSimplex siguientesOperaciones(DtoSimplex dto);
+    
 }

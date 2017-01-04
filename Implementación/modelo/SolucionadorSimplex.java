@@ -120,15 +120,14 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                     + dto.getVariablesBasicas() - 1);
             nombreFilas = agregarNombreW(nombreFilas);
             dto.setNombreFilas(nombreFilas);
-            dto.setCoordenadaPivote(new Point(artificiales.get(0) + 1, dto.getVariablesHolgura()
-                    + dto.getVariablesBasicas() - 1));
+            dto.setCoordenadaPivote(new Point(dto.getVariablesHolgura()
+                    + dto.getVariablesBasicas() - 1, artificiales.get(0)+1));
             dto.setOperaciones(siguientesOperacionesInicioDosfases(artificiales.get(0)));
-            dto.setMensaje("Se han añadido la fila -w conjunto a las variables de holgura 's' y artificiales 'a', generando"
-                    + "un problema de dos fases.");
+            dto.setMensaje("Agregada fila -w, holguras 's' y artificiales 'a'.");
         } else {
             dto.setCoordenadaPivote(siguientePivoteo(dto));
             dto = siguientesOperaciones(dto);
-            dto.setMensaje("Se han añadido las variables de holgura 's' al problema original.");
+            dto.setMensaje("Agregadas variables de holgura 's' al problema original.");
         }
         dto.setMatriz(matriz);
         return dto;
@@ -732,7 +731,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         Point coordernadaPivoteo = dto.getCoordenadaPivote();
         int columna = coordernadaPivoteo.x;
         AbstractFraccion[] radios = obtenerRadios(matriz, columna);
-        if (esAcotado(radios)) {
+        if (dto.esMatriz() || esAcotado(radios)) {
             int fila = coordernadaPivoteo.y;
             matriz[fila] = generarUno(matriz[fila], columna);
             matriz = realizarOperaciones(matriz, fila, columna);
@@ -740,22 +739,20 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             dto.setMatriz(matriz);
             String nombreColumna = dto.getNombreColumna(columna);
             dto.setNombreFila(fila, nombreColumna);
-            if (!validarSimplexTerminado(dto.getMatriz()[0])) {
+            if (dto.esMatriz() || !validarSimplexTerminado(dto.getMatriz()[0])) {
                 dto = siguientesOperaciones(dto);
-                dto.setMensaje("Se realizaron las operaciones fila indicadas en el paso anterior.");
+                dto.setMensaje("Operaciones fila realizadas.");
             } else if (!dto.esDosfases()) {
                 dto.setSolucion(obtenerSolucion(dto));
-                dto.setMensaje("Se ha finalizado logrando llegar a un estado óptimo para "
-                        + "el problema de programación lineal ingresado.");
+                dto.setMensaje("Estado óptimo.");
                 dto.setFinalizado(true);
             } else {
-                dto.setMensaje("Se realizaron las operaciones fila indicadas en el paso anterior.");
+                dto.setMensaje("Operaciones fila realizadas.");
             }
             return dto;
         } else {
             dto.setAcotado(false);
-            dto.setMensaje("El problema de programación lineal ingresado, no posee una solución acotada,"
-                    + " dentro de un rango válido. Por favor revisar restricciones.");
+            dto.setMensaje("El problema no posee una solución acotada. Revise las restricciones");
             return dto;
         }
     }
@@ -775,16 +772,18 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             if (terminado && !dto.esBloqueoDosFases()) {
                 dto = eliminarFilaW(dto);
                 dto = eliminarColumnasArtificiales(dto);
-                dto.setMensaje("Se ha finalizado la primera fase, se eliminaron las "
-                        + "columnas de las variables artificiales 'a' y la fila que representa"
-                        + " a la función w.");
                 dto.setDosfases(false);
+                boolean finalizado = validarSimplexTerminado(dto.getMatriz()[0]);
+                dto.setFinalizado(finalizado);
+                if (finalizado) {
+                    dto.setSolucion(obtenerSolucion(dto));
+                }
+                dto.setMensaje("Primera fase finalizada, eliminadas variables artificiales y fila w. "+ (finalizado ? "Estado óptimo. " : ""));
                 dto.setCoordenadaPivote(siguientePivoteo(dto));
                 dto = siguientesOperaciones(dto);
             } else if (dto.esBloqueoDosFases()) {
                 dto = eliminarArtificiales(dto);
-                dto.setMensaje("Primera etapa del método de dos fases, se eliminan los 1's "
-                        + "de la fila que representa a las variables artificiales en la función w.");
+                dto.setMensaje("Primera etapa de las dos fases, se eliminan los 1's de las variables artificiales");
             } else {
                 dto = siguientePasoSimplex(dto);
                 dto.setFinalizado(false);
@@ -793,15 +792,13 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 boolean factible = verificarFactibilidad(dto.getMatriz()[0]);
                 dto.setFactible(factible);
                 if (!factible) {
-                    dto.setMensaje("Se ha detectado que el problema de programación lineal, no posee "
-                            + "una solución optima factible.");
+                    dto.setMensaje("El problema no posee solución óptima factible.");
                 }
             }
             return dto;
         } else {
             dto.setFactible(false);
-            dto.setMensaje("Se ha detectado que el problema de programación lineal, no posee "
-                    + "una solución optima factible.");
+            dto.setMensaje("El problema no posee solución óptima factible.");
             return dto;
         }
     }
@@ -836,7 +833,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             nombreArtificial = nombreColumnas[columna];
             fila = buscarIndice(nombreFilas, nombreArtificial);
             dto.setOperaciones(siguientesOperacionesInicioDosfases(fila - 1));
-            dto.setCoordenadaPivote(new Point(fila, columna));
+            dto.setCoordenadaPivote(new Point(columna, fila));
         }
         dto.setMatriz(matriz);
         return dto;

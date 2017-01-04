@@ -8,18 +8,26 @@ package vista;
 import controlador.AbstractSimplexControlador;
 import controlador.SimplexControlador;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -49,6 +57,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     String[][] matrizFracciones;
     JLabel[][] matrizLabels;
     JLabel[] matrizRadios;
+    JLabel labelMensaje;
     JTextArea labelOperaciones;
     JTextArea labelResumen;
     JScrollPane scrollResumen;
@@ -65,8 +74,8 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     JButton botonCopiarTodo;
     JButton botonCopiarPaso;
     final Point casillaSeleccionada;
-    final int ANCHO_CASILLA = 50;
-    final int ALTO_CASILLA = 20;
+    final int ANCHO_CASILLA = 100;
+    final int ALTO_CASILLA = 40;
     final int POSICION_TABLA_X = 20;
     final int POSICION_TABLA_Y = 50;
     int pasoActual;
@@ -74,6 +83,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     int POSICION_RADIOS_Y;
     KeyListener keyboardListener;
     final StringBuilder keyBuffer;
+    final StringBuilder resumenPasoAnterior;
     private int ESPACIO_TABLAS = 10;
     boolean esPrimeraFase = false;
     
@@ -82,8 +92,15 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     public PantallaPasoIntermedio(AbstractSimplexControlador controlador) {
         initComponents();
         this.setVisible(true);
+        this.addWindowListener(new WindowAdapter() {
+        public void windowClosing(WindowEvent evt) {
+          dispose();
+          new PantallaPrincipal("").setVisible(true);
+        }
+       });
         this.controlador = controlador;
         this.keyBuffer = new StringBuilder();
+        this.resumenPasoAnterior = new StringBuilder();
         this.casillaSeleccionada = new Point();
         initVariables();
         agregarActionListeners();
@@ -95,25 +112,38 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         panelRadios = new JPanel();
         panelBotonesMatriz = new JPanel();
         panelBotonesResumen = new JPanel();
-        panelBotonesResumen.setBounds(380, 20, 120, 140);
+        panelBotonesResumen.setBounds(POSICION_TABLA_X-5, 320, 550, 140);
         pestanaResumen = new JPanel(null);
+        pestanaResumen.setFont(new Font("Courier New", Font.BOLD, 14));
         pestanaMatriz = new JPanel(null);
         labelOperaciones = new JTextArea();
         labelOperaciones.setEditable(false);
         labelOperaciones.setLineWrap(true);
         labelOperaciones.setBorder(null);
-        labelOperaciones.setFocusable(false);     
+        labelOperaciones.setFocusable(false);  
+        labelOperaciones.setFont(new Font("Courier New", Font.BOLD, 14));
+        labelMensaje = new JLabel();
+        labelMensaje.setBounds(POSICION_TABLA_X,10,800,40);
+        labelMensaje.setFont(new Font("Courier New", Font.BOLD, 14));
         labelResumen = new JTextArea();
         labelResumen.setEditable(false);
         labelResumen.setLineWrap(false);
+        labelResumen.setFont(new Font("Courier New", Font.BOLD, 14));
         scrollResumen = new JScrollPane(labelResumen);
-        scrollResumen.setBounds(0, 0, 350, 200);
+        scrollResumen.setBounds(POSICION_TABLA_X, 10, 800, 300);
+        scrollResumen.setFont(new Font("Courier New", Font.BOLD, 14));
         botonSiguienteMatriz = new JButton("Siguiente Paso");
+        botonSiguienteMatriz.setFont(new Font("Courier New", Font.BOLD, 14));
         botonAnteriorMatriz = new JButton("Paso Anterior");
+        botonAnteriorMatriz.setFont(new Font("Courier New", Font.BOLD, 14));
         botonSiguienteResumen = new JButton("Siguiente Paso");
+        botonSiguienteResumen.setFont(new Font("Courier New", Font.BOLD, 14));
         botonAnteriorResumen = new JButton("Paso Anterior");
+        botonAnteriorResumen.setFont(new Font("Courier New", Font.BOLD, 14));
         botonCopiarPaso = new JButton("Copiar Paso");
+        botonCopiarPaso.setFont(new Font("Courier New", Font.BOLD, 14));
         botonCopiarTodo = new JButton("Copiar Todo");
+        botonCopiarTodo.setFont(new Font("Courier New", Font.BOLD, 14));
         panelTabla.setBackground(Color.WHITE);
         botonAnteriorMatriz.setFocusable(false);
         botonSiguienteMatriz.setFocusable(false);
@@ -124,7 +154,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                controlador.siguientePasoSimplex();
+                controlador.siguientePaso();
             }
         });
         
@@ -132,7 +162,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                controlador.anteriorPasoSimplex();
+                controlador.anteriorPaso();
             }
         });
         
@@ -140,7 +170,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                controlador.siguientePasoSimplex();
+                controlador.siguientePaso();
             }
         });
         
@@ -148,7 +178,24 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                controlador.anteriorPasoSimplex();
+                controlador.anteriorPaso();
+            }
+        });
+        botonCopiarPaso.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StringSelection stringSelection = new StringSelection(resumenPasoAnterior.toString());
+                Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clpbrd.setContents(stringSelection, null);
+            }
+        });
+        botonCopiarTodo.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StringSelection stringSelection = new StringSelection(labelResumen.getText());
+                Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clpbrd.setContents(stringSelection, null);
             }
         });
     }
@@ -156,12 +203,13 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     public void agregarComponentes(){
         panelBotonesMatriz.add(botonAnteriorMatriz);
         panelBotonesMatriz.add(botonSiguienteMatriz);
-        panelBotonesResumen.add(botonSiguienteResumen);
         panelBotonesResumen.add(botonAnteriorResumen);
+        panelBotonesResumen.add(botonSiguienteResumen);
         panelBotonesResumen.add(botonCopiarPaso);
         panelBotonesResumen.add(botonCopiarTodo);
-        panelPestana.addTab("Matriz", pestanaMatriz);
-        panelPestana.addTab("Resumen", pestanaResumen);
+        panelPestana.addTab("Matriz Numérica", pestanaMatriz);
+        panelPestana.addTab("Resumen de pasos", pestanaResumen);
+        pestanaMatriz.add(labelMensaje);
         pestanaMatriz.add(panelTabla);
         pestanaMatriz.add(panelRadios);
         pestanaMatriz.add(panelBotonesMatriz);
@@ -170,11 +218,15 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         pestanaResumen.add(panelBotonesResumen);
     }
     public void siguientePaso() {
-        controlador.siguientePasoSimplex();
+        controlador.siguientePaso();
     }
     
     public void mostrarOperacion(String operacion){
         labelOperaciones.setText("Siguientes operaciones:\n"+operacion);
+    }
+    
+    public void mostrarMensaje(String mensaje){
+        labelMensaje.setText(mensaje);
     }
     
     public void configurarLayout(int cantFilas, int cantColumnas) {
@@ -192,10 +244,11 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         int altoTablaRadios = altoTablaNumeros;
         panelRadios.setBounds(posicionRadiosX1, posicionRadiosY1, anchoTablaRadios, altoTablaRadios);
         panelRadios.setBackground(Color.white);
-        panelBotonesMatriz.setBounds(POSICION_TABLA_X - 32, POSICION_TABLA_Y + altoTablaRadios, 275,40);
-        labelOperaciones.setBounds(POSICION_TABLA_X + 245, POSICION_TABLA_Y + altoTablaRadios + 5, 250,100);
+        panelBotonesMatriz.setBounds(POSICION_TABLA_X , POSICION_TABLA_Y + altoTablaRadios, 300,40);
+        labelOperaciones.setBounds(POSICION_TABLA_X + 300, POSICION_TABLA_Y + altoTablaRadios + 5, 250,100);
         labelOperaciones.setBackground(new Color(214, 217, 223));
-        this.setSize(anchoTablaNumeros + anchoTablaRadios + 100, altoTablaNumeros * 2 + 100);
+        Dimension dimension = this.getSize();
+        this.setSize(Math.max(anchoTablaNumeros + anchoTablaRadios + 200, dimension.width), Math.max(altoTablaNumeros * 2 + 100, dimension.height));
     }
     
     public void mostrarMatriz(DtoSimplex dto){
@@ -205,12 +258,13 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         String[] nombresFilas = dto.getNombreFilas();
         Point coordenada = dto.getCoordenadaPivote();
         String[] listaRadios = controlador.generarRadios(coordenada.x);
+        resumenPasoAnterior.setLength(0);
+        resumenPasoAnterior.append(dto.toString());
         this.matrizFracciones = dto.getMatrizString();
         int cantFilas = matriz.length + 1;
         int cantColumnas = matriz[0].length + 2;
         
         configurarLayout(cantFilas, cantColumnas);
-        
         //inicializa la matriz de labels
         initMatriz(cantFilas, cantColumnas);
         //inicializa la tabla de radios
@@ -223,6 +277,8 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         rellenarRadios(listaRadios);
         //rellena el cuadrod el texto del resumen
         rellenarResumen(controlador.generarResumen());
+        //muestra las proximas operaciones basadas en el pivote actual. 
+        mostrarMensaje(dto.getMensaje());
         //muestra las proximas operaciones basadas en el pivote actual. 
         mostrarOperacion(dto.getOperaciones());
         //colocar los componentes en sus respectivas posiciones.
@@ -242,7 +298,8 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Simplex Educativo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -250,14 +307,14 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
+                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
+                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -278,6 +335,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
                 label.setBorder(BorderFactory.createLineBorder(Color.black));
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 label.setVerticalAlignment(SwingConstants.CENTER);
+                label.setFont(new Font("Courier New", Font.BOLD, 14));;
                 matrizLabels[i][j] = label;
                 panelTabla.add(label);
             }
@@ -500,7 +558,12 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
 
     private void rellenarRadios(String[] listaRadios) {
         for (int i = 0; i < listaRadios.length; i++) {
-            matrizRadios[i].setText(listaRadios[i].toString());
+            int limiteRestricciones = this.esPrimeraFase ? 2 : 1;
+            if (i < limiteRestricciones) {
+                matrizRadios[i].setText("-");
+            } else {
+                matrizRadios[i].setText(listaRadios[i]);
+            }
         }
     }
 
@@ -511,12 +574,14 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
         label.setBorder(BorderFactory.createLineBorder(Color.black));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font("Courier New", Font.BOLD, 14));
         panelRadios.add(label);
         for (int i = 0; i < cantRestricciones; i++) {
             label = new JLabel();
             label.setBorder(BorderFactory.createLineBorder(Color.black));
             label.setHorizontalAlignment(SwingConstants.CENTER);
             label.setVerticalAlignment(SwingConstants.CENTER);
+            label.setFont(new Font("Courier New", Font.BOLD, 14));
             matrizRadios[i] = label;
             panelRadios.add(label);
         }

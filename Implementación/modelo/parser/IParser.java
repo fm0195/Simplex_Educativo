@@ -1,5 +1,6 @@
 package modelo.parser;
 
+import java.io.IOException;
 import modelo.DtoSimplex;
 
 /**
@@ -14,5 +15,5 @@ public interface IParser {
      * @param value el string que representa el problema lineal. 
      * @return un DTO con la informacion del string representada como matriz. 
      */
-    public DtoSimplex parse(String value);
+    public DtoSimplex parse(String value) throws IOException;
 }

@@ -20,6 +20,7 @@ public class DtoSimplex {
     private boolean finalizado = false;
     private boolean bloqueoDosFases = false;
     private boolean formatoFraccional = true;
+    private boolean esMatriz = false;
     private int variablesBasicas;
     private int variablesHolgura;
     private int artificialActual;
@@ -155,6 +156,22 @@ public class DtoSimplex {
         return factible;
     }
 
+    public boolean isMaximizacion() {
+        return maximizacion;
+    }
+
+    public void setMaximizacion(boolean maximizacion) {
+        this.maximizacion = maximizacion;
+    }
+
+    public boolean esMatriz() {
+        return esMatriz;
+    }
+
+    public void setEsMatriz(boolean esMatriz) {
+        this.esMatriz = esMatriz;
+    }
+
     public void setAcotado(boolean acotado) {
         this.acotado = acotado;
     }
@@ -261,10 +278,12 @@ public class DtoSimplex {
      * @return Nueva referencia del objeto.
      */
     public DtoSimplex clonarProfundo() {
-        return new DtoSimplex(clonarMatriz(), nombreColumnas, nombreFilas, listaDesigualdades,
+        DtoSimplex resultado = new DtoSimplex(clonarMatriz(), nombreColumnas.clone(), nombreFilas.clone(), listaDesigualdades,
                 maximizacion, variablesBasicas, variablesHolgura, dosfases, acotado,
-                factible, finalizado, bloqueoDosFases, formatoFraccional,coordenadaPivote,
+                factible, finalizado, bloqueoDosFases, formatoFraccional,(Point)coordenadaPivote.clone(),
                 artificialActual);
+        resultado.setEsMatriz(esMatriz);
+        return resultado;
     }
 
     /**
@@ -294,35 +313,37 @@ public class DtoSimplex {
     }
     
     public String toString() {
-        AbstractFraccion[][] m = getMatriz();
-        String c = "";
-        String[] f = getNombreFilas();
-        String[] col = getNombreColumnas();
-        String s = "";
-        s += getOperaciones();
-        s += '\n';
-        c += s;
-        s = "      ";
-        for (int contador = 0; contador < col.length; contador++) {
-            s += col[contador];
-            s += "      ";
+        AbstractFraccion[][] matriz = getMatriz();
+        String resultado = "";
+        String[] arregloFilas = getNombreFilas();
+        String[] arregloColumnas = getNombreColumnas();
+        String string = "";
+        string = "|  BVS   ";
+        for (int contador = 0; contador < arregloColumnas.length; contador++) {
+            string += arregloColumnas[contador];
+            string += "          ";
         }
-        s += "RHS\n";
-        c += s;
-        for (int contadorFila = 0; contadorFila < m.length; contadorFila++) {
-            s = "";
-            s += f[contadorFila];
-            s += "  ";
-            for (int contadorColumna = 0; contadorColumna < m[0].length; contadorColumna++) {
-                String numero = m[contadorFila][contadorColumna].toString(formatoFraccional);
-                s += numero;
-                s += "        ".substring(numero.length(),8);
+        string +=  esMatriz ? " |\n"  : "RHS     |\n";
+        String lineaHorizontal = "";
+        for (int i = 1; i < string.length(); i++) {
+            lineaHorizontal+="-";
+        }
+        
+        resultado += lineaHorizontal + "\n" + string + lineaHorizontal + "\n";
+        for (int contadorFila = 0; contadorFila < matriz.length; contadorFila++) {
+            string = "|  ";
+            string += arregloFilas[contadorFila];
+            string += "    ";
+            for (int contadorColumna = 0; contadorColumna < matriz[0].length; contadorColumna++) {
+                String numero = matriz[contadorFila][contadorColumna].toString(formatoFraccional);
+                string += numero;
+                string += "                        ".substring(numero.length(),12);
             }
-            s += "\n";
-            c += s;
+            string = string.substring(0, string.length()-4) + "|\n";
+            resultado += string;
         }
-        c+="\n\n------------------------------\n\n";
-        return (c);
+        resultado+=lineaHorizontal;
+        return (resultado);
     }
 
     public int getArtificialActual() {

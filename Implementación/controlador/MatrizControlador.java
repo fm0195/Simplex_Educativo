@@ -1,71 +1,35 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controlador;
 
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import modelo.AbstractFraccion;
-import modelo.AbstractSolucionadorSimplex;
 import modelo.DtoSimplex;
 import modelo.Fraccion;
 import modelo.SolucionadorSimplex;
-import modelo.parser.IParser;
+import modelo.parser.MatrizParser;
 import vista.PantallaPasoIntermedio;
 import vista.PantallaPrincipal;
 
 /**
  *
- * @author Yordan Jiménez
+ * @author fm010
  */
-public abstract class AbstractSimplexControlador {
+public class MatrizControlador extends AbstractSimplexControlador {
 
-    protected AbstractSolucionadorSimplex solucionador;
-    protected IParser parser;
-    protected int pasoActual = 0;
-    protected ArrayList<DtoSimplex> listaPasos;
-    protected PantallaPasoIntermedio vista;
-    protected String problemaOriginal;
-
-    /**
-     * Indica al solucionador de problemas Simplex, que realice todas las
-     * iteraciones para solucionar el problema de programación lineal indicado
-     * por parámetro.
-     *
-     * @param dto Contiene los datos del problema de programación lineal a
-     * generar la siguiente iteracción.
-     * @return Arreglo que contiene todas las iteraciones del problema de
-     * programación lineal.
-     */
+    public MatrizControlador() {
+        this.solucionador = new SolucionadorSimplex();
+        this.parser = new MatrizParser();
+    }
+    
     public ArrayList<DtoSimplex> solucionar(String problema) {
-        DtoSimplex dto = null;
         this.problemaOriginal = problema;
-        try {
-            dto = parser.parse(problema);
-        } catch (Exception ex) {
-            vista.setVisible(false);
-            vista.mostrarMensajeError("Error en el formato de entrada.", "Error");
-            vista.dispose();
-            new PantallaPrincipal(problema).setVisible(true);
-            return null;
-        }
-        dto = solucionador.completarProblema(dto);
-        listaPasos = solucionador.solucionar(dto);
-        pasoActual = listaPasos.size()-1;
-        vista.mostrarMatriz(listaPasos.get(pasoActual));
-        if (!listaPasos.get(pasoActual).esFactible()) {
-            vista.mostrarMensajeError("El problema no es factible. ", "Infactibilidad");
-        }
-        else{
-            if (!listaPasos.get(pasoActual).esAcotado()) {
-                vista.mostrarMensajeError("El problema no esta acotado. ", "No acotado");
-            }else{
-                if (listaPasos.get(pasoActual).esFinalizado()) {
-                    vista.mostrarMensajeInformacion("Problema finalizado. \n" + listaPasos.get(pasoActual).getSolucion(), "Finalizado");
-                }
-            }
-        }
-        return listaPasos;
+        return null;
     }
 
     /**
@@ -85,7 +49,6 @@ public abstract class AbstractSimplexControlador {
             new PantallaPrincipal(problema).setVisible(true);
             return;
         }
-        dto = solucionador.completarProblema(dto);
         pasoActual = 0;
         listaPasos = new ArrayList<>();
         listaPasos.add(dto);
@@ -108,19 +71,6 @@ public abstract class AbstractSimplexControlador {
         }
         pasoActual++;
         vista.mostrarMatriz(listaPasos.get(pasoActual));
-        
-        if (!listaPasos.get(pasoActual).esFactible()) {
-            vista.mostrarMensajeError("El problema no es factible. ", "Infactibilidad");
-        }
-        else{
-            if (!listaPasos.get(pasoActual).esAcotado()) {
-                vista.mostrarMensajeError("El problema no esta acotado. ", "No acotado");
-            }else{
-                if (listaPasos.get(pasoActual).esFinalizado()) {
-                    vista.mostrarMensajeInformacion("Problema finalizado. \n" + listaPasos.get(pasoActual).getSolucion(), "Finalizado");
-                }
-            }
-        }
     }
     
     /**
@@ -246,5 +196,4 @@ public abstract class AbstractSimplexControlador {
         }
         return resultado;
     }
-    
 }

@@ -2,7 +2,7 @@
 package controlador;
 
 import modelo.SolucionadorSimplex;
-import modelo.parser.Parser;
+import modelo.parser.SimplexParser;
 
 /**
  *
@@ -12,7 +12,7 @@ public class SimplexControlador extends AbstractSimplexControlador{
 
     public SimplexControlador() {
         this.solucionador = new SolucionadorSimplex();
-        this.parser = new Parser();
+        this.parser = new SimplexParser();
     }
     
     
