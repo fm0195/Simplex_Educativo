@@ -742,11 +742,14 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             dto.setNombreFila(fila, nombreColumna);
             if (!validarSimplexTerminado(dto.getMatriz()[0])) {
                 dto = siguientesOperaciones(dto);
-            } else {
+                dto.setMensaje("Se realizaron las operaciones fila indicadas en el paso anterior.");
+            } else if(!dto.esDosfases()){
                 dto.setSolucion(obtenerSolucion(dto));
-                dto.setMensaje("Se ha finalizado lograndollegar a un estado óptimo para "
+                dto.setMensaje("Se ha finalizado logrando llegar a un estado óptimo para "
                         + "el problema de programación lineal ingresado.");
                 dto.setFinalizado(true);
+            }else{
+                dto.setMensaje("Se realizaron las operaciones fila indicadas en el paso anterior.");
             }
             return dto;
         } else {
@@ -780,7 +783,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 dto = siguientesOperaciones(dto);
             } else if (dto.esBloqueoDosFases()) {
                 dto = eliminarArtificiales(dto);
-                dto.setMensaje("Primera etapa del método de dos fases, se eeliminan los 1's "
+                dto.setMensaje("Primera etapa del método de dos fases, se eliminan los 1's "
                         + "de la fila que representa a las variables artificiales en la función w.");
             } else {
                 dto = siguientePasoSimplex(dto);
@@ -999,6 +1002,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         c += " Dos fases: " + dto.esDosfases() + "\n";
         c += " Bloqueo: " + dto.esBloqueoDosFases() + "\n";
         c += " punto: " + dto.getCoordenadaPivote() + "\n";
+        c += dto.getMensaje()+"\n";
         s = "     ";
         for (int contador = 0; contador < col.length; contador++) {
             s += col[contador];
