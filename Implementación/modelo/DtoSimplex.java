@@ -22,7 +22,10 @@ public class DtoSimplex {
     private boolean formatoFraccional = true;
     private int variablesBasicas;
     private int variablesHolgura;
+    private int artificialActual;
     private Point coordenadaPivote;
+    private String solucion;
+    private String mensaje;
 
     /**
      * Instancia un objeto de transferencia de datos con todos los atributos no
@@ -58,7 +61,6 @@ public class DtoSimplex {
         this.nombreColumnas = nombreColumnas;
         this.listaDesigualdades = listaDesigualdades;
         this.maximizacion = maximizacion;
-        this.variablesBasicas = nombreColumnas.length;
     }
 
     /**
@@ -110,7 +112,8 @@ public class DtoSimplex {
             String[] nombreFilas, int[] listaDesigualdades, boolean maximizacion,
             int variablesBasicas, int variablesHolgura, boolean dosFases,
             boolean acotado, boolean factible, boolean finalizado,
-            boolean bloqueoDosFases, boolean formatoFraccional, Point coordenadaPivote) {
+            boolean bloqueoDosFases, boolean formatoFraccional, Point coordenadaPivote,
+            int artificialActual) {
         this.matriz = matriz;
         this.nombreColumnas = nombreColumnas;
         this.nombreFilas = nombreFilas;
@@ -124,7 +127,8 @@ public class DtoSimplex {
         this.factible = factible;
         this.finalizado = finalizado;
         this.formatoFraccional = formatoFraccional;
-        this.coordenadaPivote = coordenadaPivote;
+        this.coordenadaPivote = new Point(coordenadaPivote.x, coordenadaPivote.y);
+        this.artificialActual =  artificialActual;
     }
 
     public AbstractFraccion[][] getMatriz() {
@@ -257,9 +261,10 @@ public class DtoSimplex {
      * @return Nueva referencia del objeto.
      */
     public DtoSimplex clonarProfundo() {
-        return new DtoSimplex(clonarMatriz(), (String[]) nombreColumnas.clone(), (String[]) nombreFilas.clone(), listaDesigualdades,
+        return new DtoSimplex(clonarMatriz(), nombreColumnas, nombreFilas, listaDesigualdades,
                 maximizacion, variablesBasicas, variablesHolgura, dosfases, acotado,
-                factible, finalizado, bloqueoDosFases, formatoFraccional,(Point) coordenadaPivote.clone());
+                factible, finalizado, bloqueoDosFases, formatoFraccional,coordenadaPivote,
+                artificialActual);
     }
 
     /**
@@ -277,7 +282,7 @@ public class DtoSimplex {
         }
         return resultado;
     }
-
+    
     public String[][] getMatrizString() {
         String[][] resultado = new String[matriz.length][matriz[0].length];
         for (int contadorFila = 0; contadorFila < resultado.length; contadorFila++) {
@@ -318,5 +323,29 @@ public class DtoSimplex {
         }
         c+="\n\n------------------------------\n\n";
         return (c);
+    }
+
+    public int getArtificialActual() {
+        return artificialActual;
+    }
+
+    public void setArtificialActual(int artificialActual) {
+        this.artificialActual = artificialActual;
+    }
+
+    public String getSolucion() {
+        return solucion;
+    }
+
+    public void setSolucion(String solucion) {
+        this.solucion = solucion;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 }

@@ -17,11 +17,12 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         boolean continuar = dto.esAcotado() && dto.esFactible();
         ArrayList<DtoSimplex> resultado = new ArrayList<>();
         resultado.add(dto);
-        //imprimir(dto);
+        imprimir(dto);
         while (continuar) {
             dto = dto.clonarProfundo();
             dto = siguientePaso(dto);
-            //imprimir(dto);
+            imprimir(dto);
+            System.out.println(dto.getSolucion());
             continuar = !dto.esFinalizado();
             continuar &= dto.esAcotado() && dto.esFactible();
             resultado.add(dto);
@@ -115,14 +116,19 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             matriz = convertirDosFases(matriz, dto.getVariablesBasicas() + dto.getVariablesHolgura());
             dto.setDosfases(true);
             dto.setBloqueoDosFases(true);
+            dto.setArtificialActual(dto.getVariablesHolgura()
+                    + dto.getVariablesBasicas() - 1);
             nombreFilas = agregarNombreW(nombreFilas);
             dto.setNombreFilas(nombreFilas);
-            dto.setOperaciones(siguientesOperacionesInicioDosfases(artificiales));
-            dto.setCoordenadaPivote(new Point (-1,-1));
+            dto.setCoordenadaPivote(new Point(artificiales.get(0)+1, dto.getVariablesHolgura()
+                    + dto.getVariablesBasicas() - 1));
+            dto.setOperaciones(siguientesOperacionesInicioDosfases(artificiales.get(0)));
+            dto.setMensaje("Se han añadido la fila -w conjunto a las variables de holgura 's' y artificiales 'a', generando"
+                    + "un problema de dos fases.");
         } else {
             dto.setCoordenadaPivote(siguientePivoteo(dto));
             dto = siguientesOperaciones(dto);
-            dto.setCoordenadaPivote(siguientePivoteo(dto));
+            dto.setMensaje("Se han añadido las variables de holgura 's' al problema original." );
         }
         dto.setMatriz(matriz);
         return dto;
@@ -611,7 +617,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
     }
 
     /**
-     * Genera automaticamente la fila y columna que serán entrantes en la
+     * Genera automaticamente la fila y columna que serán entrante en la
      * siguiente iteración, se generan los radios y se obtiene el menor, de
      * igual manera se busca la posición más pequeña dentro de los coeficientes
      * de la función objetivo del problema.
@@ -708,7 +714,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      */
     private String[] crearNombreFila(int tamano, String nombreCabeza) {
         String[] nombres = new String[tamano];
-        nombres[0] = "-z";
+        nombres[0] = nombreCabeza;
         return nombres;
     }
 
@@ -731,17 +737,22 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             matriz[fila] = generarUno(matriz[fila], columna);
             matriz = realizarOperaciones(matriz, fila, columna);
             dto.setCoordenadaPivote(siguientePivoteo(dto));
-            if (!validarSimplexTerminado(dto.getMatriz()[0])) {
-                dto = siguientesOperaciones(dto);
-            } else {
-                dto.setFinalizado(true);
-            }
             dto.setMatriz(matriz);
             String nombreColumna = dto.getNombreColumna(columna);
             dto.setNombreFila(fila, nombreColumna);
+            if (!validarSimplexTerminado(dto.getMatriz()[0])) {
+                dto = siguientesOperaciones(dto);
+            } else {
+                dto.setSolucion(obtenerSolucion(dto));
+                dto.setMensaje("Se ha finalizado lograndollegar a un estado óptimo para "
+                        + "el problema de programación lineal ingresado.");
+                dto.setFinalizado(true);
+            }
             return dto;
         } else {
             dto.setAcotado(false);
+            dto.setMensaje("El problema de programación lineal ingresado, no posee una solución acotada,"
+                    + " dentro de un rango válido. Por favor revisar restricciones.");
             return dto;
         }
     }
@@ -761,23 +772,27 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             if (terminado && !dto.esBloqueoDosFases()) {
                 dto = eliminarFilaW(dto);
                 dto = eliminarColumnasArtificiales(dto);
+                dto.setMensaje("Se ha finalizado la primera fase, se eliminaron las "
+                        + "columnas de las variables artificiales 'a' y la fila que representa"
+                        + " a la función w.");
                 dto.setDosfases(false);
-                dto.setFinalizado(validarSimplexTerminado(dto.getMatriz()[0]));
                 dto.setCoordenadaPivote(siguientePivoteo(dto));
                 dto = siguientesOperaciones(dto);
-            } else{ 
-                if (dto.esBloqueoDosFases()) {
-                    dto = eliminarArtificiales(dto);
-                    dto = siguientesOperaciones(dto);
-                } else {
-                    dto = siguientePasoSimplex(dto);
-                    dto.setFinalizado(false);
-                }
-                dto.setFactible(verificarFactibilidad(dto.getMatriz()[0]));
+            } else if (dto.esBloqueoDosFases()) {
+                dto = eliminarArtificiales(dto);
+                dto.setMensaje("Primera etapa del método de dos fases, se eeliminan los 1's "
+                        + "de la fila que representa a las variables artificiales en la función w.");
+            } else {
+                dto = siguientePasoSimplex(dto);
+                dto.setFinalizado(false);
             }
+            boolean factible = verificarFactibilidad(dto.getMatriz()[0]);
+            dto.setFactible(factible);
             return dto;
         } else {
             dto.setFactible(false);
+            dto.setMensaje("Se ha detectado que el problema de programación lineal, no posee "
+                    + "una solución optima factible.");
             return dto;
         }
     }
@@ -792,21 +807,28 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      * realizar la eliminación de las variables artificiales..
      */
     private DtoSimplex eliminarArtificiales(DtoSimplex dto) {
-        int indiceInicioArtificiales = dto.getVariablesBasicas()
-                + dto.getVariablesHolgura() - 1;
         AbstractFraccion[][] matriz = dto.getMatriz();
         String[] nombreColumnas = dto.getNombreColumnas();
         String[] nombreFilas = dto.getNombreFilas();
         AbstractFraccion unoNegativo = new Fraccion(-1);
         int columna, fila;
-        for (; indiceInicioArtificiales < matriz[0].length - 1; indiceInicioArtificiales++) {
-            columna = indiceInicioArtificiales;
-            String nombreArtificial = nombreColumnas[columna];
+        columna = dto.getArtificialActual();
+        String nombreArtificial = nombreColumnas[columna];
+        fila = buscarIndice(nombreFilas, nombreArtificial);
+        matriz[0] = pivotear(matriz, fila, 0, unoNegativo);
+        columna++;
+        dto.setArtificialActual(columna);
+        if (matriz[0].length - 1 == columna) {
+            dto.setBloqueoDosFases(false);
+            dto.setCoordenadaPivote(siguientePivoteo(dto));
+            dto = siguientesOperaciones(dto);
+        }else{
+            columna = dto.getArtificialActual();
+            nombreArtificial = nombreColumnas[columna];
             fila = buscarIndice(nombreFilas, nombreArtificial);
-            matriz[0] = pivotear(matriz, fila, 0, unoNegativo);
+            dto.setOperaciones(siguientesOperacionesInicioDosfases(fila-1));
+            dto.setCoordenadaPivote(new Point(fila, columna));
         }
-        dto.setBloqueoDosFases(false);
-        dto.setCoordenadaPivote(siguientePivoteo(dto));
         dto.setMatriz(matriz);
         return dto;
     }
@@ -825,7 +847,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 return contador;
             }
         }
-        return 0;
+        return -1;
     }
 
     /**
@@ -917,16 +939,76 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      * de las variables artificiales en la función objetivo de un problema de
      * dos fases.
      *
-     * @param inidicesFilas Índice de la fila donde se encuentra seleccionada la
+     * @param indice Índice de la fila donde se encuentra seleccionada la
      * variable artificial.
      * @return Arreglo de Strings con las operaciones a realizar.
      */
-    private String[] siguientesOperacionesInicioDosfases(ArrayList<Integer> inidicesFilas) {
-        String[] resultado = new String[inidicesFilas.size()];
-        for (int contador = 0; contador < inidicesFilas.size(); contador++) {
-            int indice = inidicesFilas.get(contador);
-            resultado[contador] = "-1 F" + indice + " + F0' -> F0'";
+    private String[] siguientesOperacionesInicioDosfases(int indice) {
+        String[] resultado = new String[1];
+        resultado[0] = "-1 F" + indice + " + F0' -> F0'";
+        return resultado;
+    }
+    
+    /**
+     * Retorna un string que simboliza el estado de las variables de la función objetivo
+     * al finalizar el metodo del simplex.
+     * @param dto Contiene los datos del problema de programación lineal.
+     * @return String con los datos de la solución.
+     */
+    private String obtenerSolucion(DtoSimplex dto){
+        String resultado = "";
+        String[] nombreFilas = dto.getNombreFilas();
+        String[] nombreColumnas = dto.getNombreColumnas();
+        resultado += nombreFilas[0]+ " = "
+                +dto.getMatriz()[0][dto.getMatriz()[0].length-1].toString(dto.esFormatoFraccional()) + "\n";
+        for (int contador = 0; contador < dto.getVariablesHolgura()-1; contador++) {
+            String columna = nombreColumnas[contador];
+            int indice = buscarIndice(nombreFilas, columna);
+            if(indice == -1){
+                resultado += columna + " = 0";
+            }else{
+                resultado += columna+ " = " + 
+                        dto.getMatriz()[indice][dto.getMatriz()[0].length-1].toString(dto.esFormatoFraccional());
+            }
+            resultado += "\n";
         }
         return resultado;
+    }
+    
+    void imprimir(DtoSimplex dto) {
+        AbstractFraccion[][] m = dto.getMatriz();
+        String c = "";
+        String[] f = dto.getNombreFilas();
+        String[] col = dto.getNombreColumnas();
+        String s = "";
+        String of = dto.getOperaciones();
+        s +=of;
+        s += '\n';
+        c += s;
+        c += " Acotado: " + dto.esAcotado() + "\n";
+        c += " Factible: " + dto.esFactible() + "\n";
+        c += " Terminado: " + dto.esFinalizado() + "\n";
+        c += " Dos fases: " + dto.esDosfases() + "\n";
+        c += " Bloqueo: " + dto.esBloqueoDosFases() + "\n";
+        c += " punto: " + dto.getCoordenadaPivote() + "\n";
+        s = "     ";
+        for (int contador = 0; contador < col.length; contador++) {
+            s += col[contador];
+            s += "     ";
+        }
+        s += "\n";
+        c += s;
+        for (int contadorFila = 0; contadorFila < m.length; contadorFila++) {
+            s = "";
+            s += f[contadorFila];
+            s += "     ";
+            for (int contadorColumna = 0; contadorColumna < m[0].length; contadorColumna++) {
+                s += m[contadorFila][contadorColumna].toString();
+                s += "     ";
+            }
+            s += "\n";
+            c += s;
+        }
+        System.out.println(c);
     }
 }
