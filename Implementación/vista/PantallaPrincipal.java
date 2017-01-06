@@ -28,6 +28,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         this.solucionDirecta = false;
         this.gomory = false;
         initComponents();
+        this.radioGomory.setVisible(false);
+        this.radioBB.setVisible(false);
         this.areaTexto.setText(problema);
     }
 
@@ -78,7 +80,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Simplex Educativo. ");
-        setResizable(false);
 
         areaTexto.setColumns(12);
         areaTexto.setFont(new java.awt.Font("Courier New", 0, 14)); // NOI18N

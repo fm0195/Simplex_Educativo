@@ -48,6 +48,7 @@ public class MatrizControlador extends AbstractControlador {
             return;
         }
         dto.setFormatoFraccional(fraccionario);
+        dto.setOperaciones(solucionador.siguientesOperaciones(dto).getOperaciones().split("\n"));
         pasoActual = 0;
         listaPasos = new ArrayList<>();
         listaPasos.add(dto);

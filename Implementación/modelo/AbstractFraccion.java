@@ -33,7 +33,22 @@ public abstract class AbstractFraccion {
      * @param numerador
      */
     public AbstractFraccion(double numerador) {
-        this.numerador = numerador;
+        if(numerador == Double.MAX_VALUE) {
+            this.numerador = numerador;
+            this.denominador = 1;
+            return;
+        }
+        String s = String.valueOf(numerador);
+        int digitsDec = s.length() - 1 - s.indexOf('.');
+        int denom = 1;
+        for (int i = 0; i < digitsDec; i++) {
+            numerador *= 10;    
+            denom *= 10;
+        }
+        int divisorComun = obtenerMayorDivisorComun(numerador, denom);
+        this.numerador = numerador / divisorComun;
+        this.denominador = denom / divisorComun;
+        validarSignos();
     }
 
     /**
