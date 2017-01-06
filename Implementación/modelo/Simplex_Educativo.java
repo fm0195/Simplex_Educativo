@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import dto.DtoSimplex;
 import java.io.FileReader;
 import java_cup.runtime.Scanner;
 import java_cup.runtime.Symbol;

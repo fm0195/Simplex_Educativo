@@ -5,7 +5,8 @@
  */
 package vista;
 
-import controlador.AbstractSimplexControlador;
+import controlador.AbstractControlador;
+import controlador.IVista;
 import controlador.SimplexControlador;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -40,20 +41,18 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import modelo.AbstractFraccion;
-import modelo.DtoSimplex;
-import modelo.Fraccion;
+import dto.DtoSimplex;
 
 /**
  *
  * @author fm010
  */
-public class PantallaPasoIntermedio extends javax.swing.JFrame {
+public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista {
 
     /**
      * Creates new form PantallaPasoIntermedio
      */
-    AbstractSimplexControlador controlador;
+    AbstractControlador controlador;
     String[][] matrizFracciones;
     JLabel[][] matrizLabels;
     JLabel[] matrizRadios;
@@ -89,7 +88,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     
 
     
-    public PantallaPasoIntermedio(AbstractSimplexControlador controlador) {
+    public PantallaPasoIntermedio(AbstractControlador controlador) {
         initComponents();
         this.setVisible(true);
         this.addWindowListener(new WindowAdapter() {
@@ -597,5 +596,15 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame {
     
     private void rellenarResumen(String resumen) {
         labelResumen.setText(resumen);
+    }
+
+    @Override
+    public void menu(String mensajeError, String problemaOriginal) {
+        this.setVisible(false);
+        if (mensajeError != null) {
+            this.mostrarMensajeError(mensajeError, "Error");
+        }
+        this.dispose();
+        new PantallaPrincipal(problemaOriginal).setVisible(true);
     }
 }

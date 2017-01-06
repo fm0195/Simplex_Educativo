@@ -1,30 +1,22 @@
 package controlador;
 
 import java.awt.Point;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import modelo.AbstractFraccion;
 import modelo.AbstractSolucionadorSimplex;
-import modelo.DtoSimplex;
-import modelo.Fraccion;
-import modelo.SolucionadorSimplex;
+import dto.DtoSimplex;
 import modelo.parser.IParser;
-import vista.PantallaPasoIntermedio;
-import vista.PantallaPrincipal;
 
 /**
  *
  * @author Yordan Jiménez
  */
-public abstract class AbstractSimplexControlador {
+public abstract class AbstractControlador {
 
     protected AbstractSolucionadorSimplex solucionador;
     protected IParser parser;
     protected int pasoActual = 0;
     protected ArrayList<DtoSimplex> listaPasos;
-    protected PantallaPasoIntermedio vista;
+    protected IVista vista;
     protected String problemaOriginal;
 
     /**
@@ -37,18 +29,16 @@ public abstract class AbstractSimplexControlador {
      * @return Arreglo que contiene todas las iteraciones del problema de
      * programación lineal.
      */
-    public ArrayList<DtoSimplex> solucionar(String problema) {
+    public ArrayList<DtoSimplex> solucionar(String problema, boolean fraccional) {
         DtoSimplex dto = null;
         this.problemaOriginal = problema;
         try {
             dto = parser.parse(problema);
         } catch (Exception ex) {
-            vista.setVisible(false);
-            vista.mostrarMensajeError("Error en el formato de entrada.", "Error");
-            vista.dispose();
-            new PantallaPrincipal(problema).setVisible(true);
+            vista.menu("Error en el formato de entrada.", problemaOriginal);
             return null;
         }
+        dto.setFormatoFraccional(fraccional);
         dto = solucionador.completarProblema(dto);
         listaPasos = solucionador.solucionar(dto);
         pasoActual = listaPasos.size()-1;
@@ -73,19 +63,17 @@ public abstract class AbstractSimplexControlador {
      * programación lineal cargado.
      * @param problema el string del problema por resolver
      */
-    public void siguientePaso(String problema) {
+    public void siguientePaso(String problema, boolean fraccional) {
         DtoSimplex dto = null;
         this.problemaOriginal = problema;
         try {
             dto = parser.parse(problema);
         } catch (Exception ex) {
-            vista.setVisible(false);
-            vista.mostrarMensajeError("Error en el formato de entrada.", "Error");
-            vista.dispose();
-            new PantallaPrincipal(problema).setVisible(true);
+            vista.menu("Error en el formato de entrada.", problemaOriginal);
             return;
         }
         dto = solucionador.completarProblema(dto);
+        dto.setFormatoFraccional(fraccional);
         pasoActual = 0;
         listaPasos = new ArrayList<>();
         listaPasos.add(dto);
@@ -138,8 +126,7 @@ public abstract class AbstractSimplexControlador {
             DtoSimplex rem = listaPasos.remove(pasoActual--);
             vista.mostrarMatriz(listaPasos.get(pasoActual));
         } else {
-            vista.dispose();
-            new PantallaPrincipal(problemaOriginal).setVisible(true);
+            vista.menu(null, problemaOriginal);
         }
     }
 
@@ -190,7 +177,9 @@ public abstract class AbstractSimplexControlador {
             if (resultado[i].compareTo(String.valueOf(Integer.MIN_VALUE)) == 0) {
                 resultado[i] = "-oo";
             }
-            if (resultado[i].compareTo(String.valueOf(Integer.MAX_VALUE)) == 0) {
+            String maxDouble = String.format("%.2f",Double.MAX_VALUE);
+            String actual = resultado[i];
+            if (resultado[i].compareTo(String.valueOf(Integer.MAX_VALUE)) == 0 || resultado[i].compareTo(String.format("%.2f",Double.MAX_VALUE)) == 0) {
                 resultado[i] = "oo";
             }
         }
@@ -225,17 +214,19 @@ public abstract class AbstractSimplexControlador {
      */
     public void modificarEntradaMatriz(int fila, int columna,
             String valor) {
-        AbstractFraccion nuevaFraccion;
+        double numerador;
+        double denominador = 1;
         if (valor.contains("/")) {
             String[] split = valor.split("/");
-            nuevaFraccion = new Fraccion(Double.valueOf(split[0]), Double.valueOf(split[1]));
+            numerador = Double.valueOf(split[0]);
+            denominador = Double.valueOf(split[1]);
         }else {
-            nuevaFraccion = new Fraccion(Double.valueOf(valor));
+            numerador = Double.valueOf(valor);
         }
-        listaPasos.get(pasoActual).getMatriz()[fila][columna] = nuevaFraccion;
+        listaPasos.get(pasoActual).setEntradaMatriz(fila, columna, numerador, denominador);
     }
 
-    public void setVista(PantallaPasoIntermedio vista) {
+    public void setVista(IVista vista) {
         this.vista = vista;
     }
     
@@ -246,5 +237,4 @@ public abstract class AbstractSimplexControlador {
         }
         return resultado;
     }
-    
 }

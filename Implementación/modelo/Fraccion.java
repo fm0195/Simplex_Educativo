@@ -103,11 +103,15 @@ public class Fraccion extends AbstractFraccion {
 
     @Override
     public String toString(boolean fraccional) {
-       if(fraccional && getNumerador() != 0 
-               && getDenominador() != 1){
-           return toString();
+       if(fraccional){
+           if (getNumerador() == 0) {
+                return "0";
+           }else if(getDenominador() == 1){
+               return String.valueOf((int) getNumerador());
+           }else
+               return toString();
        }else{
-           return String.valueOf((int)getNumerador() / (int)getDenominador());
+           return String.format("%.2f", (getNumerador() / getDenominador()));
        }
     }
 }

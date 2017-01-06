@@ -1,5 +1,6 @@
 package modelo;
 
+import dto.DtoSimplex;
 import java.util.ArrayList;
 
 /**

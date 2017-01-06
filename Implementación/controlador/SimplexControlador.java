@@ -8,7 +8,7 @@ import modelo.parser.SimplexParser;
  *
  * @author Yordan Jimenez
  */
-public class SimplexControlador extends AbstractSimplexControlador{
+public class SimplexControlador extends AbstractControlador{
 
     public SimplexControlador() {
         this.solucionador = new SolucionadorSimplex();

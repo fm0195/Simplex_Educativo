@@ -1,7 +1,7 @@
 package modelo.parser;
 
 import java.io.IOException;
-import modelo.DtoSimplex;
+import dto.DtoSimplex;
 
 /**
  *

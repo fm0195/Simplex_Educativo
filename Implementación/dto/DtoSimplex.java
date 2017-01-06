@@ -1,6 +1,8 @@
-package modelo;
+package dto;
 
 import java.awt.Point;
+import modelo.AbstractFraccion;
+import modelo.Fraccion;
 
 /**
  *
@@ -344,6 +346,12 @@ public class DtoSimplex {
         }
         resultado+=lineaHorizontal;
         return (resultado);
+    }
+    
+    public void setEntradaMatriz(int fila, int columna, double numerador, double denominador){
+        AbstractFraccion nuevaFraccion;
+        nuevaFraccion = new Fraccion(numerador, denominador);
+        matriz[fila][columna] = nuevaFraccion;
     }
 
     public int getArtificialActual() {

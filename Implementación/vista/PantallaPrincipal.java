@@ -5,20 +5,9 @@
  */
 package vista;
 
-import controlador.AbstractSimplexControlador;
+import controlador.AbstractControlador;
 import controlador.SimplexControlador;
 import controlador.MatrizControlador;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import modelo.AbstractSolucionadorSimplex;
-import modelo.DtoSimplex;
-import modelo.SolucionadorSimplex;
-import modelo.parser.IParser;
-import modelo.parser.MatrizParser;
-import modelo.parser.SimplexParser;
 
 /**
  *
@@ -31,7 +20,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private boolean solucionDirecta; 
     private boolean matrizNumerica;
     private boolean solucionSimplex;
-    AbstractSimplexControlador controlador;
+    AbstractControlador controlador;
     
     public PantallaPrincipal(String problema) {
         this.solucionSimplex = true;
@@ -351,19 +340,19 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             if (solucionDirecta) {
                 controlador.setVista(new PantallaPasoIntermedio(controlador));
                 texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
-                controlador.solucionar(texto);
+                controlador.solucionar(texto, fraccionario);
                 this.dispose();
             }else {
                 controlador.setVista(new PantallaPasoIntermedio(controlador));
                 texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
-                controlador.siguientePaso(texto);
+                controlador.siguientePaso(texto, fraccionario);
                 this.dispose();
             }
         }
         if (matrizNumerica) {
             controlador = new MatrizControlador();
             controlador.setVista(new PantallaPasoIntermedio(controlador));
-            controlador.siguientePaso(areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", ""));
+            controlador.siguientePaso(areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", ""), fraccionario);
             this.dispose();
         }
     }//GEN-LAST:event_botonSimplexActionPerformed

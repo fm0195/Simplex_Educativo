@@ -1,5 +1,6 @@
 package modelo;
 
+import dto.DtoSimplex;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -17,11 +18,9 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         boolean continuar = dto.esAcotado() && dto.esFactible();
         ArrayList<DtoSimplex> resultado = new ArrayList<>();
         resultado.add(dto);
-        imprimir(dto);
         while (continuar) {
             dto = dto.clonarProfundo();
             dto = siguientePaso(dto);
-            imprimir(dto);
             System.out.println(dto.getSolucion());
             continuar = !dto.esFinalizado();
             continuar &= dto.esAcotado() && dto.esFactible();
@@ -247,16 +246,16 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      * menor.
      * @return Valor entro que representa el índice del valor menor del arreglo.
      */
-    private int obtenerIndiceDelValorMenor(AbstractFraccion[] valores, int indiceIncio,
+    private int obtenerIndiceDelValorMenor(AbstractFraccion[] valores, int indiceInicio,
             int acotoFinal) {
-        AbstractFraccion valorMenor = valores[indiceIncio];
+        AbstractFraccion valorMenor = valores[indiceInicio];
         AbstractFraccion valor;
-        int indice = indiceIncio;
-        for (; indiceIncio < valores.length - acotoFinal; indiceIncio++) {
-            valor = valores[indiceIncio];
+        int indice = indiceInicio;
+        for (; indiceInicio < valores.length - acotoFinal; indiceInicio++) {
+            valor = valores[indiceInicio];
             if (valor.menorQue(valorMenor)) {
                 valorMenor = valor;
-                indice = indiceIncio;
+                indice = indiceInicio;
             }
         }
         return indice;
@@ -985,43 +984,5 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             resultado += "\n";
         }
         return resultado;
-    }
-
-    void imprimir(DtoSimplex dto) {
-        AbstractFraccion[][] m = dto.getMatriz();
-        String c = "";
-        String[] f = dto.getNombreFilas();
-        String[] col = dto.getNombreColumnas();
-        String s = "";
-        String of = dto.getOperaciones();
-        s += of;
-        s += '\n';
-        c += s;
-        c += " Acotado: " + dto.esAcotado() + "\n";
-        c += " Factible: " + dto.esFactible() + "\n";
-        c += " Terminado: " + dto.esFinalizado() + "\n";
-        c += " Dos fases: " + dto.esDosfases() + "\n";
-        c += " Bloqueo: " + dto.esBloqueoDosFases() + "\n";
-        c += " punto: " + dto.getCoordenadaPivote() + "\n";
-        c += dto.getMensaje() + "\n";
-        s = "     ";
-        for (int contador = 0; contador < col.length; contador++) {
-            s += col[contador];
-            s += "     ";
-        }
-        s += "\n";
-        c += s;
-        for (int contadorFila = 0; contadorFila < m.length; contadorFila++) {
-            s = "";
-            s += f[contadorFila];
-            s += "     ";
-            for (int contadorColumna = 0; contadorColumna < m[0].length; contadorColumna++) {
-                s += m[contadorFila][contadorColumna].toString();
-                s += "     ";
-            }
-            s += "\n";
-            c += s;
-        }
-        System.out.println(c);
     }
 }

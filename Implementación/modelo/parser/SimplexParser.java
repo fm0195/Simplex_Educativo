@@ -11,7 +11,7 @@ import java_cup.runtime.*;
 import modelo.parser.Scanner;
 import modelo.parser.IParser;
 import modelo.AbstractFraccion;
-import modelo.DtoSimplex;
+import dto.DtoSimplex;
 import modelo.Fraccion;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ import java_cup.runtime.XMLElement;
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
   */
 @SuppressWarnings({"rawtypes"})
-public class Parser extends java_cup.runtime.lr_parser implements IParser{
+public class SimplexParser extends java_cup.runtime.lr_parser implements IParser{
 
  public final Class getSymbolContainer() {
     return sym.class;
@@ -31,14 +31,14 @@ public class Parser extends java_cup.runtime.lr_parser implements IParser{
 
   /** Default constructor. */
   @Deprecated
-  public Parser() {super();}
+  public SimplexParser() {super();}
 
   /** Constructor which sets the default scanner. */
   @Deprecated
-  public Parser(java_cup.runtime.Scanner s) {super(s);}
+  public SimplexParser(java_cup.runtime.Scanner s) {super(s);}
 
   /** Constructor which sets the default scanner. */
-  public Parser(java_cup.runtime.Scanner s, java_cup.runtime.SymbolFactory sf) {super(s,sf);}
+  public SimplexParser(java_cup.runtime.Scanner s, java_cup.runtime.SymbolFactory sf) {super(s,sf);}
 
   /** Production table. */
   protected static final short _production_table[][] = 
@@ -162,7 +162,7 @@ public class Parser extends java_cup.runtime.lr_parser implements IParser{
 
 
     private Scanner s;
-    private Parser(Scanner s){ super(s); this.s=s; }
+    private SimplexParser(Scanner s){ super(s); this.s=s; }
     private TreeSet<String> conjuntoVariables = new TreeSet<>();
     private HashMap<String, AbstractFraccion> hashFracciones = new HashMap<>();
     private ArrayList<HashMap<String, AbstractFraccion>> listaRestricciones = new ArrayList<>();
@@ -172,7 +172,7 @@ public class Parser extends java_cup.runtime.lr_parser implements IParser{
     public DtoSimplex parse(String value) {
         try {
             java_cup.runtime.Scanner s = new modelo.parser.Scanner(new StringReader(value));
-            Parser p = new Parser(s);
+            SimplexParser p = new SimplexParser(s);
             Symbol res = p.parse();
             DtoSimplex dto = (DtoSimplex) res.value;
             return dto;
@@ -185,10 +185,10 @@ public class Parser extends java_cup.runtime.lr_parser implements IParser{
 /** Cup generated class to encapsulate user supplied action code.*/
 @SuppressWarnings({"rawtypes", "unchecked", "unused"})
 class CUP$Parser$actions {
-  private final Parser parser;
+  private final SimplexParser parser;
 
   /** Constructor */
-  CUP$Parser$actions(Parser parser) {
+  CUP$Parser$actions(SimplexParser parser) {
     this.parser = parser;
   }
 
@@ -523,6 +523,6 @@ class CUP$Parser$actions {
                                CUP$Parser$stack,
                                CUP$Parser$top);
     }
-}
+    }
 
 }

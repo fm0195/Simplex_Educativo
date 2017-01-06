@@ -9,25 +9,25 @@ import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import modelo.AbstractFraccion;
-import modelo.DtoSimplex;
+import dto.DtoSimplex;
 import modelo.Fraccion;
 import modelo.SolucionadorSimplex;
 import modelo.parser.MatrizParser;
-import vista.PantallaPasoIntermedio;
-import vista.PantallaPrincipal;
 
 /**
  *
  * @author fm010
  */
-public class MatrizControlador extends AbstractSimplexControlador {
+public class MatrizControlador extends AbstractControlador {
 
+    
     public MatrizControlador() {
         this.solucionador = new SolucionadorSimplex();
         this.parser = new MatrizParser();
     }
     
-    public ArrayList<DtoSimplex> solucionar(String problema) {
+    @Override
+    public ArrayList<DtoSimplex> solucionar(String problema, boolean fraccional) {
         this.problemaOriginal = problema;
         return null;
     }
@@ -37,18 +37,17 @@ public class MatrizControlador extends AbstractSimplexControlador {
      * programación lineal cargado.
      * @param problema el string del problema por resolver
      */
-    public void siguientePaso(String problema) {
+    @Override
+    public void siguientePaso(String problema, boolean fraccionario) {
         DtoSimplex dto = null;
         this.problemaOriginal = problema;
         try {
             dto = parser.parse(problema);
         } catch (Exception ex) {
-            vista.setVisible(false);
-            vista.mostrarMensajeError("Error en el formato de entrada.", "Error");
-            vista.dispose();
-            new PantallaPrincipal(problema).setVisible(true);
+            vista.menu("Error en el formato de entrada", problema);
             return;
         }
+        dto.setFormatoFraccional(fraccionario);
         pasoActual = 0;
         listaPasos = new ArrayList<>();
         listaPasos.add(dto);
@@ -60,6 +59,7 @@ public class MatrizControlador extends AbstractSimplexControlador {
      * programación lineal cargado.
      *
      */
+    @Override
     public void siguientePaso() {
         DtoSimplex problemaActual = listaPasos.get(pasoActual).clonarProfundo();
         DtoSimplex siguientePaso = solucionador.siguientePaso(problemaActual);
@@ -80,6 +80,7 @@ public class MatrizControlador extends AbstractSimplexControlador {
      * @return Datos de la siguiente iteración del problema de programación
      * lineal.
      */
+    @Override
     public void anteriorPaso() {
         if (pasoActual < listaPasos.size() && pasoActual > 0) {
             DtoSimplex anterior = listaPasos.get(pasoActual-1);
@@ -88,8 +89,7 @@ public class MatrizControlador extends AbstractSimplexControlador {
             DtoSimplex rem = listaPasos.remove(pasoActual--);
             vista.mostrarMatriz(listaPasos.get(pasoActual));
         } else {
-            vista.dispose();
-            new PantallaPrincipal(problemaOriginal).setVisible(true);
+            vista.menu(null, problemaOriginal);
         }
     }
 
@@ -104,6 +104,7 @@ public class MatrizControlador extends AbstractSimplexControlador {
      * @return Datos de las siguientes operaciones del problema de programación
      * lineal.
      */
+    @Override
     public String siguientesOperaciones(Point coordenadas) {
         String resultado = listaPasos.get(pasoActual).getOperaciones();
         if (!listaPasos.get(pasoActual).esBloqueoDosFases()) {
@@ -124,6 +125,7 @@ public class MatrizControlador extends AbstractSimplexControlador {
      * @param columna Indice de la columna a generar el radio.
      * @return Arreglo con el valor de los radios.
      */
+    @Override
     public String[] generarRadios(int columna) {   
         String[] resultado;
         if(columna == -1){
@@ -158,6 +160,7 @@ public class MatrizControlador extends AbstractSimplexControlador {
      * @return Arreglo con el valor de los radios.
      *
      */
+    @Override
     public String[] generarRadios() {
         DtoSimplex dto = listaPasos.get(pasoActual);
         return solucionador.calcularRadio(dto, dto.getCoordenadaPivote().y);
@@ -173,6 +176,7 @@ public class MatrizControlador extends AbstractSimplexControlador {
      * @param columna Indice de la columna dentro de la matriz.
      * @param valor Valor del coeficiente a intercambiar.
      */
+    @Override
     public void modificarEntradaMatriz(int fila, int columna,
             String valor) {
         AbstractFraccion nuevaFraccion;
@@ -185,10 +189,12 @@ public class MatrizControlador extends AbstractSimplexControlador {
         listaPasos.get(pasoActual).getMatriz()[fila][columna] = nuevaFraccion;
     }
 
-    public void setVista(PantallaPasoIntermedio vista) {
+    @Override
+    public void setVista(IVista vista) {
         this.vista = vista;
     }
     
+    @Override
     public String generarResumen() {
         String resultado = "";
         for (int i = 0; i <= pasoActual; i++) {

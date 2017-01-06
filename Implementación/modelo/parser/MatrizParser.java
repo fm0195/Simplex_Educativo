@@ -11,7 +11,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java_cup.runtime.Symbol;
 import modelo.AbstractFraccion;
-import modelo.DtoSimplex;
+import dto.DtoSimplex;
 
 /**
  *
