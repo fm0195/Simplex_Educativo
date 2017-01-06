@@ -364,12 +364,14 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      * problema de programación lineal se encuentra acotado.
      *
      * @param ladoDerecho Valores del lado derecho del problema.
+     * @param dosFases Indica si se encuentra en un problema de dos fases.
      * @return Valor booleano que indica si el problema esta acotado.
      */
-    private boolean esAcotado(AbstractFraccion[] ladoDerecho) {
+    private boolean esAcotado(AbstractFraccion[] ladoDerecho, boolean dosFases) {
         AbstractFraccion elementoLadoDerecho;
         AbstractFraccion infinito = new Fraccion(Double.MAX_VALUE);
-        for (int contador = 1; contador < ladoDerecho.length; contador++) {
+        int inicio = dosFases ? 2 : 1;
+        for (int contador = inicio; contador < ladoDerecho.length; contador++) {
             elementoLadoDerecho = ladoDerecho[contador];
             if (!elementoLadoDerecho.iguales(infinito)) {
                 return true;
@@ -730,7 +732,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         Point coordernadaPivoteo = dto.getCoordenadaPivote();
         int columna = coordernadaPivoteo.x;
         AbstractFraccion[] radios = obtenerRadios(matriz, columna);
-        if (dto.esMatriz() || esAcotado(radios)) {
+        if (dto.esMatriz() || esAcotado(radios, dto.esDosfases())) {
             int fila = coordernadaPivoteo.y;
             matriz[fila] = generarUno(matriz[fila], columna);
             matriz = realizarOperaciones(matriz, fila, columna);
