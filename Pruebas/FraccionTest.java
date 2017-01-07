@@ -42,11 +42,11 @@ public class FraccionTest {
     AbstractFraccion fraccionOperando1;
     AbstractFraccion fraccionOperando2;
     AbstractFraccion[] resultadoOperando;
-    double[] resDivisorComun;
+    int[] resDivisorComun;
     boolean esCero;
 
     public FraccionTest(AbstractFraccion fraccion1, AbstractFraccion fraccion2,
-            double resDivisorComun[], AbstractFraccion[] resultado, boolean esCero) {
+            int resDivisorComun[], AbstractFraccion[] resultado, boolean esCero) {
         this.fraccionOperando1 = fraccion1;
         this.fraccionOperando2 = fraccion2;
         this.resultadoOperando = resultado;
@@ -125,11 +125,11 @@ public class FraccionTest {
         };
 
         return Arrays.asList(new Object[][]{
-            {fraccion, fraccion6, new double[]{15, 60, 15}, fraccionRes1, false},
-            {fraccion2, fraccion7, new double[]{150, 60, 30}, fraccionRes2, false},
-            {fraccion3, fraccion8, new double[]{120, 25, 5}, fraccionRes3, false},
-            {fraccion4, fraccion9, new double[]{9, 78, 3}, fraccionRes4, false},
-            {fraccion5, fraccion10, new double[]{12, 3, 3}, fraccionRes5, false}
+            {fraccion, fraccion6, new int[]{15, 60, 15}, fraccionRes1, false},
+            {fraccion2, fraccion7, new int[]{150, 60, 30}, fraccionRes2, false},
+            {fraccion3, fraccion8, new int[]{120, 25, 5}, fraccionRes3, false},
+            {fraccion4, fraccion9, new int[]{9, 78, 3}, fraccionRes4, false},
+            {fraccion5, fraccion10, new int[]{12, 3, 3}, fraccionRes5, false}
         });
     }
 
@@ -172,10 +172,10 @@ public class FraccionTest {
         assertTrue(resultadoCorrecto.iguales(fraccion));
     }
 
-    public void testObtenerMayorDivisorComun(double numerador, double denominador, int resultadoCorrecto) {
+    public void testObtenerMayorDivisorComun(int numerador, int denominador, int resultadoCorrecto) {
         try {
             Object[] argumentos = new Object[]{numerador, denominador};
-            Class<?>[] tipoArgumentos = new Class[]{double.class, double.class};
+            Class<?>[] tipoArgumentos = new Class[]{int.class, int.class};
             Class<?> claseFraccion = Fraccion.class;
             Method metodo = claseFraccion.getDeclaredMethod(
                     "obtenerMayorDivisorComun", tipoArgumentos);

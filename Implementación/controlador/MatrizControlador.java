@@ -174,7 +174,7 @@ public class MatrizControlador extends AbstractControlador {
         AbstractFraccion nuevaFraccion;
         if (valor.contains("/")) {
             String[] split = valor.split("/");
-            nuevaFraccion = new Fraccion(Double.valueOf(split[0]), Double.valueOf(split[1]));
+            nuevaFraccion = new Fraccion(Integer.valueOf(split[0]), Integer.valueOf(split[1]));
         } else {
             nuevaFraccion = new Fraccion(Double.valueOf(valor));
         }

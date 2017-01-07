@@ -56,7 +56,7 @@ public class DtoSimplex {
      * @param nombreColumnas Etiquetas que identifican las variables en cada
      * columna.
      * @param listaDesigualdades identifica numeracamente el tipo de desigualdad
-     * de la restriccion, >=, <= o =
+     * de la restriccion, &lt;=, &gt;= o =
      * @param maximizacion indica si el problema es de maximizacion o
      * minimizacion
      */
@@ -355,7 +355,7 @@ public class DtoSimplex {
         return (resultado);
     }
 
-    public void setEntradaMatriz(int fila, int columna, double numerador, double denominador) {
+    public void setEntradaMatriz(int fila, int columna, int numerador, int denominador) {
         AbstractFraccion nuevaFraccion;
         nuevaFraccion = new Fraccion(numerador, denominador);
         matriz[fila][columna] = nuevaFraccion;

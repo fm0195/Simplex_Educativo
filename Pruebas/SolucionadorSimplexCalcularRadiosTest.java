@@ -44,6 +44,9 @@ public class SolucionadorSimplexCalcularRadiosTest {
             fail("El solucionador no ha brindado un solución con la cantidad correcta"
                     + "de elementos");
         }
+        boolean res = UtilPruebas.arreglosIguales(solucionGenerada, resultado);
+        if(!res)
+            res = false;
         assertTrue(UtilPruebas.arreglosIguales(solucionGenerada, resultado));
     }
 

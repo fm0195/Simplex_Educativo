@@ -1,44 +1,27 @@
 package modelo;
 
-import modelo.AbstractFraccion;
-
 /**
  *
  * @author Yordan Jiménez
  */
 public class Fraccion extends AbstractFraccion {
 
-    /**
-     * Crea una fraccion nueva con valor 0
-     */
     public Fraccion() {
         super(0, 1);
     }
 
-    /**
-     * Crea una fraccion nueva con los parametros enviados
-     *
-     * @param numerador numerador de la fraccion
-     * @param denominador denominador de la fraccion
-     */
-    public Fraccion(double numerador, double denominador) {
+    public Fraccion(int numerador, int denominador) {
         super(numerador, denominador);
     }
 
-    /**
-     * Crea una fracción con el numerador indicado. Se encarga de convertir
-     * dicho numero decimal a fraccionario.
-     *
-     * @param numerador numerador de la fraccion
-     */
     public Fraccion(double numerador) {
         super(numerador);
     }
 
     @Override
     public AbstractFraccion sumar(AbstractFraccion operando) {
-        double numerador = 0;
-        double denominador = 0;
+        int numerador = 0;
+        int denominador = 0;
         numerador = (this.getNumerador() * operando.getDenominador())
                 + (this.getDenominador() * operando.getNumerador());
 
@@ -48,8 +31,8 @@ public class Fraccion extends AbstractFraccion {
 
     @Override
     public AbstractFraccion restar(AbstractFraccion operando) {
-        double numerador = 0;
-        double denominador = 0;
+        int numerador = 0;
+        int denominador = 0;
         numerador = (this.getNumerador() * operando.getDenominador())
                 - (this.getDenominador() * operando.getNumerador());
 
@@ -59,8 +42,8 @@ public class Fraccion extends AbstractFraccion {
 
     @Override
     public AbstractFraccion multiplicar(AbstractFraccion operando) {
-        double numerador = 0;
-        double denominador = 0;
+        int numerador = 0;
+        int denominador = 0;
         numerador = this.getNumerador() * operando.getNumerador();
         denominador = this.getDenominador() * operando.getDenominador();
         return new Fraccion(numerador, denominador);
@@ -68,8 +51,8 @@ public class Fraccion extends AbstractFraccion {
 
     @Override
     public AbstractFraccion dividir(AbstractFraccion operando) {
-        double numerador = 0;
-        double denominador = 0;
+        int numerador = 0;
+        int denominador = 0;
         if (esCero(operando)) {
             throw new ArithmeticException("División entre 0 no permitida.");
         }
@@ -79,8 +62,8 @@ public class Fraccion extends AbstractFraccion {
     }
 
     @Override
-    protected int obtenerMayorDivisorComun(double numero1, double numero2) {
-        double valorTemporal;
+    protected int obtenerMayorDivisorComun(int numero1, int numero2) {
+        int valorTemporal;
         while (numero2 != 0) {
             valorTemporal = numero2;
             numero2 = numero1 % numero2;
@@ -117,18 +100,24 @@ public class Fraccion extends AbstractFraccion {
 
     @Override
     public String toString(boolean fraccional) {
-        if (fraccional) {
-            if (getNumerador() == 0) {
+       if(fraccional){
+           if (getNumerador() == 0) {
                 return "0";
-            } else {
-                if (getDenominador() == 1) {
-                    return String.valueOf((int) getNumerador());
-                } else {
-                    return toString();
-                }
-            }
-        } else {
-            return String.format("%.2f", (getNumerador() / getDenominador()));
-        }
+           }else if(getDenominador() == 1){
+               return String.valueOf((int) getNumerador());
+           }else
+               return toString();
+       }else{
+           return String.format("%.2f", (getNumerador() / getDenominador()));
+       }
+    }
+
+    @Override
+    public AbstractFraccion obtenerParteDecimal() {
+        double monto = ((double)getNumerador()) / ((double) getDenominador()); 
+        String[] nums = String.format("%.4f", monto).split("\\.");
+        String stringDecimal = nums[1];
+        double parteDecimal = Double.parseDouble(stringDecimal);
+        return new Fraccion(parteDecimal);
     }
 }

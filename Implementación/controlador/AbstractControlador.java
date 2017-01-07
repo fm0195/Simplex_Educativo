@@ -188,9 +188,7 @@ public abstract class AbstractControlador {
             if (resultado[i].compareTo(String.valueOf(Integer.MIN_VALUE)) == 0) {
                 resultado[i] = "-oo";
             }
-            String maxDouble = String.format("%.2f", Double.MAX_VALUE);
-            String actual = resultado[i];
-            if (resultado[i].compareTo(String.valueOf(Integer.MAX_VALUE)) == 0 || resultado[i].compareTo(String.format("%.2f", Double.MAX_VALUE)) == 0) {
+            if (resultado[i].compareTo(String.valueOf(Integer.MAX_VALUE)) == 0) {
                 resultado[i] = "oo";
             }
         }
@@ -221,14 +219,14 @@ public abstract class AbstractControlador {
      */
     public void modificarEntradaMatriz(int fila, int columna,
             String valor) {
-        double numerador;
-        double denominador = 1;
+        int numerador;
+        int denominador = 1;
         if (valor.contains("/")) {
             String[] split = valor.split("/");
-            numerador = Double.valueOf(split[0]);
-            denominador = Double.valueOf(split[1]);
+            numerador = Integer.valueOf(split[0]);
+            denominador = Integer.valueOf(split[1]);
         } else {
-            numerador = Double.valueOf(valor);
+            numerador = Integer.valueOf(valor);
         }
         listaPasos.get(pasoActual).setEntradaMatriz(fila, columna, numerador, denominador);
     }

@@ -138,7 +138,6 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         String[] resultado = new String[radios.length];
         for (int i = 0; i < resultado.length; i++) {
             resultado[i] = radios[i].toString(dto.esFormatoFraccional());
-
         }
         return resultado;
     }
