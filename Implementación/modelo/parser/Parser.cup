@@ -1,0 +1,164 @@
+/* Simple +/-/* expression language; parser evaluates constant expressions on the fly*/
+package modelo.parser;
+import java_cup.runtime.*;
+import modelo.parser.Scanner;
+import modelo.parser.IParser;
+import modelo.AbstractFraccion;
+import modelo.DtoSimplex;
+import modelo.Fraccion;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeSet;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.io.StringReader;
+
+parser code {:
+    private Scanner s;
+    private Parser(Scanner s){ super(s); this.s=s; }
+    private TreeSet<String> conjuntoVariables = new TreeSet<>();
+    private HashMap<String, AbstractFraccion> hashFracciones = new HashMap<>();
+    private ArrayList<HashMap<String, AbstractFraccion>> listaRestricciones = new ArrayList<>();
+    private ArrayList<Integer> listaDesigualdades = new ArrayList<>();
+    private boolean esMaximizacion = true;
+    @Override
+    public DtoSimplex parse(String value) {
+        return null;
+    }
+:}
+
+/* define how to connect to the scanner! */
+init with {: this.s = (Scanner) super.getScanner(); :};
+scan with {:
+        Symbol next = s.next_token();
+        if(next.sym == sym.NUMRESTRICCION)
+            return scan();
+        return next;  :};
+
+/* Terminals (tokens returned by the scanner). */
+terminal MAS, MENOS, COEFICIENTE, MAYORIGUAL, MENORIGUAL, IGUAL; 
+terminal NUMRESTRICCION, CAMBIOLINEA, VARIABLE, MAX, MIN;
+/* Non terminals */
+non terminal problemaSimplex, funcionObjetivo, restricciones, restriccion;
+non terminal declaracionVariables, declaracionVariable, declaracionVariablesAux; 
+non terminal desigualdad, operador;      
+
+/* The grammar rules */
+problemaSimplex ::= funcionObjetivo CAMBIOLINEA restricciones
+                    {: 
+                    int cantRestricciones = listaRestricciones.size();
+                    int cantVariables = conjuntoVariables.size() + 1;
+                    AbstractFraccion[][] matriz = new Fraccion[cantRestricciones][cantVariables];
+                    HashMap<String, AbstractFraccion> hashRestriccion = listaRestricciones.get(0);
+                    int i = 0;
+                    for (Iterator<String> iterator = conjuntoVariables.iterator(); i < cantVariables; i++) {
+                        String variable;
+                        try {
+                            variable = iterator.next();
+                        } catch (NoSuchElementException e) {
+                            variable = null;
+                        }
+                        for (int j = 0; j < cantRestricciones ; j++) {
+                            hashRestriccion = listaRestricciones.get(j);
+
+                            if(hashRestriccion.containsKey(variable))
+                              matriz[j][i] = hashRestriccion.get(variable);
+                            else
+                              matriz[j][i] = new Fraccion();
+                        }
+                    }
+                    int[] desigualdades = new int[cantRestricciones-1];
+                    for (i = 0; i < desigualdades.length; i++) {
+                        desigualdades[i] = listaDesigualdades.get(i);
+                    }
+                    String[] listaVariables = conjuntoVariables.toArray(new String[conjuntoVariables.size()]);
+                    RESULT = new DtoSimplex(matriz, listaVariables, desigualdades);
+                    :}
+;
+funcionObjetivo ::= MAX VARIABLE IGUAL declaracionVariables
+                    {: 
+                        listaRestricciones.add(hashFracciones);
+                        hashFracciones = new HashMap<>();
+                    :}
+                    | MIN VARIABLE IGUAL declaracionVariables
+                    {: 
+                        listaRestricciones.add(hashFracciones);
+                        hashFracciones = new HashMap<>();
+                        esMaximizacion = false;
+                    :}
+;
+restricciones ::= restriccion CAMBIOLINEA restricciones 
+                    | restriccion
+;
+restriccion ::= declaracionVariables desigualdad:d COEFICIENTE:coef
+                    {:  
+                        listaDesigualdades.add((int) d);
+                        AbstractFraccion coeficiente = (AbstractFraccion) coef;
+                        hashFracciones.put(null, coeficiente);
+                        listaRestricciones.add(hashFracciones);
+                        hashFracciones = new HashMap<>();
+                    :}
+                    | declaracionVariables desigualdad:d MENOS COEFICIENTE:coef
+                    {:  
+                        listaDesigualdades.add((int) d);
+                        AbstractFraccion coeficiente = (AbstractFraccion) coef;
+                        coeficiente.hacerNegativa();
+                        hashFracciones.put(null, coeficiente);
+                        listaRestricciones.add(hashFracciones);
+                        hashFracciones = new HashMap<>();
+                    :}
+;
+
+declaracionVariables ::= declaracionVariables operador:op declaracionVariable:var
+                        {: 
+                            int operador = (int) op;
+                            String variable = (String) var;
+                            if(operador == sym.MENOS){
+                                AbstractFraccion fraccion = hashFracciones.get(variable);
+                                fraccion.hacerNegativa();
+                                hashFracciones.put(variable, fraccion);
+                            }
+                        :}
+                     | declaracionVariable
+;
+
+declaracionVariable ::= COEFICIENTE:coef VARIABLE:var    
+                    {:  AbstractFraccion fraccion = (AbstractFraccion) coef;
+                        String variable = (String) var;
+                        conjuntoVariables.add(variable);
+                        hashFracciones.put(variable, fraccion); 
+                        RESULT = variable;
+                    :}
+                    | VARIABLE:var
+                    {:  String variable = (String) var;
+                        conjuntoVariables.add(variable);
+                        hashFracciones.put(variable, new Fraccion(1, 1));
+                        RESULT = variable;
+                    :}
+                    |  MENOS COEFICIENTE:coef VARIABLE:var    
+                    {:  AbstractFraccion fraccion = (AbstractFraccion) coef;
+                        fraccion.hacerNegativa();
+                        String variable = (String) var;
+                        conjuntoVariables.add(variable);
+                        hashFracciones.put(variable, fraccion); 
+                        RESULT = variable;
+                    :}
+                    | MENOS VARIABLE:var
+                    {:  String variable = (String) var;
+                        conjuntoVariables.add(variable);
+                        hashFracciones.put(variable, new Fraccion(-1, 1));
+                        RESULT = variable;
+                    :}
+;
+desigualdad ::= MAYORIGUAL 
+                {: RESULT = sym.MAYORIGUAL; :}
+                | MENORIGUAL
+                {: RESULT = sym.MENORIGUAL; :}
+                | IGUAL
+                {: RESULT = sym.IGUAL; :}
+;
+operador ::= MAS:mas 
+            {: RESULT = sym.MAS; :}
+            | MENOS:menos 
+            {: RESULT = sym.MENOS;; :}
+;
