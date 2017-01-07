@@ -16,6 +16,7 @@ import org.junit.runners.Parameterized;
  */
 @RunWith(Parameterized.class)
 public class AgregarUnoMatrizTest {
+
     AbstractFraccion[][] matriz;
     int fila;
     int columna;
@@ -29,19 +30,19 @@ public class AgregarUnoMatrizTest {
         this.positivo = positivo;
         this.valorCorrecto = valorCorrecto;
     }
-    
+
     @Test
     public void test() {
-        Object[] argumentos = new Object[]{UtilPruebas.clonarMatriz(matriz),fila,columna,positivo};
-        Class<?>[] tipoArgumentos = new Class<?>[]{AbstractFraccion[][].class,int.class,int.class,boolean.class};
+        Object[] argumentos = new Object[]{UtilPruebas.clonarMatriz(matriz), fila, columna, positivo};
+        Class<?>[] tipoArgumentos = new Class<?>[]{AbstractFraccion[][].class, int.class, int.class, boolean.class};
         Class<?> clase = SolucionadorSimplex.class;
         String nombreMetodo = "agregarUnoMatriz";
         Object solucionador = new SolucionadorSimplex();
-        AbstractFraccion[][] resultadoGenerado = 
-                (AbstractFraccion[][])UtilPruebas.ingresarMetodoPrivado(argumentos,tipoArgumentos,clase,nombreMetodo,solucionador);
+        AbstractFraccion[][] resultadoGenerado
+                = (AbstractFraccion[][]) UtilPruebas.ingresarMetodoPrivado(argumentos, tipoArgumentos, clase, nombreMetodo, solucionador);
         assertTrue(resultadoGenerado[fila][columna].iguales(valorCorrecto));
     }
-    
+
     @Parameterized.Parameters
     public static Collection parametros() {
         AbstractFraccion[][] matriz1 = new AbstractFraccion[][]{
@@ -106,20 +107,18 @@ public class AgregarUnoMatrizTest {
                 new Fraccion(7)
             }
         };
-        
+
         AbstractFraccion[][] matriz2 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
                 new Fraccion(),
                 new Fraccion(),
                 new Fraccion(),
-                new Fraccion(),
-            },
+                new Fraccion(),},
             new AbstractFraccion[]{
                 new Fraccion(15, 4),
                 new Fraccion(10),
                 new Fraccion(-1),
-                new Fraccion(-1),
-            },
+                new Fraccion(-1),},
             new AbstractFraccion[]{
                 new Fraccion(1),
                 new Fraccion(),
@@ -139,7 +138,7 @@ public class AgregarUnoMatrizTest {
                 new Fraccion()
             }
         };
-        
+
         AbstractFraccion[][] matriz3 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
                 new Fraccion()
@@ -157,10 +156,10 @@ public class AgregarUnoMatrizTest {
                 new Fraccion(5)
             },
             new AbstractFraccion[]{
-                new Fraccion(2,8)
+                new Fraccion(2, 8)
             }
         };
-        
+
         AbstractFraccion[][] matriz4 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
                 new Fraccion(),

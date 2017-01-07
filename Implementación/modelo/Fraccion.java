@@ -2,21 +2,35 @@ package modelo;
 
 import modelo.AbstractFraccion;
 
-
 /**
  *
  * @author Yordan Jiménez
  */
 public class Fraccion extends AbstractFraccion {
 
+    /**
+     * Crea una fraccion nueva con valor 0
+     */
     public Fraccion() {
         super(0, 1);
     }
 
+    /**
+     * Crea una fraccion nueva con los parametros enviados
+     *
+     * @param numerador numerador de la fraccion
+     * @param denominador denominador de la fraccion
+     */
     public Fraccion(double numerador, double denominador) {
         super(numerador, denominador);
     }
 
+    /**
+     * Crea una fracción con el numerador indicado. Se encarga de convertir
+     * dicho numero decimal a fraccionario.
+     *
+     * @param numerador numerador de la fraccion
+     */
     public Fraccion(double numerador) {
         super(numerador);
     }
@@ -103,15 +117,18 @@ public class Fraccion extends AbstractFraccion {
 
     @Override
     public String toString(boolean fraccional) {
-       if(fraccional){
-           if (getNumerador() == 0) {
+        if (fraccional) {
+            if (getNumerador() == 0) {
                 return "0";
-           }else if(getDenominador() == 1){
-               return String.valueOf((int) getNumerador());
-           }else
-               return toString();
-       }else{
-           return String.format("%.2f", (getNumerador() / getDenominador()));
-       }
+            } else {
+                if (getDenominador() == 1) {
+                    return String.valueOf((int) getNumerador());
+                } else {
+                    return toString();
+                }
+            }
+        } else {
+            return String.format("%.2f", (getNumerador() / getDenominador()));
+        }
     }
 }

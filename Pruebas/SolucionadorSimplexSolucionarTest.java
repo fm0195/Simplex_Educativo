@@ -10,7 +10,7 @@ import modelo.AbstractFraccion;
 import modelo.Fraccion;
 import modelo.SolucionadorSimplex;
 import modelo.parser.IParser;
-import modelo.parser.Parser;
+import modelo.parser.SimplexParser;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
@@ -71,7 +71,7 @@ public class SolucionadorSimplexSolucionarTest {
 
     @Parameterized.Parameters
     public static Collection parametros() throws IOException {
-        IParser parser = new Parser();
+        IParser parser = new SimplexParser();
         DtoSimplex dto1 = parser.parse("(0) max z = -15/4 x1 + -10 x2 + x4 + x5 + x6\n"
                 + "(1) -1 x1        <= -2\n"
                 + "(2) -3     x2    >= -4\n"
@@ -354,7 +354,7 @@ public class SolucionadorSimplexSolucionarTest {
         dtoRes11.setFactible(true);
         dtoRes11.setDosfases(true);
         dtoRes11.setFinalizado(false);
-        dtoRes11.setCoordenadaPivote(new Point(7,2));
+        dtoRes11.setCoordenadaPivote(new Point(7, 2));
         dtoRes11.setOperaciones(new String[]{"-1 F1 + F0' -> F0'"});
         dtoRes11.setArtificialActual(7);
         dtoRes11.setVariablesBasicas(6);
@@ -595,7 +595,7 @@ public class SolucionadorSimplexSolucionarTest {
         dtoRes24.setVariablesHolgura(2);
         dtoRes24.setMensaje("Primera fase finalizada, eliminadas variables artificiales y fila w. Estado óptimo.");
 
-         /*tercer problema*/
+        /*tercer problema*/
         AbstractFraccion[][] sol31 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
                 new Fraccion(),
@@ -825,7 +825,7 @@ public class SolucionadorSimplexSolucionarTest {
         dtoRes34.setMensaje("El problema no posee solución óptima factible.");
 
         /*
-            problema 4
+         problema 4
          */
         AbstractFraccion[][] sol41 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
@@ -978,7 +978,7 @@ public class SolucionadorSimplexSolucionarTest {
         dtoRes43.setMensaje("Estado óptimo.");
         dtoRes43.setMensaje("z = 50.0\nx1 = 2.0\nx2 = 2.0");
         /*
-            Problema 5
+         Problema 5
          */
         AbstractFraccion[][] sol51 = new AbstractFraccion[][]{
             new AbstractFraccion[]{

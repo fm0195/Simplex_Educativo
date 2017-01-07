@@ -33,7 +33,7 @@ public abstract class AbstractFraccion {
      * @param numerador
      */
     public AbstractFraccion(double numerador) {
-        if(numerador == Double.MAX_VALUE) {
+        if (numerador == Double.MAX_VALUE) {
             this.numerador = numerador;
             this.denominador = 1;
             return;
@@ -42,7 +42,7 @@ public abstract class AbstractFraccion {
         int digitsDec = s.length() - 1 - s.indexOf('.');
         int denom = 1;
         for (int i = 0; i < digitsDec; i++) {
-            numerador *= 10;    
+            numerador *= 10;
             denom *= 10;
         }
         int divisorComun = obtenerMayorDivisorComun(numerador, denom);
@@ -195,8 +195,10 @@ public abstract class AbstractFraccion {
     public double getDenominador() {
         return denominador;
     }
+
     /**
      * Genera el inverso multiplicativo de una fracción.
+     *
      * @return Fracción con numerador y denominador intercambiados.
      */
     public abstract AbstractFraccion obtenerInverso();
@@ -213,15 +215,16 @@ public abstract class AbstractFraccion {
     }
 
     /**
-     * Restorn el string con el siguiente formato.
-     *          nuemrador/denominador
+     * Restorn el string con el siguiente formato. nuemrador/denominador
+     *
      * @return String con formato Fraccional.
      */
     public abstract String toString();
-    
+
     /**
-     * Retorna el String de la fracción indicando si desea el formato decimal o 
+     * Retorna el String de la fracción indicando si desea el formato decimal o
      * el fraccional
+     *
      * @param fraccional Indica el formato de salida.
      * @return String con el formato indicado
      */

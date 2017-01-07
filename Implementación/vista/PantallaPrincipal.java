@@ -8,6 +8,7 @@ package vista;
 import controlador.AbstractControlador;
 import controlador.SimplexControlador;
 import controlador.MatrizControlador;
+import modelo.Fraccion;
 
 /**
  *
@@ -17,11 +18,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private boolean fraccionario;
     private boolean gomory;
-    private boolean solucionDirecta; 
+    private boolean solucionDirecta;
     private boolean matrizNumerica;
     private boolean solucionSimplex;
     AbstractControlador controlador;
-    
+
     public PantallaPrincipal(String problema) {
         this.solucionSimplex = true;
         this.fraccionario = true;
@@ -336,14 +337,14 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void botonSimplexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSimplexActionPerformed
         String texto;
-        if(solucionSimplex) {
+        if (solucionSimplex) {
             controlador = new SimplexControlador();
             if (solucionDirecta) {
                 controlador.setVista(new PantallaPasoIntermedio(controlador));
                 texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
                 controlador.solucionar(texto, fraccionario);
                 this.dispose();
-            }else {
+            } else {
                 controlador.setVista(new PantallaPasoIntermedio(controlador));
                 texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
                 controlador.siguientePaso(texto, fraccionario);
@@ -404,10 +405,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(PantallaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                Fraccion f = new Fraccion(0.30);
                 new PantallaPrincipal("").setVisible(true);
             }
         });

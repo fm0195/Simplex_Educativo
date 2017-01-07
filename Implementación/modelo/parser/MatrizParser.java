@@ -28,27 +28,29 @@ public class MatrizParser implements IParser {
         boolean esNegativo = false;
         int cantElementosFila = 0;
         int filaActual = 0;
-        while(token.sym != sym.EOF) {
-            if(token.sym == sym.MENOS){
-                if(esNegativo){
+        while (token.sym != sym.EOF) {
+            if (token.sym == sym.MENOS) {
+                if (esNegativo) {
                     throw new IllegalArgumentException("Hay dos simbolos negativos seguidos");
-                } else
+                } else {
                     esNegativo = true;
+                }
             }
-            if(token.sym == sym.COEFICIENTE){
+            if (token.sym == sym.COEFICIENTE) {
                 AbstractFraccion fraccion = (AbstractFraccion) token.value;
-                if(esNegativo) {
+                if (esNegativo) {
                     fraccion.hacerNegativa();
                     esNegativo = false;
                 }
                 matriz.get(filaActual).add(fraccion);
             }
-            if(token.sym == sym.CAMBIOLINEA) {
+            if (token.sym == sym.CAMBIOLINEA) {
                 if (matriz.size() == 1) {
                     cantElementosFila = matriz.get(0).size();
                 } else {
-                    if(cantElementosFila != matriz.get(filaActual).size())
+                    if (cantElementosFila != matriz.get(filaActual).size()) {
                         throw new IllegalArgumentException("Diferente numero de elementos en las filas.");
+                    }
                 }
                 matriz.add(new ArrayList<>());
                 filaActual++;
@@ -59,7 +61,7 @@ public class MatrizParser implements IParser {
             matriz.remove(filaActual);
         }
         String[] nombreFilas = new String[matriz.size()];
-        String[] nombreColumnas= new String[matriz.get(0).size()];
+        String[] nombreColumnas = new String[matriz.get(0).size()];
         AbstractFraccion[][] matrizFracciones = new AbstractFraccion[matriz.size()][matriz.get(0).size()];
         for (int i = 0; i < matriz.size(); i++) {
             nombreFilas[i] = "-";
@@ -68,9 +70,9 @@ public class MatrizParser implements IParser {
                 matrizFracciones[i][j] = matriz.get(i).get(j);
             }
         }
-        DtoSimplex resultado = new DtoSimplex(matrizFracciones, nombreColumnas, nombreFilas, new Point(0,0));
+        DtoSimplex resultado = new DtoSimplex(matrizFracciones, nombreColumnas, nombreFilas, new Point(0, 0));
         resultado.setEsMatriz(true);
         return resultado;
     }
-    
+
 }

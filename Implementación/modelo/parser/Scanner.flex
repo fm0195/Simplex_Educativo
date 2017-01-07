@@ -49,7 +49,7 @@ NumeroFraccionario  = {NumeroEntero} \/ {NumeroEntero}
   {Variable}            { return symbol(sym.VARIABLE, yytext()); }
   {NumRestriccion}      { return symbol(sym.NUMRESTRICCION, yytext()); }
   {NumeroEntero}        { return symbol(sym.COEFICIENTE, new Fraccion(Integer.parseInt(yytext()))); }
-  {NumeroDecimal}       { return symbol(sym.COEFICIENTE, new Fraccion(Float.parseFloat(yytext()))); }
+  {NumeroDecimal}       { return symbol(sym.COEFICIENTE, new Fraccion(Double.parseDouble(yytext()))); }
   {NumeroFraccionario}  {   
                         String[] split = yytext().split("/");
                         int numerador = Integer.parseInt(split[0]);   

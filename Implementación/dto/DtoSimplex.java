@@ -13,7 +13,7 @@ public class DtoSimplex {
     private AbstractFraccion[][] matriz;
     private String nombreColumnas[];
     private String nombreFilas[];
-    private String operaciones[]  =new String[0];
+    private String operaciones[] = new String[0];
     private int listaDesigualdades[];
     private boolean maximizacion;
     private boolean factible = true;
@@ -57,6 +57,8 @@ public class DtoSimplex {
      * columna.
      * @param listaDesigualdades identifica numeracamente el tipo de desigualdad
      * de la restriccion, >=, <= o =
+     * @param maximizacion indica si el problema es de maximizacion o
+     * minimizacion
      */
     public DtoSimplex(AbstractFraccion[][] matriz, String[] nombreColumnas,
             int[] listaDesigualdades, boolean maximizacion) {
@@ -109,7 +111,8 @@ public class DtoSimplex {
      * @param bloqueoDosFases Indica si el problema se encuentra en la primera
      * iteración del metodo simplex de dos fases.
      * @param formatoFraccional Indica el formato de salida de los datos.
-     * @param coordenadaPivote Punto de la siguiente fila y columna a realizar operación.
+     * @param coordenadaPivote Punto de la siguiente fila y columna a realizar
+     * operación.
      */
     private DtoSimplex(AbstractFraccion[][] matriz, String[] nombreColumnas,
             String[] nombreFilas, int[] listaDesigualdades, boolean maximizacion,
@@ -131,7 +134,7 @@ public class DtoSimplex {
         this.finalizado = finalizado;
         this.formatoFraccional = formatoFraccional;
         this.coordenadaPivote = new Point(coordenadaPivote.x, coordenadaPivote.y);
-        this.artificialActual =  artificialActual;
+        this.artificialActual = artificialActual;
     }
 
     public AbstractFraccion[][] getMatriz() {
@@ -196,6 +199,10 @@ public class DtoSimplex {
 
     public void setVariablesBasicas() {
         this.variablesBasicas = matriz[0].length;
+    }
+
+    public void setVariablesBasicas(int num) {
+        this.variablesBasicas = num;
     }
 
     public int getVariablesHolgura() {
@@ -282,7 +289,7 @@ public class DtoSimplex {
     public DtoSimplex clonarProfundo() {
         DtoSimplex resultado = new DtoSimplex(clonarMatriz(), nombreColumnas.clone(), nombreFilas.clone(), listaDesigualdades,
                 maximizacion, variablesBasicas, variablesHolgura, dosfases, acotado,
-                factible, finalizado, bloqueoDosFases, formatoFraccional,(Point)coordenadaPivote.clone(),
+                factible, finalizado, bloqueoDosFases, formatoFraccional, (Point) coordenadaPivote.clone(),
                 artificialActual);
         resultado.setEsMatriz(esMatriz);
         return resultado;
@@ -303,7 +310,7 @@ public class DtoSimplex {
         }
         return resultado;
     }
-    
+
     public String[][] getMatrizString() {
         String[][] resultado = new String[matriz.length][matriz[0].length];
         for (int contadorFila = 0; contadorFila < resultado.length; contadorFila++) {
@@ -313,7 +320,7 @@ public class DtoSimplex {
         }
         return resultado;
     }
-    
+
     public String toString() {
         AbstractFraccion[][] matriz = getMatriz();
         String resultado = "";
@@ -325,12 +332,12 @@ public class DtoSimplex {
             string += arregloColumnas[contador];
             string += "          ";
         }
-        string +=  esMatriz ? " |\n"  : "RHS     |\n";
+        string += esMatriz ? " |\n" : "RHS     |\n";
         String lineaHorizontal = "";
         for (int i = 1; i < string.length(); i++) {
-            lineaHorizontal+="-";
+            lineaHorizontal += "-";
         }
-        
+
         resultado += lineaHorizontal + "\n" + string + lineaHorizontal + "\n";
         for (int contadorFila = 0; contadorFila < matriz.length; contadorFila++) {
             string = "|  ";
@@ -339,16 +346,16 @@ public class DtoSimplex {
             for (int contadorColumna = 0; contadorColumna < matriz[0].length; contadorColumna++) {
                 String numero = matriz[contadorFila][contadorColumna].toString(formatoFraccional);
                 string += numero;
-                string += "                        ".substring(numero.length(),12);
+                string += "                        ".substring(numero.length(), 12);
             }
-            string = string.substring(0, string.length()-4) + "|\n";
+            string = string.substring(0, string.length() - 4) + "|\n";
             resultado += string;
         }
-        resultado+=lineaHorizontal;
+        resultado += lineaHorizontal;
         return (resultado);
     }
-    
-    public void setEntradaMatriz(int fila, int columna, double numerador, double denominador){
+
+    public void setEntradaMatriz(int fila, int columna, double numerador, double denominador) {
         AbstractFraccion nuevaFraccion;
         nuevaFraccion = new Fraccion(numerador, denominador);
         matriz[fila][columna] = nuevaFraccion;

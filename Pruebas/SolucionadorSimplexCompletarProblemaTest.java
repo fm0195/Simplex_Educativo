@@ -9,7 +9,7 @@ import dto.DtoSimplex;
 import modelo.Fraccion;
 import modelo.SolucionadorSimplex;
 import modelo.parser.IParser;
-import modelo.parser.Parser;
+import modelo.parser.SimplexParser;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
@@ -56,7 +56,7 @@ public class SolucionadorSimplexCompletarProblemaTest {
 
     @Parameterized.Parameters
     public static Collection parametros() throws IOException {
-        IParser parser = new Parser();
+        IParser parser = new SimplexParser();
         DtoSimplex dto1 = parser.parse("(0) max z = -15/4 x1 + -10 x2 + x4 + x5 + x6\n"
                 + "(1) -1 x1        <= -2\n"
                 + "(2) -3     x2    >= -4\n"
@@ -269,7 +269,7 @@ public class SolucionadorSimplexCompletarProblemaTest {
 
 
         /*
-            problema 4
+         problema 4
          */
         AbstractFraccion[][] sol41 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
@@ -323,7 +323,7 @@ public class SolucionadorSimplexCompletarProblemaTest {
         dtoRes41.setMensaje("Agregadas variables de holgura 's' al problema original.");
 
         /*
-            Problema 5
+         Problema 5
          */
         AbstractFraccion[][] sol51 = new AbstractFraccion[][]{
             new AbstractFraccion[]{

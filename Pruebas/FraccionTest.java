@@ -61,7 +61,7 @@ public class FraccionTest {
         testMultiplicar(fraccionOperando1, fraccionOperando2, resultadoOperando[2]);
         testDividir(fraccionOperando1, fraccionOperando2, resultadoOperando[3]);
         testClonar(fraccionOperando2);
-        testObtenerInverso(fraccionOperando2,resultadoOperando[4]);
+        testObtenerInverso(fraccionOperando2, resultadoOperando[4]);
         testHacerNegativa(fraccionOperando1.clonar(), resultadoOperando[5]);
         testObtenerMayorDivisorComun(resDivisorComun[0], resDivisorComun[1], (int) resDivisorComun[2]);
         testCero(fraccionOperando2, esCero);
@@ -86,7 +86,7 @@ public class FraccionTest {
             new Fraccion(-13, 28),
             new Fraccion(5, 28),
             new Fraccion(7, 20),
-            new Fraccion(7,5),
+            new Fraccion(7, 5),
             new Fraccion(-15, 60)
         };
         fraccionRes2 = new AbstractFraccion[]{
@@ -156,22 +156,22 @@ public class FraccionTest {
         AbstractFraccion resultadoOperacion = fraccion1.dividir(fraccion2);
         assertTrue(resultado.iguales(resultadoOperacion));
     }
-    
+
     public void testClonar(AbstractFraccion fraccion) {
         AbstractFraccion resultadoOperacion = fraccion.clonar();
         assertTrue(fraccion.iguales(resultadoOperacion));
     }
-    
-    public void testObtenerInverso(AbstractFraccion fraccion, AbstractFraccion resultadoCorrecto){
+
+    public void testObtenerInverso(AbstractFraccion fraccion, AbstractFraccion resultadoCorrecto) {
         AbstractFraccion resultadoOperacion = fraccion.obtenerInverso();
         assertTrue(resultadoCorrecto.iguales(resultadoOperacion));
     }
 
-    public void testHacerNegativa(AbstractFraccion fraccion, AbstractFraccion resultadoCorrecto){
+    public void testHacerNegativa(AbstractFraccion fraccion, AbstractFraccion resultadoCorrecto) {
         fraccion.hacerNegativa();
         assertTrue(resultadoCorrecto.iguales(fraccion));
     }
-    
+
     public void testObtenerMayorDivisorComun(double numerador, double denominador, int resultadoCorrecto) {
         try {
             Object[] argumentos = new Object[]{numerador, denominador};

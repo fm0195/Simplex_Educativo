@@ -42,9 +42,8 @@ public abstract class AbstractSolucionadorSimplex {
      * Calcula el radio de la división del lado derecho de un problema de
      * programación lineal y una columna del mismo.
      *
-     * @param dtoContiene los datos del problema de programación lineal a
-     * generar el radio.
-     * @param columna Valor entero que indica la columna a generar el radio-
+     * @param dto el objeto de transferencia con la matriz actual
+     * @param columna Valor entero que indica la columna por generar el radio
      * @return Arreglo de fracciones que representan los radios por cada fila
      * del problema de programación lineal.
      */
@@ -71,5 +70,5 @@ public abstract class AbstractSolucionadorSimplex {
      * @return Objeto de tranferencia de datos con las operaciones siguientes.
      */
     public abstract DtoSimplex siguientesOperaciones(DtoSimplex dto);
-    
+
 }

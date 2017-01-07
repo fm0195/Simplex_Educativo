@@ -53,8 +53,9 @@ public class UtilPruebas {
         }
         return true;
     }
+
     public static Object ingresarMetodoPrivado(Object[] argumentos, Class<?>[] tipoArgumentos,
-            Class<?> clase,String nombreMetodo, Object instancia){
+            Class<?> clase, String nombreMetodo, Object instancia) {
         try {
             Method metodo = clase.getDeclaredMethod(
                     nombreMetodo, tipoArgumentos);
@@ -62,10 +63,11 @@ public class UtilPruebas {
             return metodo.invoke(instancia, argumentos);
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(FraccionTest.class.getName()).log(Level.SEVERE, null, ex);
-            fail("Error al acceder a un método privado "+nombreMetodo);
+            fail("Error al acceder a un método privado " + nombreMetodo);
         }
         return null;
     }
+
     public static AbstractFraccion[][] clonarMatriz(AbstractFraccion[][] matriz) {
         AbstractFraccion[][] resultado = new AbstractFraccion[matriz.length][matriz[0].length];
         for (int contadorFila = 0; contadorFila < resultado.length; contadorFila++) {

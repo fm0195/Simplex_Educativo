@@ -85,18 +85,22 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
     final StringBuilder resumenPasoAnterior;
     private int ESPACIO_TABLAS = 10;
     boolean esPrimeraFase = false;
-    
 
-    
+    /**
+     * Pantalla de pasos intermedios utilizada para dibujar la matriz de pasos y
+     * capturar los eventos del usuario con el sistema.
+     *
+     * @param controlador el controlador que se conectará con el modelo.
+     */
     public PantallaPasoIntermedio(AbstractControlador controlador) {
         initComponents();
         this.setVisible(true);
         this.addWindowListener(new WindowAdapter() {
-        public void windowClosing(WindowEvent evt) {
-          dispose();
-          new PantallaPrincipal("").setVisible(true);
-        }
-       });
+            public void windowClosing(WindowEvent evt) {
+                dispose();
+                new PantallaPrincipal("").setVisible(true);
+            }
+        });
         this.controlador = controlador;
         this.keyBuffer = new StringBuilder();
         this.resumenPasoAnterior = new StringBuilder();
@@ -105,13 +109,17 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         agregarActionListeners();
         agregarComponentes();
     }
-    
-    public void initVariables(){
+
+    /**
+     * Inicializa todas los componentes y variables necesarios para el
+     * despliegue de la pantalla.
+     */
+    public void initVariables() {
         panelTabla = new JPanel();
         panelRadios = new JPanel();
         panelBotonesMatriz = new JPanel();
         panelBotonesResumen = new JPanel();
-        panelBotonesResumen.setBounds(POSICION_TABLA_X-5, 320, 550, 140);
+        panelBotonesResumen.setBounds(POSICION_TABLA_X - 5, 320, 550, 140);
         pestanaResumen = new JPanel(null);
         pestanaResumen.setFont(new Font("Courier New", Font.BOLD, 14));
         pestanaMatriz = new JPanel(null);
@@ -119,10 +127,10 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         labelOperaciones.setEditable(false);
         labelOperaciones.setLineWrap(true);
         labelOperaciones.setBorder(null);
-        labelOperaciones.setFocusable(false);  
+        labelOperaciones.setFocusable(false);
         labelOperaciones.setFont(new Font("Courier New", Font.BOLD, 14));
         labelMensaje = new JLabel();
-        labelMensaje.setBounds(POSICION_TABLA_X,10,800,40);
+        labelMensaje.setBounds(POSICION_TABLA_X, 10, 800, 40);
         labelMensaje.setFont(new Font("Courier New", Font.BOLD, 14));
         labelResumen = new JTextArea();
         labelResumen.setEditable(false);
@@ -147,8 +155,11 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         botonAnteriorMatriz.setFocusable(false);
         botonSiguienteMatriz.setFocusable(false);
     }
-    
-    public void agregarActionListeners(){
+
+    /**
+     * Agrega las acciones a los botones de la pantalla
+     */
+    public void agregarActionListeners() {
         botonSiguienteMatriz.addActionListener(new ActionListener() {
 
             @Override
@@ -156,7 +167,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                 controlador.siguientePaso();
             }
         });
-        
+
         botonAnteriorMatriz.addActionListener(new ActionListener() {
 
             @Override
@@ -164,7 +175,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                 controlador.anteriorPaso();
             }
         });
-        
+
         botonSiguienteResumen.addActionListener(new ActionListener() {
 
             @Override
@@ -172,7 +183,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                 controlador.siguientePaso();
             }
         });
-        
+
         botonAnteriorResumen.addActionListener(new ActionListener() {
 
             @Override
@@ -198,8 +209,12 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
             }
         });
     }
-    
-    public void agregarComponentes(){
+
+    /**
+     * Agrega los componentes en su respectivo contenedor, y agrega los
+     * componentes a la pantalla principal.
+     */
+    public void agregarComponentes() {
         panelBotonesMatriz.add(botonAnteriorMatriz);
         panelBotonesMatriz.add(botonSiguienteMatriz);
         panelBotonesResumen.add(botonAnteriorResumen);
@@ -216,24 +231,54 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         pestanaResumen.add(scrollResumen);
         pestanaResumen.add(panelBotonesResumen);
     }
+
+    /**
+     * Pide al controlador el siguiente paso del problema.
+     */
     public void siguientePaso() {
         controlador.siguientePaso();
     }
-    
-    public void mostrarOperacion(String operacion){
-        labelOperaciones.setText("Siguientes operaciones:\n"+operacion);
+
+    /**
+     * Muestra la operacion recibida por parámetro en el área de texto
+     * correspondiente
+     *
+     * @param operacion
+     */
+    public void mostrarOperacion(String operacion) {
+        labelOperaciones.setText("Siguientes operaciones:\n" + operacion);
     }
-    
-    public void mostrarMensaje(String mensaje){
+
+    /**
+     * Muetra el mensaje informativo sobre el paso anterior en el label
+     * correspondiente
+     *
+     * @param mensaje mensaje por mostrar
+     */
+    public void mostrarMensaje(String mensaje) {
         labelMensaje.setText(mensaje);
     }
-    
+
+    /**
+     * Configura el layout del panel que contiene la matriz a un GridLayout con
+     * la cantidad de filas y columnas indicadas.
+     *
+     * @param cantFilas cantidad de filas del layout
+     * @param cantColumnas cantidad de columnas del layout
+     */
     public void configurarLayout(int cantFilas, int cantColumnas) {
-        panelTabla.setLayout(new GridLayout(cantFilas,cantColumnas));
+        panelTabla.setLayout(new GridLayout(cantFilas, cantColumnas));
         panelRadios.setLayout(new GridLayout(cantFilas, 1));
     }
-    
-    public void colocarComponentes(int cantFilas, int cantColumnas){
+
+    /**
+     * Coloca los componentes en sus posiciones relativas al tamaño de la matriz
+     * recibido por parametro,
+     *
+     * @param cantFilas cantidad de filas de la matriz mostrada
+     * @param cantColumnas cantidad de columnas de la matriz mostrada.
+     */
+    public void colocarComponentes(int cantFilas, int cantColumnas) {
         int anchoTablaNumeros = ANCHO_CASILLA * cantColumnas;
         int altoTablaNumeros = ALTO_CASILLA * cantFilas;
         panelTabla.setBounds(POSICION_TABLA_X, POSICION_TABLA_Y, anchoTablaNumeros, altoTablaNumeros);
@@ -243,14 +288,14 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         int altoTablaRadios = altoTablaNumeros;
         panelRadios.setBounds(posicionRadiosX1, posicionRadiosY1, anchoTablaRadios, altoTablaRadios);
         panelRadios.setBackground(Color.white);
-        panelBotonesMatriz.setBounds(POSICION_TABLA_X , POSICION_TABLA_Y + altoTablaRadios, 300,40);
-        labelOperaciones.setBounds(POSICION_TABLA_X + 300, POSICION_TABLA_Y + altoTablaRadios + 5, 250,100);
+        panelBotonesMatriz.setBounds(POSICION_TABLA_X, POSICION_TABLA_Y + altoTablaRadios, 300, 40);
+        labelOperaciones.setBounds(POSICION_TABLA_X + 300, POSICION_TABLA_Y + altoTablaRadios + 5, 250, 100);
         labelOperaciones.setBackground(new Color(214, 217, 223));
         Dimension dimension = this.getSize();
         this.setSize(Math.max(anchoTablaNumeros + anchoTablaRadios + 200, dimension.width), Math.max(altoTablaNumeros * 2 + 100, dimension.height));
     }
-    
-    public void mostrarMatriz(DtoSimplex dto){
+
+    public void mostrarMatriz(DtoSimplex dto) {
         this.esPrimeraFase = dto.esDosfases();
         String[][] matriz = dto.getMatrizString();
         String[] nombresColumnas = dto.getNombreColumnas();
@@ -262,7 +307,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         this.matrizFracciones = dto.getMatrizString();
         int cantFilas = matriz.length + 1;
         int cantColumnas = matriz[0].length + 2;
-        
+
         configurarLayout(cantFilas, cantColumnas);
         //inicializa la matriz de labels
         initMatriz(cantFilas, cantColumnas);
@@ -323,7 +368,6 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
     private void initMatriz(int cantFilas, int cantColumnas) {
         panelTabla.removeAll();
         this.matrizLabels = new JLabel[cantFilas][cantColumnas];
@@ -369,7 +413,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                     return;
                 }
                 char tecla = ke.getKeyChar();
-                switch(tecla){
+                switch (tecla) {
                     case '0':
                         keyBuffer.append('0');
                         break;
@@ -401,53 +445,62 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                         keyBuffer.append('9');
                         break;
                     case '-':
-                        if(keyBuffer.length() == 0)
+                        if (keyBuffer.length() == 0) {
                             keyBuffer.append('-');
+                        }
                         break;
                     case '\b':
-                        if(keyBuffer.length() > 0)
-                            keyBuffer.setLength(keyBuffer.length()-1);
+                        if (keyBuffer.length() > 0) {
+                            keyBuffer.setLength(keyBuffer.length() - 1);
+                        }
                         break;
                     case '.':
-                        if(keyBuffer.indexOf(".") == -1) {
+                        if (keyBuffer.indexOf(".") == -1) {
                             keyBuffer.append(".");
                         }
                         break;
                     case '/':
-                        if(keyBuffer.length() > 0 && keyBuffer.indexOf("/") == -1) {
+                        if (keyBuffer.length() > 0 && keyBuffer.indexOf("/") == -1) {
                             keyBuffer.append("/");
                         }
                         break;
                     case '\n':
-                        if(esNumeroEntero(keyBuffer.toString())){
+                        if (esNumeroEntero(keyBuffer.toString())) {
                             matrizFracciones[coordenada.y][coordenada.x] = keyBuffer.toString();
                             controlador.modificarEntradaMatriz(coordenada.y, coordenada.x, keyBuffer.toString());
                             JOptionPane.showMessageDialog(null, "Valor actualizado.", "Info", JOptionPane.INFORMATION_MESSAGE);
                             keyBuffer.setLength(0);
-                        }else if(esFraccion(keyBuffer.toString())){
-                            matrizFracciones[coordenada.y][coordenada.x] = keyBuffer.toString();
-                            controlador.modificarEntradaMatriz(coordenada.y, coordenada.x, keyBuffer.toString());
-                            JOptionPane.showMessageDialog(null, "Valor actualizado.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                            keyBuffer.setLength(0);
-                        } else if (esDecimal(keyBuffer.toString())){
-                            matrizFracciones[coordenada.y][coordenada.x] = keyBuffer.toString();
-                            controlador.modificarEntradaMatriz(coordenada.y, coordenada.x, keyBuffer.toString());
-                            JOptionPane.showMessageDialog(null, "Valor actualizado.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                            keyBuffer.setLength(0);
-                        } else{
-                            JOptionPane.showMessageDialog(null, "El numero ingresado no tiene formato valido.", "Error", JOptionPane.ERROR_MESSAGE);
-                            keyBuffer.setLength(0);
+                        } else {
+                            if (esFraccion(keyBuffer.toString())) {
+                                matrizFracciones[coordenada.y][coordenada.x] = keyBuffer.toString();
+                                controlador.modificarEntradaMatriz(coordenada.y, coordenada.x, keyBuffer.toString());
+                                JOptionPane.showMessageDialog(null, "Valor actualizado.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                                keyBuffer.setLength(0);
+                            } else {
+                                if (esDecimal(keyBuffer.toString())) {
+                                    matrizFracciones[coordenada.y][coordenada.x] = keyBuffer.toString();
+                                    controlador.modificarEntradaMatriz(coordenada.y, coordenada.x, keyBuffer.toString());
+                                    JOptionPane.showMessageDialog(null, "Valor actualizado.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                                    keyBuffer.setLength(0);
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "El numero ingresado no tiene formato valido.", "Error", JOptionPane.ERROR_MESSAGE);
+                                    keyBuffer.setLength(0);
+                                }
+                            }
                         }
                 }
                 mostrarOperacion(controlador.siguientesOperaciones(coordenada));
-                if(keyBuffer.length() > 0)
+                if (keyBuffer.length() > 0) {
                     labelNumero.setText(keyBuffer.toString());
-                else
+                } else {
                     labelNumero.setText(matrizFracciones[coordenada.y][coordenada.x].toString());
+                }
             }
+
             @Override
             public void keyPressed(KeyEvent ke) {
             }
+
             @Override
             public void keyReleased(KeyEvent ke) {
             }
@@ -455,9 +508,11 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
             private boolean esNumeroEntero(String string) {
                 return string.matches("-?[0-9]*");
             }
+
             private boolean esFraccion(String string) {
                 return string.matches("-?[1-9][0-9]*/[1-9][0-9]*");
             }
+
             private boolean esDecimal(String string) {
                 return string.matches("-?[0-9]*\\.[0-9]+");
             }
@@ -465,7 +520,11 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         panelPestana.addKeyListener(keyboardListener);
         label.setOpaque(true);
     }
-    
+
+    /**
+     * Despinta la casilla seleccionada junto con las casillas de su fila y
+     * columna que habían sido marcadas cuando estuvieron seleccionadas.
+     */
     public void despintarCasilla() {
         Point coordenada = this.casillaSeleccionada;
         int columna = coordenada.x + 2;
@@ -486,46 +545,46 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         panelPestana.validate();
         panelPestana.repaint();
     }
-    
-    private void rellenarMatriz(String[][] matriz, String[] nombresColumnas, String[] nombresFilas){
+
+    private void rellenarMatriz(String[][] matriz, String[] nombresColumnas, String[] nombresFilas) {
         int i;
         //rellenar la primera fila (nombres de variables)
-        for (i = 0; i < nombresColumnas.length ; i++) {
-            matrizLabels[0][i+2].setText(nombresColumnas[i]);
+        for (i = 0; i < nombresColumnas.length; i++) {
+            matrizLabels[0][i + 2].setText(nombresColumnas[i]);
         }
-        matrizLabels[0][matrizLabels[0].length-1].setText("RHS");
+        matrizLabels[0][matrizLabels[0].length - 1].setText("RHS");
         //rellenar la primera columna (numero de restriccion)
         if (esPrimeraFase) {
             i = 0;
             matrizLabels[1][0].setText("0'");
-            for (i=1; i < matriz.length; i++) {
-                matrizLabels[i+1][0].setText(String.valueOf(i-1));
+            for (i = 1; i < matriz.length; i++) {
+                matrizLabels[i + 1][0].setText(String.valueOf(i - 1));
             }
-        }else{
-            for (i=1; i <= matriz.length; i++) {
-                matrizLabels[i][0].setText(String.valueOf(i-1));
+        } else {
+            for (i = 1; i <= matriz.length; i++) {
+                matrizLabels[i][0].setText(String.valueOf(i - 1));
             }
         }
-        
+
         //rellenar la segunda columna (Variabls basicas)
-        for (i = 1; i <= nombresFilas.length ; i++) {
-            matrizLabels[i][1].setText(nombresFilas[i-1]);
+        for (i = 1; i <= nombresFilas.length; i++) {
+            matrizLabels[i][1].setText(nombresFilas[i - 1]);
         }
         //rellenar los valores numericos
         for (i = 1; i < matriz.length + 1; i++) {
             for (int j = 2; j < matriz[0].length + 2; j++) {
-                final Point coordenada = new Point(j-2,i-1);
-                String fraccion = matriz[i-1][j-2];
+                final Point coordenada = new Point(j - 2, i - 1);
+                String fraccion = matriz[i - 1][j - 2];
                 matrizLabels[i][j].setText(fraccion);
                 matrizLabels[i][j].addMouseListener(new MouseListener() {
                     @Override
                     public void mouseClicked(MouseEvent me) {
-                        
+
                     }
 
                     @Override
                     public void mousePressed(MouseEvent me) {
-                        if(me.getButton() == MouseEvent.BUTTON1){
+                        if (me.getButton() == MouseEvent.BUTTON1) {
                             me.consume();
                             despintarCasilla();
                             seleccionarCasilla(coordenada);
@@ -585,15 +644,15 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
             panelRadios.add(label);
         }
     }
-    
-    public void mostrarMensajeError(String mensaje, String encabezado){
+
+    public void mostrarMensajeError(String mensaje, String encabezado) {
         JOptionPane.showMessageDialog(null, mensaje, encabezado, JOptionPane.ERROR_MESSAGE);
     }
-    
-    public void mostrarMensajeInformacion(String mensaje, String encabezado){
+
+    public void mostrarMensajeInformacion(String mensaje, String encabezado) {
         JOptionPane.showMessageDialog(null, mensaje, encabezado, JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     private void rellenarResumen(String resumen) {
         labelResumen.setText(resumen);
     }

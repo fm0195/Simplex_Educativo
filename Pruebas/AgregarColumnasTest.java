@@ -16,6 +16,7 @@ import org.junit.runners.Parameterized;
  */
 @RunWith(Parameterized.class)
 public class AgregarColumnasTest {
+
     AbstractFraccion[][] matriz;
     int cantidadAgregar;
     int resultadoCorrecto;
@@ -25,30 +26,31 @@ public class AgregarColumnasTest {
         this.cantidadAgregar = cantidadAgregar;
         this.resultadoCorrecto = resultadoCorrecto;
     }
-    
+
     @Test
     public void test() {
-        Object[] argumentos = new Object[]{matriz,cantidadAgregar};
-        Class<?>[] tipoArgumentos = new Class<?>[]{AbstractFraccion[][].class,int.class};
+        Object[] argumentos = new Object[]{matriz, cantidadAgregar};
+        Class<?>[] tipoArgumentos = new Class<?>[]{AbstractFraccion[][].class, int.class};
         Class<?> clase = SolucionadorSimplex.class;
         String nombreMetodo = "agregarColumnas";
         Object solucionador = new SolucionadorSimplex();
-        AbstractFraccion[][] resultadoGenerado = 
-                (AbstractFraccion[][])UtilPruebas.ingresarMetodoPrivado(argumentos,tipoArgumentos,clase,nombreMetodo,solucionador);
+        AbstractFraccion[][] resultadoGenerado
+                = (AbstractFraccion[][]) UtilPruebas.ingresarMetodoPrivado(argumentos, tipoArgumentos, clase, nombreMetodo, solucionador);
         assertTrue(compararCantidadColumnas(resultadoGenerado));
     }
-    private boolean compararCantidadColumnas(AbstractFraccion[][] matriz){
+
+    private boolean compararCantidadColumnas(AbstractFraccion[][] matriz) {
         for (int i = 0; i < matriz.length; i++) {
             AbstractFraccion[] fila = matriz[i];
-            if(fila.length != resultadoCorrecto){
+            if (fila.length != resultadoCorrecto) {
                 return false;
-            }            
+            }
         }
         return true;
     }
-    
+
     @Parameterized.Parameters
-    public static Collection parametros(){
+    public static Collection parametros() {
         AbstractFraccion[][] matriz1 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
                 new Fraccion(),
@@ -111,20 +113,18 @@ public class AgregarColumnasTest {
                 new Fraccion(7)
             }
         };
-        
+
         AbstractFraccion[][] matriz2 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
                 new Fraccion(),
                 new Fraccion(),
                 new Fraccion(),
-                new Fraccion(),
-            },
+                new Fraccion(),},
             new AbstractFraccion[]{
                 new Fraccion(15, 4),
                 new Fraccion(10),
                 new Fraccion(-1),
-                new Fraccion(-1),
-            },
+                new Fraccion(-1),},
             new AbstractFraccion[]{
                 new Fraccion(1),
                 new Fraccion(),
@@ -144,7 +144,7 @@ public class AgregarColumnasTest {
                 new Fraccion()
             }
         };
-        
+
         AbstractFraccion[][] matriz3 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
                 new Fraccion()
@@ -162,10 +162,10 @@ public class AgregarColumnasTest {
                 new Fraccion(5)
             },
             new AbstractFraccion[]{
-                new Fraccion(2,8)
+                new Fraccion(2, 8)
             }
         };
-        
+
         AbstractFraccion[][] matriz4 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
                 new Fraccion(),
@@ -194,11 +194,11 @@ public class AgregarColumnasTest {
             }
         };
         return Arrays.asList(new Object[][]{
-            {matriz1,12,22},
-            {matriz2,5,9},
-            {matriz3,2,3},
-            {matriz4,1,4},
-            {matriz4,5,8}
+            {matriz1, 12, 22},
+            {matriz2, 5, 9},
+            {matriz3, 2, 3},
+            {matriz4, 1, 4},
+            {matriz4, 5, 8}
         });
     }
 }

@@ -188,7 +188,7 @@ public class SolucionadorSimplexSiguientePasoTest {
         dtoRes11.setFactible(true);
         dtoRes11.setDosfases(true);
         dtoRes11.setFinalizado(false);
-        dtoRes11.setCoordenadaPivote(new Point(7,2));
+        dtoRes11.setCoordenadaPivote(new Point(7, 2));
         //dtoRes11.setOperaciones(new String[]{"-1 F1 + F0' -> F0'"});
         dtoRes11.setArtificialActual(7);
         dtoRes11.setVariablesBasicas(6);
@@ -209,9 +209,8 @@ public class SolucionadorSimplexSiguientePasoTest {
         dtoRes12.setVariablesBasicas(6);
         dtoRes12.setVariablesHolgura(2);
         dtoRes12.setMensaje("Primera etapa de las dos fases, se eliminan los 1's de las variables artificiales");
-        
+
         /*Segunda prueba*/
-        
         AbstractFraccion[][] sol22 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
                 new Fraccion(-2),
@@ -426,9 +425,8 @@ public class SolucionadorSimplexSiguientePasoTest {
         dtoRes34.setMensaje("El problema no posee solución óptima factible.");
 
         /*
-            problema 4
+         problema 4
          */
-
         AbstractFraccion[][] sol42 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
                 new Fraccion(0),
@@ -529,7 +527,7 @@ public class SolucionadorSimplexSiguientePasoTest {
         dtoRes43.setMensaje("Estado óptimo.");
         dtoRes43.setMensaje("z = 50.0\nx1 = 2.0\nx2 = 2.0");
         /*
-            Problema 5
+         Problema 5
          */
 
         AbstractFraccion[][] sol52 = new AbstractFraccion[][]{
@@ -577,7 +575,7 @@ public class SolucionadorSimplexSiguientePasoTest {
                 new Fraccion(),
                 new Fraccion(2)
             },};
-        
+
         DtoSimplex dtoRes52 = new DtoSimplex(sol52,
                 new String[]{"x1", "x2", "s3", "s4"},
                 new String[]{"z", "s3", "x1"});

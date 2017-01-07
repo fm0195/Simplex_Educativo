@@ -24,8 +24,10 @@ import org.junit.runners.Parameterized;
  */
 @RunWith(Parameterized.class)
 public class SolucionadorSimplexSiguientesOperacionesTest {
+
     DtoSimplex problema;
     String operaciones;
+
     public SolucionadorSimplexSiguientesOperacionesTest(DtoSimplex problema, String resultado) {
         this.problema = problema;
         this.operaciones = resultado;
@@ -40,7 +42,7 @@ public class SolucionadorSimplexSiguientesOperacionesTest {
 
     @Parameterized.Parameters
     public static Collection parametros() throws IOException {
-        
+
         AbstractFraccion[][] sol22 = new AbstractFraccion[][]{
             new AbstractFraccion[]{
                 new Fraccion(-2),
@@ -246,7 +248,7 @@ public class SolucionadorSimplexSiguientesOperacionesTest {
                 new Fraccion(),
                 new Fraccion(2)
             },};
-        
+
         DtoSimplex dtoRes52 = new DtoSimplex(sol52,
                 new String[]{"x1", "x2", "s3", "s4"},
                 new String[]{"z", "s3", "x1"});
@@ -282,9 +284,9 @@ public class SolucionadorSimplexSiguientesOperacionesTest {
             {dtoRes22, "1/2 * F2 -> F2\n2 * F2 + F0' -> F0'\n-1 * F2 + F0 -> F0\n-3 * F2 + F1 -> F1\n"},
             {dtoRes33, "1 * F1 -> F1\n1 * F1 + F0' -> F0'\n25 * F1 + F0 -> F0\n-1 * F1 + F2 -> F2\n1 * F1 + F3 -> F3\n"},
             {dtoRes42, "1 * F3 -> F3\n10 * F3 + F0 -> F0\n0 * F3 + F1 -> F1\n-1 * F3 + F2 -> F2\n"},
-            {dtoRes52,"1 * F1 -> F1\n25 * F1 + F0 -> F0\n1 * F1 + F2 -> F2\n"},
-            {dtoRes53,"-1 * F1 -> F1\n10 * F1 + F0 -> F0\n0 * F1 + F2 -> F2\n"}
+            {dtoRes52, "1 * F1 -> F1\n25 * F1 + F0 -> F0\n1 * F1 + F2 -> F2\n"},
+            {dtoRes53, "-1 * F1 -> F1\n10 * F1 + F0 -> F0\n0 * F1 + F2 -> F2\n"}
         });
     }
-    
+
 }

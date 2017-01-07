@@ -12,11 +12,30 @@ import modelo.parser.IParser;
  */
 public abstract class AbstractControlador {
 
+    /**
+     * El solucionador de problemas con el algoritmo simplex.
+     */
     protected AbstractSolucionadorSimplex solucionador;
+    /**
+     * Parser para analizar una cadena de texto que represente un problema
+     * lineal y retornar un Dto con sus datos
+     */
     protected IParser parser;
+    /**
+     * Indice del paso actual para acceder a la lista de pasos
+     */
     protected int pasoActual = 0;
+    /**
+     * Lista con todos los pasos resueltos hasta el momento.
+     */
     protected ArrayList<DtoSimplex> listaPasos;
+    /**
+     * La vista donde se mostrara la matriz del paso actual
+     */
     protected IVista vista;
+    /**
+     * La cadena de texto del problema original.
+     */
     protected String problemaOriginal;
 
     /**
@@ -24,8 +43,9 @@ public abstract class AbstractControlador {
      * iteraciones para solucionar el problema de programación lineal indicado
      * por parámetro.
      *
-     * @param dto Contiene los datos del problema de programación lineal a
-     * generar la siguiente iteracción.
+     * @param problema Representacion textual del problema de programacion
+     * lineal.
+     * @param fraccional representacion fraccionaria o decimal.
      * @return Arreglo que contiene todas las iteraciones del problema de
      * programación lineal.
      */
@@ -41,15 +61,14 @@ public abstract class AbstractControlador {
         dto.setFormatoFraccional(fraccional);
         dto = solucionador.completarProblema(dto);
         listaPasos = solucionador.solucionar(dto);
-        pasoActual = listaPasos.size()-1;
+        pasoActual = listaPasos.size() - 1;
         vista.mostrarMatriz(listaPasos.get(pasoActual));
         if (!listaPasos.get(pasoActual).esFactible()) {
             vista.mostrarMensajeError("El problema no es factible. ", "Infactibilidad");
-        }
-        else{
+        } else {
             if (!listaPasos.get(pasoActual).esAcotado()) {
                 vista.mostrarMensajeError("El problema no esta acotado. ", "No acotado");
-            }else{
+            } else {
                 if (listaPasos.get(pasoActual).esFinalizado()) {
                     vista.mostrarMensajeInformacion("Problema finalizado. \n" + listaPasos.get(pasoActual).getSolucion(), "Finalizado");
                 }
@@ -61,7 +80,9 @@ public abstract class AbstractControlador {
     /**
      * Indica al solucionador, que genera la siguiente iteración del problema de
      * programación lineal cargado.
+     *
      * @param problema el string del problema por resolver
+     * @param fraccional formato de salida fraccional o decimal
      */
     public void siguientePaso(String problema, boolean fraccional) {
         DtoSimplex dto = null;
@@ -79,7 +100,7 @@ public abstract class AbstractControlador {
         listaPasos.add(dto);
         vista.mostrarMatriz(listaPasos.get(pasoActual));
     }
-    
+
     /**
      * Indica al solucionador, que genera la siguiente iteración del problema de
      * programación lineal cargado.
@@ -88,41 +109,36 @@ public abstract class AbstractControlador {
     public void siguientePaso() {
         DtoSimplex problemaActual = listaPasos.get(pasoActual).clonarProfundo();
         DtoSimplex siguientePaso = solucionador.siguientePaso(problemaActual);
-        if(pasoActual == listaPasos.size()-1){
+        if (pasoActual == listaPasos.size() - 1) {
             listaPasos.add(siguientePaso);
-        }
-        else{
-            listaPasos.set(pasoActual+1, siguientePaso);
+        } else {
+            listaPasos.set(pasoActual + 1, siguientePaso);
         }
         pasoActual++;
         vista.mostrarMatriz(listaPasos.get(pasoActual));
-        
+
         if (!listaPasos.get(pasoActual).esFactible()) {
             vista.mostrarMensajeError("El problema no es factible. ", "Infactibilidad");
-        }
-        else{
+        } else {
             if (!listaPasos.get(pasoActual).esAcotado()) {
                 vista.mostrarMensajeError("El problema no esta acotado. ", "No acotado");
-            }else{
+            } else {
                 if (listaPasos.get(pasoActual).esFinalizado()) {
                     vista.mostrarMensajeInformacion("Problema finalizado. \n" + listaPasos.get(pasoActual).getSolucion(), "Finalizado");
                 }
             }
         }
     }
-    
+
     /**
-     * Indica al solucionador, que genera la siguiente iteración del problema de
-     * programación lineal indicado por parámetro.
+     * Indica al controlador que muestre en la vista el paso anterior
      *
-     * @return Datos de la siguiente iteración del problema de programación
-     * lineal.
      */
     public void anteriorPaso() {
         if (pasoActual < listaPasos.size() && pasoActual > 0) {
-            DtoSimplex anterior = listaPasos.get(pasoActual-1);
+            DtoSimplex anterior = listaPasos.get(pasoActual - 1);
             DtoSimplex actual = listaPasos.get(pasoActual);
-            DtoSimplex siguiente = pasoActual+1 < listaPasos.size() ? listaPasos.get(pasoActual+1) : null;
+            DtoSimplex siguiente = pasoActual + 1 < listaPasos.size() ? listaPasos.get(pasoActual + 1) : null;
             DtoSimplex rem = listaPasos.remove(pasoActual--);
             vista.mostrarMatriz(listaPasos.get(pasoActual));
         } else {
@@ -131,14 +147,11 @@ public abstract class AbstractControlador {
     }
 
     /**
-     * Indica al solucionador, que genera las siguientes operaciones del
-     * problema de programación lineal indicado por parámetro, en el punto(fila,
-     * columna) que se encuentra dentro del objeto de transferencia.
+     * Indica al solucionadore que genere las siguientes operaciones del
+     * problema de programación lineal actual, en el punto coordenadas
      *
      * @param coordenadas la coordenada de la entrada seleccionada
-     * @param dto Contiene los datos del problema de programación lineal a
-     * generar la siguiente iteracción.
-     * @return Datos de las siguientes operaciones del problema de programación
+     * @return Texto de las siguientes operaciones del problema de programación
      * lineal.
      */
     public String siguientesOperaciones(Point coordenadas) {
@@ -156,14 +169,12 @@ public abstract class AbstractControlador {
      * transferencia, se obtiene llamando al método calcular radio del
      * solucionador.
      *
-     * @param dto Contiene los datos del problema de programación lineal a
-     * generar la siguiente iteracción.
      * @param columna Indice de la columna a generar el radio.
      * @return Arreglo con el valor de los radios.
      */
-    public String[] generarRadios(int columna) {   
+    public String[] generarRadios(int columna) {
         String[] resultado;
-        if(columna == -1){
+        if (columna == -1) {
             int cantRadios = solucionador.calcularRadio(listaPasos.get(pasoActual), 0).length;
             resultado = new String[cantRadios];
             for (int i = 0; i < cantRadios; i++) {
@@ -172,14 +183,14 @@ public abstract class AbstractControlador {
             return resultado;
         }
         resultado = solucionador.calcularRadio(listaPasos.get(pasoActual), columna);
-         
+
         for (int i = 0; i < resultado.length; i++) {
             if (resultado[i].compareTo(String.valueOf(Integer.MIN_VALUE)) == 0) {
                 resultado[i] = "-oo";
             }
-            String maxDouble = String.format("%.2f",Double.MAX_VALUE);
+            String maxDouble = String.format("%.2f", Double.MAX_VALUE);
             String actual = resultado[i];
-            if (resultado[i].compareTo(String.valueOf(Integer.MAX_VALUE)) == 0 || resultado[i].compareTo(String.format("%.2f",Double.MAX_VALUE)) == 0) {
+            if (resultado[i].compareTo(String.valueOf(Integer.MAX_VALUE)) == 0 || resultado[i].compareTo(String.format("%.2f", Double.MAX_VALUE)) == 0) {
                 resultado[i] = "oo";
             }
         }
@@ -187,13 +198,11 @@ public abstract class AbstractControlador {
     }
 
     /**
-     * Genera el valor de los radios entre la columna indicada dentro del punto
-     * dentro del objeto y el "lado derecho" del problema de programación lineal
-     * dentro del objeto de transferencia, se obtiene llamando al método
-     * calcular radio del solucionador.
+     * Genera el valor textual de los radios entre la columna indicada del paso
+     * actual el "lado derecho" del problema de programación lineal dentro del
+     * objeto de transferencia, se obtiene llamando al método calcular radio del
+     * solucionador.
      *
-     * @param dto Contiene los datos del problema de programación lineal a
-     * generar la siguiente iteracción.
      * @return Arreglo con el valor de los radios.
      *
      */
@@ -203,11 +212,9 @@ public abstract class AbstractControlador {
     }
 
     /**
-     * Cambia el valor de una entrada en la matriz de coeficientes, por un nuevo
-     * valor en la posición fila y columna indicado.
+     * Cambia el valor de una entrada en la matriz de coeficientes actual, por
+     * un nuevo valor en la posición fila y columna indicado.
      *
-     * @param dto Contiene los datos del problema de programación lineal a
-     * generar la siguiente iteracción.
      * @param fila Indice de la fila dentro de la matriz.
      * @param columna Indice de la columna dentro de la matriz.
      * @param valor Valor del coeficiente a intercambiar.
@@ -220,7 +227,7 @@ public abstract class AbstractControlador {
             String[] split = valor.split("/");
             numerador = Double.valueOf(split[0]);
             denominador = Double.valueOf(split[1]);
-        }else {
+        } else {
             numerador = Double.valueOf(valor);
         }
         listaPasos.get(pasoActual).setEntradaMatriz(fila, columna, numerador, denominador);
@@ -229,7 +236,14 @@ public abstract class AbstractControlador {
     public void setVista(IVista vista) {
         this.vista = vista;
     }
-    
+
+    /**
+     * Genera una cadena de texto con las tablas obtenidas en todos los pasos
+     * seguidos para llegar hasta el paso actual.
+     *
+     * @return representacion en texto de las matrices de los pasos anteriores y
+     * el actual
+     */
     public String generarResumen() {
         String resultado = "";
         for (int i = 0; i <= pasoActual; i++) {

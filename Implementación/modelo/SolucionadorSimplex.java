@@ -120,7 +120,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             nombreFilas = agregarNombreW(nombreFilas);
             dto.setNombreFilas(nombreFilas);
             dto.setCoordenadaPivote(new Point(dto.getVariablesHolgura()
-                    + dto.getVariablesBasicas() - 1, artificiales.get(0)+1));
+                    + dto.getVariablesBasicas() - 1, artificiales.get(0) + 1));
             dto.setOperaciones(siguientesOperacionesInicioDosfases(artificiales.get(0)));
             dto.setMensaje("Agregada fila -w, holguras 's' y artificiales 'a'.");
         } else {
@@ -164,11 +164,13 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             if (contador < siguientePivote.y) {
                 indiceOperacion = contador + 1;
                 fila = matriz[contador];
-            } else if (contador > siguientePivote.y) {
-                indiceOperacion = contador;
-                fila = matriz[contador];
             } else {
-                continue;
+                if (contador > siguientePivote.y) {
+                    indiceOperacion = contador;
+                    fila = matriz[contador];
+                } else {
+                    continue;
+                }
             }
             coeficiente = fila[siguientePivote.x].clonar();
             coeficiente.hacerNegativa();
@@ -513,11 +515,13 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 if (contadorColumna < totalAnterior - 1) {
                     nuevaMatriz[contadorFila][contadorColumna]
                             = matriz[contadorFila][contadorColumna];
-                } else if (contadorColumna < nuevaMatriz[0].length - 1) {
-                    nuevaMatriz[contadorFila][contadorColumna] = cero.clonar();
                 } else {
-                    nuevaMatriz[contadorFila][contadorColumna]
-                            = matriz[contadorFila][totalAnterior - 1];
+                    if (contadorColumna < nuevaMatriz[0].length - 1) {
+                        nuevaMatriz[contadorFila][contadorColumna] = cero.clonar();
+                    } else {
+                        nuevaMatriz[contadorFila][contadorColumna]
+                                = matriz[contadorFila][totalAnterior - 1];
+                    }
                 }
             }
         }
@@ -587,10 +591,12 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         for (int contador = 0; contador < funcionW.length; contador++) {
             if (contador < inicioArtifiales) {
                 funcionW[contador] = cero.clonar();
-            } else if (contador < tamano - 1) {
-                funcionW[contador] = uno.clonar();
             } else {
-                funcionW[contador] = cero.clonar();
+                if (contador < tamano - 1) {
+                    funcionW[contador] = uno.clonar();
+                } else {
+                    funcionW[contador] = cero.clonar();
+                }
             }
         }
         return funcionW;
@@ -743,12 +749,14 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             if (dto.esMatriz() || !validarSimplexTerminado(dto.getMatriz()[0])) {
                 dto = siguientesOperaciones(dto);
                 dto.setMensaje("Operaciones fila realizadas.");
-            } else if (!dto.esDosfases()) {
-                dto.setSolucion(obtenerSolucion(dto));
-                dto.setMensaje("Estado óptimo.");
-                dto.setFinalizado(true);
             } else {
-                dto.setMensaje("Operaciones fila realizadas.");
+                if (!dto.esDosfases()) {
+                    dto.setSolucion(obtenerSolucion(dto));
+                    dto.setMensaje("Estado óptimo.");
+                    dto.setFinalizado(true);
+                } else {
+                    dto.setMensaje("Operaciones fila realizadas.");
+                }
             }
             return dto;
         } else {
@@ -779,15 +787,17 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 if (finalizado) {
                     dto.setSolucion(obtenerSolucion(dto));
                 }
-                dto.setMensaje("Primera fase finalizada, eliminadas variables artificiales y fila w. "+ (finalizado ? "Estado óptimo. " : ""));
+                dto.setMensaje("Primera fase finalizada, eliminadas variables artificiales y fila w. " + (finalizado ? "Estado óptimo. " : ""));
                 dto.setCoordenadaPivote(siguientePivoteo(dto));
                 dto = siguientesOperaciones(dto);
-            } else if (dto.esBloqueoDosFases()) {
-                dto = eliminarArtificiales(dto);
-                dto.setMensaje("Primera etapa de las dos fases, se eliminan los 1's de las variables artificiales");
             } else {
-                dto = siguientePasoSimplex(dto);
-                dto.setFinalizado(false);
+                if (dto.esBloqueoDosFases()) {
+                    dto = eliminarArtificiales(dto);
+                    dto.setMensaje("Primera etapa de las dos fases, se eliminan los 1's de las variables artificiales");
+                } else {
+                    dto = siguientePasoSimplex(dto);
+                    dto.setFinalizado(false);
+                }
             }
             if (dto.esDosfases()) {
                 boolean factible = verificarFactibilidad(dto.getMatriz()[0]);
