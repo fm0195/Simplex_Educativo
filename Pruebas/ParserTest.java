@@ -1,7 +1,8 @@
 package pruebas;
 
+import dto.DtoSimplex;
+import java.io.IOException;
 import modelo.AbstractFraccion;
-import modelo.DtoSimplex;
 import modelo.parser.IParser;
 import modelo.parser.Parser;
 import modelo.parser.sym;
@@ -12,9 +13,7 @@ import org.junit.Test;
 import org.junit.Before;
 
 import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class ParserTest {
@@ -145,7 +144,7 @@ public class ParserTest {
     }
     
     @Test
-    public void test() {
+    public void test() throws IOException {
         DtoSimplex resultado = parser.parse(problema);
         assert(compararResultados(resultado, resultadoEsperado, desigualdadesEsperadas));
     }
