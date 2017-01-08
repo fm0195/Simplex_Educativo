@@ -13,5 +13,4 @@ public class SimplexControlador extends AbstractControlador {
         this.solucionador = new SolucionadorSimplex();
         this.parser = new SimplexParser();
     }
-
 }

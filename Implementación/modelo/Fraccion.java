@@ -1,5 +1,7 @@
 package modelo;
 
+import java.text.DecimalFormat;
+
 /**
  *
  * @author Yordan Jiménez
@@ -90,7 +92,7 @@ public class Fraccion extends AbstractFraccion {
 
     @Override
     public String toString() {
-        return (int) getNumerador() + "/" + (int) getDenominador();
+        return getNumerador() + "/" + getDenominador();
     }
 
     @Override
@@ -108,16 +110,16 @@ public class Fraccion extends AbstractFraccion {
            }else
                return toString();
        }else{
-           return String.format("%.2f", (getNumerador() / getDenominador()));
+           return new DecimalFormat("#.##").format(((double)getNumerador() / (double)getDenominador()));//String.format("%.2f", ((double)getNumerador() / (double)getDenominador()));
        }
     }
 
     @Override
     public AbstractFraccion obtenerParteDecimal() {
         double monto = ((double)getNumerador()) / ((double) getDenominador()); 
-        String[] nums = String.format("%.4f", monto).split("\\.");
-        String stringDecimal = nums[1];
-        double parteDecimal = Double.parseDouble(stringDecimal);
+        String[] nums = new DecimalFormat("#.##").format(monto).split("\\,");
+        String stringDecimal = nums.length > 1 ? nums[1] : "0";
+        double parteDecimal = Double.parseDouble("0."+stringDecimal);
         return new Fraccion(parteDecimal);
     }
 }

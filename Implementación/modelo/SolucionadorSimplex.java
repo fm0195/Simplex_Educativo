@@ -503,7 +503,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      * @return Nueva matriz con las columnas que representan las variables de
      * holgura y artificiales.
      */
-    private AbstractFraccion[][] agregarColumnas(AbstractFraccion[][] matriz,
+    protected AbstractFraccion[][] agregarColumnas(AbstractFraccion[][] matriz,
             int cantidad) {
         int totalAnterior = matriz[0].length;
         int totalNuevo = totalAnterior + cantidad;
@@ -562,7 +562,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      * @return Mtriz con los coeficientes del problema convertido en problema de
      * dos fases.
      */
-    private AbstractFraccion[][] convertirDosFases(AbstractFraccion[][] matriz,
+    protected AbstractFraccion[][] convertirDosFases(AbstractFraccion[][] matriz,
             int inicioArtifiales) {
         AbstractFraccion[][] resultado = new AbstractFraccion[matriz.length + 1][matriz[0].length];
         AbstractFraccion[] funcionW = crearFuncionW(matriz[0].length, inicioArtifiales - 1);
@@ -959,7 +959,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      * variable artificial.
      * @return Arreglo de Strings con las operaciones a realizar.
      */
-    private String[] siguientesOperacionesInicioDosfases(int indice) {
+    protected String[] siguientesOperacionesInicioDosfases(int indice) {
         String[] resultado = new String[1];
         resultado[0] = "-1 F" + indice + " + F0' -> F0'";
         return resultado;
@@ -972,7 +972,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      * @param dto Contiene los datos del problema de programación lineal.
      * @return String con los datos de la solución.
      */
-    private String obtenerSolucion(DtoSimplex dto) {
+    protected String obtenerSolucion(DtoSimplex dto) {
         String resultado = "";
         String[] nombreFilas = dto.getNombreFilas();
         String[] nombreColumnas = dto.getNombreColumnas();
@@ -996,4 +996,29 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         }
         return resultado;
     }
+    
+    /**
+     * Agrega una fila de fracciones con valor cero, al final de la matriz
+     * indicada.
+     *
+     * @param matriz Matriz de elementos AbstractFraccion donde se agregará la
+     * fila.
+     * @return Matriz con elementos tipo AbstractFraccion con la nueva fila
+     * agregada.
+     */
+    protected AbstractFraccion[][] agregarFila(AbstractFraccion[][] matriz) {
+        AbstractFraccion[][] resultado = new AbstractFraccion[matriz.length+1][matriz[0].length];
+        for (int contadorFila = 0; contadorFila < matriz.length; contadorFila++) {
+            AbstractFraccion[] fila = matriz[contadorFila].clone();
+            for (int contadorColumna = 0; contadorColumna < fila.length; contadorColumna++) {
+                AbstractFraccion elemento = fila[contadorColumna];
+                resultado[contadorFila][contadorColumna] = elemento;
+            }
+        }
+        for (int contador = 0; contador < resultado[0].length; contador++) {
+            resultado[matriz.length][contador] = new Fraccion();
+        }
+        return resultado;
+    }
+    
 }

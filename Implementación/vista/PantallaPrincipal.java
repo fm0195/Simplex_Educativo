@@ -6,6 +6,7 @@
 package vista;
 
 import controlador.AbstractControlador;
+import controlador.GomoryControlador;
 import controlador.SimplexControlador;
 import controlador.MatrizControlador;
 import modelo.Fraccion;
@@ -18,6 +19,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private boolean fraccionario;
     private boolean gomory;
+    private boolean branchAndBound;
     private boolean solucionDirecta;
     private boolean matrizNumerica;
     private boolean solucionSimplex;
@@ -29,8 +31,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         this.solucionDirecta = false;
         this.gomory = false;
         initComponents();
-        this.radioGomory.setVisible(false);
-        this.radioBB.setVisible(false);
         this.areaTexto.setText(problema);
     }
 
@@ -311,6 +311,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void radioGomoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioGomoryActionPerformed
         gomory = true;
+        branchAndBound = false;
         solucionSimplex = false;
         matrizNumerica = false;
         labelPasosIntermedios.setVisible(true);
@@ -320,6 +321,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void radioBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioBBActionPerformed
         gomory = false;
+        branchAndBound = true;
         solucionSimplex = false;
         matrizNumerica = false;
         labelPasosIntermedios.setVisible(true);
@@ -357,6 +359,21 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             controlador.siguientePaso(areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", ""), fraccionario);
             this.dispose();
         }
+        if(gomory){
+            controlador = new GomoryControlador();
+            if (solucionDirecta) {
+                controlador.setVista(new PantallaPasoIntermedio(controlador));
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                controlador.solucionar(texto, fraccionario);
+                this.dispose();
+            } else {
+                controlador.setVista(new PantallaPasoIntermedio(controlador));
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                controlador.siguientePaso(texto, fraccionario);
+                this.dispose();
+            }
+        }
+            
     }//GEN-LAST:event_botonSimplexActionPerformed
 
     private void botonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarActionPerformed
