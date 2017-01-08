@@ -26,21 +26,10 @@ public class SolucionadorGomory extends SolucionadorSimplex {
     public ArrayList<DtoSimplex> solucionar(DtoSimplex dto) {
         ArrayList<DtoSimplex> solucion = super.solucionar(dto);
         listaPasos.addAll(solucion);
-        DtoSimplex ultimaSolucion = solucion.get(solucion.size()-1).clonarProfundo();
-        while(! esSolucionEntera(ultimaSolucion)){
-            int indiceRestriccionCorte = obtenerIndiceRestriccionCorte(ultimaSolucion);
-            AbstractFraccion[] nuevoCorte = realizarCorte(ultimaSolucion, indiceRestriccionCorte);
-            AbstractFraccion[][] nuevaMatriz = agregarFila(ultimaSolucion.getMatriz());
-            for (int i = 0; i < nuevaMatriz[0].length; i++) {
-                nuevaMatriz[nuevaMatriz.length-1][i] = nuevoCorte[i];
-            }
-            nuevaMatriz = agregarColumnas(nuevaMatriz, 2);
-            ultimaSolucion.setMatriz(nuevaMatriz);
-            ultimaSolucion = completarDto(ultimaSolucion);
-            solucion = super.solucionar(ultimaSolucion);
-            solucion.get(solucion.size()-1).setMensaje("Solucion óptima no entera. Corte agregado.");
-            listaPasos.addAll(solucion);
-            ultimaSolucion = solucion.get(solucion.size()-1);
+        DtoSimplex ultimaSolucion = solucion.get(solucion.size()-1);
+        while(!esSolucionEntera(ultimaSolucion) || ultimaSolucion.esDosfases()){
+            ultimaSolucion = siguientePaso(ultimaSolucion.clonarProfundo());
+            listaPasos.add(ultimaSolucion);
         }
         return listaPasos;
     }
@@ -49,7 +38,7 @@ public class SolucionadorGomory extends SolucionadorSimplex {
     public DtoSimplex siguientePaso(DtoSimplex dto) {
         DtoSimplex siguiente = super.siguientePaso(dto);
         if (dto.esFinalizado()) {
-            if(! esSolucionEntera(dto)){
+            if(!esSolucionEntera(dto)){
                 int indiceRestriccionCorte = obtenerIndiceRestriccionCorte(siguiente);
                 AbstractFraccion[] nuevoCorte = realizarCorte(siguiente, indiceRestriccionCorte);
                 AbstractFraccion[][] nuevaMatriz = agregarFila(siguiente.getMatriz());
@@ -60,8 +49,9 @@ public class SolucionadorGomory extends SolucionadorSimplex {
                 siguiente.setMatriz(nuevaMatriz);
                 siguiente = completarDto(siguiente);
                 siguiente.setMensaje("Solucion óptima no entera. Corte agregado a la fila "+indiceRestriccionCorte);
-            } else
+            } else{
                 return siguiente;
+            }
         }
         return siguiente;
     }
@@ -87,8 +77,8 @@ public class SolucionadorGomory extends SolucionadorSimplex {
         dtoRes.setBloqueoDosFases(true);
         dtoRes.setNombreColumnas(agregarNombresColumnas(dtoRes.getNombreColumnas()));
         dtoRes.setNombreFilas(agregarNombresFilas(matriz, dtoRes.getNombreFilas(), dtoRes.getNombreColumnas()));
-        dtoRes.setCoordenadaPivote(new Point(matriz.length, matriz[0].length-3));
-        dtoRes.setOperaciones(siguientesOperacionesInicioDosfases(matriz[0].length-1));
+        dtoRes.setCoordenadaPivote(new Point(matriz[0].length-2, matriz.length-1));
+        dtoRes.setOperaciones(siguientesOperacionesInicioDosfases(matriz[0].length-2));
         return dtoRes;
     }
 
@@ -98,8 +88,11 @@ public class SolucionadorGomory extends SolucionadorSimplex {
     }
 
     private boolean esSolucionEntera(DtoSimplex dto) {
+        if(!dto.esFactible() || !dto.esAcotado()){
+            return true;
+        }
         String solucion = obtenerSolucion(dto);
-        return !solucion.contains("/") && !solucion.contains(".");
+        return !solucion.contains("/") && !solucion.contains(".") && !solucion.contains(",");
     }
 
     private int obtenerIndiceRestriccionCorte(DtoSimplex dto) {

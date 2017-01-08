@@ -223,6 +223,12 @@ public abstract class AbstractFraccion {
     
     /**
      * Separa la parte decimal de la parte entera de una fracción.
+     * @return Fraccion con el valor de la parte entera.
+     */
+    public abstract AbstractFraccion obtenerParteEntera();
+    
+    /**
+     * Separa la parte decimal de la parte entera de una fracción.
      * @return Fraccion con el valor de la parte decimal.
      */
     public abstract AbstractFraccion obtenerParteDecimal();

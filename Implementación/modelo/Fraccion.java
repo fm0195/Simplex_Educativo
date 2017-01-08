@@ -116,11 +116,8 @@ public class Fraccion extends AbstractFraccion {
 
     @Override
     public AbstractFraccion obtenerParteDecimal() {
-        double monto = ((double)getNumerador()) / ((double) getDenominador()); 
-        String[] nums = new DecimalFormat("#.##").format(monto).split("\\.");
-        String stringDecimal = nums.length > 1 ? nums[1] : "0";
-        double parteDecimal = Double.parseDouble("0."+stringDecimal);
-        return new Fraccion(parteDecimal);
+        int nuevoNumerador = getNumerador() % getDenominador();
+        return new Fraccion(nuevoNumerador, getDenominador());
     }
     
      @Override
