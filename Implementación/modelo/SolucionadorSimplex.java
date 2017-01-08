@@ -20,7 +20,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         resultado.add(dto);
         while (continuar) {
             dto = dto.clonarProfundo();
-            dto = siguientePaso(dto);
+            dto = _SiguientePaso(dto);
             System.out.println(dto.getSolucion());
             continuar = !dto.esFinalizado();
             continuar &= dto.esAcotado() && dto.esFactible();
@@ -31,11 +31,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
 
     @Override
     public DtoSimplex siguientePaso(DtoSimplex dto) {
-        if (dto.esDosfases()) {
-            return siguientePasoDosFases(dto);
-        } else {
-            return siguientePasoSimplex(dto);
-        }
+        return _SiguientePaso(dto);
     }
 
     @Override
@@ -180,6 +176,21 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         dto.setOperaciones(operaciones);
         return dto;
     }
+    /**
+     * Obtiene el siguiente paso del problema de programación lineal indicado por 
+     * parámetro.Este método fue construido para evitar dependencias cíclicas
+     * entre métodos de las subclases.
+     * @param dto Contiene los datos del problema de programación lineal a
+     * generar el siguiente paso.
+     * @return DTO con los datos del siguiente paso del problema de programación .
+     */
+    private DtoSimplex _SiguientePaso(DtoSimplex dto) {
+        if (dto.esDosfases()) {
+            return siguientePasoDosFases(dto);
+        } else {
+            return siguientePasoSimplex(dto);
+        }
+    }
 
     /**
      * Crea un string que simboliza la operación fila a realizar según los datos
@@ -245,6 +256,9 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      *
      * @param valores Arreglo con las fracciones donde se va a buscar el valor
      * menor.
+     * @param  indiceInicio Índice donde va a inciar a recorrer el arreglo de valores.
+     * @param  acotoFinal Índice que representa el último elemento dentro del arreglo
+     * que va se comparado.
      * @return Valor entro que representa el índice del valor menor del arreglo.
      */
     private int obtenerIndiceDelValorMenor(AbstractFraccion[] valores, int indiceInicio,
@@ -255,6 +269,48 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         for (; indiceInicio < valores.length - acotoFinal; indiceInicio++) {
             valor = valores[indiceInicio];
             if (valor.menorQue(valorMenor)) {
+                valorMenor = valor;
+                indice = indiceInicio;
+            }
+        }
+        return indice;
+    }
+    
+    /**
+     * Obtiene el índice del valor menor que se encuentre dentro de la lista de
+     * fracciones que representa al lado derecho, si el algoritmo se encuentra en 
+     * el método de dos fases se le da prioridad a las variables artificiales.
+     *
+     * @param valores Arreglo con las fracciones donde se va a buscar el valor
+     * menor.
+     * @param  indiceInicio Índice donde va a inciar a recorrer el arreglo de valores.
+     * @param  acotoFinal Índice que representa el último elemento dentro del arreglo
+     * que va se comparado.
+     * @return Valor entro que representa el índice del valor menor del arreglo.
+     */
+    private int obtenerIndiceDeSiguienteVariableSaliente(AbstractFraccion[] valores, int indiceInicio,
+            int acotoFinal, DtoSimplex dtoProblema) {
+        String[] nombreColumnas = dtoProblema.getNombreColumnas();
+        String[] nombreFilas = dtoProblema.getNombreFilas();
+        boolean esDosFases = dtoProblema.esDosfases();
+        int indiceInicioArtificiales = dtoProblema.getVariablesBasicas() + dtoProblema.getVariablesHolgura()-1;
+        
+        AbstractFraccion valorMenor = valores[indiceInicio];
+        AbstractFraccion valor;
+        int indice = indiceInicio;
+        for (; indiceInicio < valores.length - acotoFinal; indiceInicio++) {
+            valor = valores[indiceInicio];
+            if(valor.iguales(valorMenor) && esDosFases){
+                String nombreFila1 = nombreFilas[indice];
+                String nombreFila2 = nombreFilas[indiceInicio];
+                int indiceColumna1 = buscarIndice(nombreColumnas, nombreFila1);
+                int indiceColumna2 = buscarIndice(nombreColumnas, nombreFila2);
+                if(indiceColumna1 < indiceInicioArtificiales 
+                        && indiceColumna2 >= indiceInicioArtificiales){
+                    valorMenor = valor;
+                    indice = indiceInicio;
+                }
+            }else if (valor.menorQue(valorMenor)) {
                 valorMenor = valor;
                 indice = indiceInicio;
             }
@@ -637,7 +693,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         int acoto = dto.esDosfases() ? 2 : 1;
         int columna = obtenerIndiceDelValorMenor(matriz[0], 0, 1);
         AbstractFraccion[] radios = obtenerRadios(matriz, columna);
-        int fila = obtenerIndiceDelValorMenor(radios, acoto, 0);
+        int fila = obtenerIndiceDeSiguienteVariableSaliente(radios, acoto, 0, dto);
         Point resultado = new Point(columna, fila);
         return resultado;
     }
@@ -856,7 +912,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      * @param nombre Elemento a buscar dentro de la lista.
      * @return Índice del elemento que se busco.
      */
-    private int buscarIndice(String[] nombres, String nombre) {
+    protected int buscarIndice(String[] nombres, String nombre) {
         for (int contador = 0; contador < nombres.length; contador++) {
             String elementoNombre = nombres[contador];
             if (elementoNombre.equals(nombre)) {
