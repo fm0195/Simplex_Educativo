@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import modelo.AbstractSolucionadorSimplex;
 import dto.DtoSimplex;
 import modelo.parser.IParser;
+import modelo.parser.sym;
 
 /**
  *
@@ -248,5 +249,25 @@ public abstract class AbstractControlador {
             resultado += listaPasos.get(i).toString() + "\n";
         }
         return resultado;
+    }
+    
+    /**
+     * Agrega una restricción &gt;=, &lt= ó = al problema actual. 
+     *
+     * @param tipo valor numérico para identificar el tipo de restricción agregada
+     */
+    public void agregarRestriccion(int tipo){
+        DtoSimplex actual = listaPasos.get(pasoActual);
+        if (!actual.esDosfases() && (tipo == sym.MAYORIGUAL || tipo == sym.IGUAL)) {
+            vista.mostrarMensajeError("No puede agregar esta restricción en un problema de una fase.", "Problema de una fase");
+            return;
+        }
+        if (pasoActual != 0) {
+            vista.mostrarMensajeError("Solamente puede agregar restricciones al inicio del algoritmo.", "Problema iniciado");
+            return;
+        }
+        DtoSimplex resultado = solucionador.agregarRestriccion(listaPasos.get(pasoActual), tipo);
+        listaPasos.set(pasoActual, resultado);
+        vista.mostrarMatriz(resultado);
     }
 }

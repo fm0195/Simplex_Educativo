@@ -71,4 +71,13 @@ public abstract class AbstractSolucionadorSimplex {
      */
     public abstract DtoSimplex siguientesOperaciones(DtoSimplex dto);
 
+    /**
+     * Agrega una restricción &gt;=, &lt= ó = al problema pasado por aprametro. 
+     *
+     * @param dto el objeto de transferencia de datos con el problema
+     * @param tipo valor numérico para identificar el tipo de restricción agregada
+     * @return dto con el problema actualizado
+     */
+    public abstract DtoSimplex agregarRestriccion(DtoSimplex dto, int tipo);
+
 }

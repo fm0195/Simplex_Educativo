@@ -42,6 +42,10 @@ import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import dto.DtoSimplex;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import modelo.parser.sym;
 
 /**
  *
@@ -72,6 +76,11 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
     JButton botonAnteriorResumen;
     JButton botonCopiarTodo;
     JButton botonCopiarPaso;
+    JMenuBar barraMenu;
+    JMenu menuRestricciones;
+    JMenuItem itemMenuMayorIgual;
+    JMenuItem itemMenuMenorIgual;
+    JMenuItem itemMenuIgual;
     final Point casillaSeleccionada;
     final int ANCHO_CASILLA = 100;
     final int ALTO_CASILLA = 40;
@@ -154,6 +163,11 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         panelTabla.setBackground(Color.WHITE);
         botonAnteriorMatriz.setFocusable(false);
         botonSiguienteMatriz.setFocusable(false);
+        barraMenu = new JMenuBar();
+        menuRestricciones = new JMenu("Agregar restricción");
+        itemMenuMayorIgual = new JMenuItem(">=");
+        itemMenuMenorIgual= new JMenuItem("<=");
+        itemMenuIgual= new JMenuItem("=");
     }
 
     /**
@@ -208,6 +222,27 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                 clpbrd.setContents(stringSelection, null);
             }
         });
+        itemMenuIgual.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controlador.agregarRestriccion(sym.IGUAL);
+            }
+        });
+        itemMenuMayorIgual.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controlador.agregarRestriccion(sym.MAYORIGUAL);
+            }
+        });
+        itemMenuMenorIgual.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controlador.agregarRestriccion(sym.MENORIGUAL);
+            }
+        });
     }
 
     /**
@@ -230,6 +265,11 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         pestanaMatriz.add(labelOperaciones);
         pestanaResumen.add(scrollResumen);
         pestanaResumen.add(panelBotonesResumen);
+        menuRestricciones.add(itemMenuMenorIgual);
+        menuRestricciones.add(itemMenuIgual);
+        menuRestricciones.add(itemMenuMayorIgual);
+        barraMenu.add(menuRestricciones);
+        this.setJMenuBar(barraMenu);
     }
 
     /**

@@ -134,15 +134,6 @@ public class SolucionadorGomory extends SolucionadorSimplex {
         }
     }
     
-    private void imprimirMatriz(AbstractFraccion[][] matriz){
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz[0].length; j++) {
-                System.out.print(matriz[i][j].toString(true) + "  ");
-            }
-            System.out.println();
-        }
-        System.out.println("\n----------------------\n");
-    }
     
     private String[] agregarNombresColumnas(String[] nombres){
         String[] resultado = new String[nombres.length + 2];
@@ -161,7 +152,6 @@ public class SolucionadorGomory extends SolucionadorSimplex {
         AbstractFraccion uno = new Fraccion(1);
         AbstractFraccion cero = new Fraccion(0);
         boolean todosUno;
-        imprimirMatriz(matriz);
         resultado[0] = "-w";
         resultado[1] = nombreFilas[0];
         for (int i = 2; i < resultado.length; i++) {
