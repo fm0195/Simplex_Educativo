@@ -89,6 +89,7 @@ public class SolucionadorGomory extends SolucionadorSimplex {
 
     private boolean esSolucionEntera(DtoSimplex dto) {
         if(!dto.esFactible() || !dto.esAcotado()){
+            dto.setDosfases(false);
             return true;
         }
         String solucion = obtenerSolucion(dto);
