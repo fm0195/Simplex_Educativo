@@ -6,6 +6,7 @@
 package vista;
 
 import controlador.AbstractControlador;
+import controlador.BranchAndBoundControlador;
 import controlador.GomoryControlador;
 import controlador.SimplexControlador;
 import controlador.MatrizControlador;
@@ -359,7 +360,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             controlador.siguientePaso(areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", ""), fraccionario);
             this.dispose();
         }
-        if(gomory){
+        if (gomory) {
             controlador = new GomoryControlador();
             if (solucionDirecta) {
                 controlador.setVista(new PantallaPasoIntermedio(controlador));
@@ -373,7 +374,21 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 this.dispose();
             }
         }
-            
+        if (branchAndBound) {
+            controlador = new BranchAndBoundControlador();
+            if (solucionDirecta) {
+                controlador.setVista(new PantallaPasoIntermedioBranchBound(controlador));
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                controlador.solucionar(texto, fraccionario);
+                this.dispose();
+            } else {
+                controlador.setVista(new PantallaPasoIntermedioBranchBound(controlador));
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                controlador.siguientePaso(texto, fraccionario);
+                this.dispose();
+            }
+        }
+
     }//GEN-LAST:event_botonSimplexActionPerformed
 
     private void botonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarActionPerformed
