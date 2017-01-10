@@ -847,14 +847,24 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             dto.setNombreFila(fila, nombreColumna);
             if (dto.esMatriz() || !validarSimplexTerminado(dto.getMatriz()[0])) {
                 dto = siguientesOperaciones(dto);
-                dto.setMensaje("Operaciones fila realizadas.");
+                String[] nombreColumnas = dto.getNombreColumnas();
+                String[] nombreFilas = dto.getNombreFilas();
+                Point seleccion = dto.getCoordenadaPivote();
+                String entrante = nombreColumnas[seleccion.x];
+                String saliente = nombreFilas[seleccion.y];
+                dto.setMensaje("Variable entrante: "+entrante+" Variable saliente: "+saliente);
             } else {
                 if (!dto.esDosfases()) {
                     dto.setSolucion(obtenerSolucion(dto));
                     dto.setMensaje("Estado óptimo.");
                     dto.setFinalizado(true);
                 } else {
-                    dto.setMensaje("Operaciones fila realizadas.");
+                    String[] nombreColumnas = dto.getNombreColumnas();
+                    String[] nombreFilas = dto.getNombreFilas();
+                    Point seleccion = dto.getCoordenadaPivote();
+                    String entrante = nombreColumnas[seleccion.x];
+                    String saliente = nombreFilas[seleccion.y];
+                    dto.setMensaje("Variable entrante: "+entrante+" Variable saliente: "+saliente);
                 }
             }
             return dto;
@@ -895,7 +905,11 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                     dto.setMensaje("Primera etapa de las dos fases, se eliminan los 1's de las variables artificiales");
                 } else {
                     dto = siguientePasoSimplex(dto);
-                    dto.setFinalizado(false);
+                    if (validarSimplexTerminado(dto.getMatriz()[0])) {
+                        dto = siguientePasoDosFases(dto);
+                    }
+                    else
+                        dto.setFinalizado(false);
                 }
             }
             if (dto.esDosfases()) {
@@ -1136,6 +1150,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 dtoLocal = agregarIgual(dtoLocal);
                 break;
         }
+        dtoLocal.setMensaje("Restricción agregada.");
         return dtoLocal;
     }
     

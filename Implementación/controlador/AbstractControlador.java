@@ -65,10 +65,10 @@ public abstract class AbstractControlador {
         pasoActual = listaPasos.size() - 1;
         vista.mostrarMatriz(listaPasos.get(pasoActual));
         if (!listaPasos.get(pasoActual).esFactible()) {
-            vista.mostrarMensajeError("El problema no es factible. ", "Infactibilidad");
+            vista.mostrarMensajeError("El problema no es factible.\nLa función -w no posee el valor 0 en el RHS al terminar la primera fase.", "Infactibilidad");
         } else {
             if (!listaPasos.get(pasoActual).esAcotado()) {
-                vista.mostrarMensajeError("El problema no esta acotado. ", "No acotado");
+                vista.mostrarMensajeError("El problema no esta acotado.\nRadios de la columna actual son todos infinito.", "No acotado");
             } else {
                 if (listaPasos.get(pasoActual).esFinalizado()) {
                     vista.mostrarMensajeInformacion("Problema finalizado. \n" + listaPasos.get(pasoActual).getSolucion(), "Finalizado");
@@ -119,10 +119,10 @@ public abstract class AbstractControlador {
         vista.mostrarMatriz(listaPasos.get(pasoActual));
 
         if (!listaPasos.get(pasoActual).esFactible()) {
-            vista.mostrarMensajeError("El problema no es factible. ", "Infactibilidad");
+            vista.mostrarMensajeError("El problema no es factible.\nLa función -w no posee el valor 0 en el RHS al terminar la primera fase.", "Infactibilidad");
         } else {
             if (!listaPasos.get(pasoActual).esAcotado()) {
-                vista.mostrarMensajeError("El problema no esta acotado. ", "No acotado");
+                vista.mostrarMensajeError("El problema no esta acotado.\nRadios de la columna actual son todos infinito.", "No acotado");
             } else {
                 if (listaPasos.get(pasoActual).esFinalizado()) {
                     vista.mostrarMensajeInformacion("Problema finalizado. \n" + listaPasos.get(pasoActual).getSolucion(), "Finalizado");

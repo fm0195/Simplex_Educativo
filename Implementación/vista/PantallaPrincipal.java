@@ -10,6 +10,8 @@ import controlador.BranchAndBoundControlador;
 import controlador.GomoryControlador;
 import controlador.SimplexControlador;
 import controlador.MatrizControlador;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import modelo.Fraccion;
 
 /**
@@ -32,7 +34,29 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         this.solucionDirecta = false;
         this.gomory = false;
         initComponents();
+        this.panelFormatoNumerico.setVisible(false);
+        this.panelMetodoSolucion.setVisible(false);
+        this.panelPasosIntermedios.setVisible(false);
+        this.botonSimplex.setVisible(false);
+        this.botonBorrar.setVisible(false);
         this.areaTexto.setText(problema);
+        this.areaTexto.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                panelFormatoNumerico.setVisible(true);
+                botonBorrar.setVisible(true);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                
+            }
+        });
     }
 
     /**
@@ -55,19 +79,22 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         labelFormato2 = new javax.swing.JLabel();
-        labelFormato = new javax.swing.JLabel();
-        radioFraccion = new javax.swing.JRadioButton();
-        radioDecimal = new javax.swing.JRadioButton();
-        labelEntero = new javax.swing.JLabel();
-        radioGomory = new javax.swing.JRadioButton();
-        radioBB = new javax.swing.JRadioButton();
-        labelPasosIntermedios = new javax.swing.JLabel();
-        radioMostrarPasos = new javax.swing.JRadioButton();
-        radioSolucionDirecta = new javax.swing.JRadioButton();
         botonBorrar = new javax.swing.JButton();
         botonSimplex = new javax.swing.JButton();
-        radioSimplex = new javax.swing.JRadioButton();
+        panelFormatoNumerico = new javax.swing.JPanel();
+        radioDecimal = new javax.swing.JRadioButton();
+        radioFraccion = new javax.swing.JRadioButton();
+        labelFormato = new javax.swing.JLabel();
+        panelMetodoSolucion = new javax.swing.JPanel();
+        radioBB = new javax.swing.JRadioButton();
+        radioGomory = new javax.swing.JRadioButton();
         radioMatriz = new javax.swing.JRadioButton();
+        radioSimplex = new javax.swing.JRadioButton();
+        labelEntero = new javax.swing.JLabel();
+        panelPasosIntermedios = new javax.swing.JPanel();
+        radioSolucionDirecta = new javax.swing.JRadioButton();
+        radioMostrarPasos = new javax.swing.JRadioButton();
+        labelPasosIntermedios = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -131,74 +158,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addComponent(jScrollPane2)
                 .addGap(19, 19, 19))
         );
-
-        labelFormato.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        labelFormato.setText("Escoja el formato numérico");
-
-        grupoFormato.add(radioFraccion);
-        radioFraccion.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioFraccion.setSelected(true);
-        radioFraccion.setText("Fracción");
-        radioFraccion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioFraccionActionPerformed(evt);
-            }
-        });
-
-        grupoFormato.add(radioDecimal);
-        radioDecimal.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioDecimal.setText("Decimal");
-        radioDecimal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioDecimalActionPerformed(evt);
-            }
-        });
-
-        labelEntero.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        labelEntero.setText("Escoja el metodo de solucion");
-
-        grupoSolucion.add(radioGomory);
-        radioGomory.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioGomory.setText("Cortes de Gomory");
-        radioGomory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioGomoryActionPerformed(evt);
-            }
-        });
-
-        grupoSolucion.add(radioBB);
-        radioBB.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioBB.setText("Branch and Bound");
-        radioBB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioBBActionPerformed(evt);
-            }
-        });
-
-        labelPasosIntermedios.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        labelPasosIntermedios.setText("¿Desea mostrar los pasos intermedios?");
-
-        grupoPasos.add(radioMostrarPasos);
-        radioMostrarPasos.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioMostrarPasos.setSelected(true);
-        radioMostrarPasos.setText("Mostrar Pasos");
-        radioMostrarPasos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioMostrarPasosActionPerformed(evt);
-            }
-        });
-
-        grupoPasos.add(radioSolucionDirecta);
-        radioSolucionDirecta.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioSolucionDirecta.setText("Solucion Directa");
-        radioSolucionDirecta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioSolucionDirectaActionPerformed(evt);
-            }
-        });
 
         botonBorrar.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
         botonBorrar.setLabel("Borrar");
@@ -216,13 +178,70 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        grupoSolucion.add(radioSimplex);
-        radioSimplex.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioSimplex.setSelected(true);
-        radioSimplex.setText("Simplex de Dos Fases");
-        radioSimplex.addActionListener(new java.awt.event.ActionListener() {
+        grupoFormato.add(radioDecimal);
+        radioDecimal.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioDecimal.setText("Decimal");
+        radioDecimal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioSimplexActionPerformed(evt);
+                radioDecimalActionPerformed(evt);
+            }
+        });
+
+        grupoFormato.add(radioFraccion);
+        radioFraccion.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioFraccion.setText("Fracción");
+        radioFraccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioFraccionActionPerformed(evt);
+            }
+        });
+
+        labelFormato.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        labelFormato.setText("Escoja el formato numérico");
+
+        javax.swing.GroupLayout panelFormatoNumericoLayout = new javax.swing.GroupLayout(panelFormatoNumerico);
+        panelFormatoNumerico.setLayout(panelFormatoNumericoLayout);
+        panelFormatoNumericoLayout.setHorizontalGroup(
+            panelFormatoNumericoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFormatoNumericoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelFormatoNumericoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelFormato)
+                    .addGroup(panelFormatoNumericoLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(panelFormatoNumericoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(radioFraccion)
+                            .addComponent(radioDecimal))
+                        .addGap(139, 139, 139)))
+                .addContainerGap())
+        );
+        panelFormatoNumericoLayout.setVerticalGroup(
+            panelFormatoNumericoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelFormatoNumericoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelFormato)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radioFraccion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radioDecimal)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        grupoSolucion.add(radioBB);
+        radioBB.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioBB.setText("Branch and Bound");
+        radioBB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioBBActionPerformed(evt);
+            }
+        });
+
+        grupoSolucion.add(radioGomory);
+        radioGomory.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioGomory.setText("Cortes de Gomory");
+        radioGomory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioGomoryActionPerformed(evt);
             }
         });
 
@@ -235,68 +254,128 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelFormato)
-                            .addComponent(labelEntero)
-                            .addComponent(botonSimplex)
-                            .addComponent(botonBorrar)
-                            .addComponent(labelPasosIntermedios)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(radioFraccion)
-                                    .addComponent(radioDecimal)
-                                    .addComponent(radioMostrarPasos)
-                                    .addComponent(radioSolucionDirecta)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        grupoSolucion.add(radioSimplex);
+        radioSimplex.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioSimplex.setText("Simplex de Dos Fases");
+        radioSimplex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioSimplexActionPerformed(evt);
+            }
+        });
+
+        labelEntero.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        labelEntero.setText("Escoja el metodo de solucion");
+
+        javax.swing.GroupLayout panelMetodoSolucionLayout = new javax.swing.GroupLayout(panelMetodoSolucion);
+        panelMetodoSolucion.setLayout(panelMetodoSolucionLayout);
+        panelMetodoSolucionLayout.setHorizontalGroup(
+            panelMetodoSolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMetodoSolucionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelMetodoSolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelEntero)
+                    .addGroup(panelMetodoSolucionLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(panelMetodoSolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(radioMatriz)
                             .addComponent(radioBB)
                             .addComponent(radioGomory)
                             .addComponent(radioSimplex))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(labelFormato)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(radioFraccion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(radioDecimal)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        panelMetodoSolucionLayout.setVerticalGroup(
+            panelMetodoSolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMetodoSolucionLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelEntero)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(11, 11, 11)
                 .addComponent(radioSimplex)
                 .addGap(5, 5, 5)
                 .addComponent(radioMatriz)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radioGomory)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(radioBB)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radioBB))
+        );
+
+        grupoPasos.add(radioSolucionDirecta);
+        radioSolucionDirecta.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioSolucionDirecta.setText("Solucion Directa");
+        radioSolucionDirecta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioSolucionDirectaActionPerformed(evt);
+            }
+        });
+
+        grupoPasos.add(radioMostrarPasos);
+        radioMostrarPasos.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioMostrarPasos.setText("Mostrar Pasos");
+        radioMostrarPasos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioMostrarPasosActionPerformed(evt);
+            }
+        });
+
+        labelPasosIntermedios.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        labelPasosIntermedios.setText("¿Desea mostrar los pasos intermedios?");
+
+        javax.swing.GroupLayout panelPasosIntermediosLayout = new javax.swing.GroupLayout(panelPasosIntermedios);
+        panelPasosIntermedios.setLayout(panelPasosIntermediosLayout);
+        panelPasosIntermediosLayout.setHorizontalGroup(
+            panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPasosIntermediosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelPasosIntermedios)
+                    .addGroup(panelPasosIntermediosLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(radioMostrarPasos)
+                            .addComponent(radioSolucionDirecta)))))
+        );
+        panelPasosIntermediosLayout.setVerticalGroup(
+            panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPasosIntermediosLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
                 .addComponent(labelPasosIntermedios)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(radioMostrarPasos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radioSolucionDirecta)
-                .addGap(18, 18, 18)
-                .addComponent(botonSimplex)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(botonBorrar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonBorrar)
+                    .addComponent(panelPasosIntermedios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonSimplex)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(panelFormatoNumerico, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panelMetodoSolucion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelFormatoNumerico, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelMetodoSolucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelPasosIntermedios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonSimplex)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonBorrar)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -304,10 +383,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void radioFraccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioFraccionActionPerformed
         fraccionario = true;
+        panelMetodoSolucion.setVisible(true);
     }//GEN-LAST:event_radioFraccionActionPerformed
 
     private void radioDecimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioDecimalActionPerformed
         fraccionario = false;
+        panelMetodoSolucion.setVisible(true);
     }//GEN-LAST:event_radioDecimalActionPerformed
 
     private void radioGomoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioGomoryActionPerformed
@@ -315,9 +396,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         branchAndBound = false;
         solucionSimplex = false;
         matrizNumerica = false;
-        labelPasosIntermedios.setVisible(true);
-        radioMostrarPasos.setVisible(true);
-        radioSolucionDirecta.setVisible(true);
+        panelPasosIntermedios.setVisible(true);
+        botonSimplex.setVisible(false);
     }//GEN-LAST:event_radioGomoryActionPerformed
 
     private void radioBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioBBActionPerformed
@@ -325,17 +405,18 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         branchAndBound = true;
         solucionSimplex = false;
         matrizNumerica = false;
-        labelPasosIntermedios.setVisible(true);
-        radioMostrarPasos.setVisible(true);
-        radioSolucionDirecta.setVisible(true);
+        panelPasosIntermedios.setVisible(true);
+        botonSimplex.setVisible(false);
     }//GEN-LAST:event_radioBBActionPerformed
 
     private void radioMostrarPasosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMostrarPasosActionPerformed
         solucionDirecta = false;
+        botonSimplex.setVisible(true);
     }//GEN-LAST:event_radioMostrarPasosActionPerformed
 
     private void radioSolucionDirectaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioSolucionDirectaActionPerformed
         solucionDirecta = true;
+        botonSimplex.setVisible(true);
     }//GEN-LAST:event_radioSolucionDirectaActionPerformed
 
     private void botonSimplexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSimplexActionPerformed
@@ -388,27 +469,28 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 this.dispose();
             }
         }
-
     }//GEN-LAST:event_botonSimplexActionPerformed
 
     private void botonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarActionPerformed
         areaTexto.setText("");
+        panelFormatoNumerico.setVisible(false);
+        panelMetodoSolucion.setVisible(false);
+        panelPasosIntermedios.setVisible(false);
+        botonBorrar.setVisible(false);
     }//GEN-LAST:event_botonBorrarActionPerformed
 
     private void radioSimplexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioSimplexActionPerformed
         solucionSimplex = true;
         matrizNumerica = false;
-        labelPasosIntermedios.setVisible(true);
-        radioMostrarPasos.setVisible(true);
-        radioSolucionDirecta.setVisible(true);
+        panelPasosIntermedios.setVisible(true);
+        botonSimplex.setVisible(false);
     }//GEN-LAST:event_radioSimplexActionPerformed
 
     private void radioMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMatrizActionPerformed
         solucionSimplex = false;
         matrizNumerica = true;
-        labelPasosIntermedios.setVisible(false);
-        radioMostrarPasos.setVisible(false);
-        radioSolucionDirecta.setVisible(false);
+        panelPasosIntermedios.setVisible(false);
+        botonSimplex.setVisible(true);
     }//GEN-LAST:event_radioMatrizActionPerformed
 
     /**
@@ -464,6 +546,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel labelFormato1;
     private javax.swing.JLabel labelFormato2;
     private javax.swing.JLabel labelPasosIntermedios;
+    private javax.swing.JPanel panelFormatoNumerico;
+    private javax.swing.JPanel panelMetodoSolucion;
+    private javax.swing.JPanel panelPasosIntermedios;
     private javax.swing.JRadioButton radioBB;
     private javax.swing.JRadioButton radioDecimal;
     private javax.swing.JRadioButton radioFraccion;

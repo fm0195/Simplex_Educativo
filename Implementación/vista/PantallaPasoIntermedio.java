@@ -42,6 +42,9 @@ import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import dto.DtoSimplex;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.BoxLayout;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -60,7 +63,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
     String[][] matrizFracciones;
     JLabel[][] matrizLabels;
     JLabel[] matrizRadios;
-    JLabel labelMensaje;
+    JTextArea labelMensaje;
     JTextArea labelOperaciones;
     JTextArea labelResumen;
     JScrollPane scrollResumen;
@@ -114,6 +117,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         this.keyBuffer = new StringBuilder();
         this.resumenPasoAnterior = new StringBuilder();
         this.casillaSeleccionada = new Point();
+        
         initVariables();
         agregarActionListeners();
         agregarComponentes();
@@ -126,27 +130,33 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
     public void initVariables() {
         panelTabla = new JPanel();
         panelRadios = new JPanel();
-        panelBotonesMatriz = new JPanel();
+        panelBotonesMatriz = new JPanel(new GridBagLayout());
         panelBotonesResumen = new JPanel();
-        panelBotonesResumen.setBounds(POSICION_TABLA_X - 5, 320, 550, 140);
-        pestanaResumen = new JPanel(null);
+        pestanaResumen = new JPanel(new GridBagLayout());
         pestanaResumen.setFont(new Font("Courier New", Font.BOLD, 14));
-        pestanaMatriz = new JPanel(null);
+        pestanaMatriz = new JPanel(new GridBagLayout());
+        
         labelOperaciones = new JTextArea();
         labelOperaciones.setEditable(false);
         labelOperaciones.setLineWrap(true);
         labelOperaciones.setBorder(null);
         labelOperaciones.setFocusable(false);
         labelOperaciones.setFont(new Font("Courier New", Font.BOLD, 14));
-        labelMensaje = new JLabel();
-        labelMensaje.setBounds(POSICION_TABLA_X, 10, 800, 40);
+        labelOperaciones.setBackground(new Color(214, 217, 223));
+        labelMensaje = new JTextArea();
+        labelMensaje.setEditable(false);
+        labelMensaje.setLineWrap(true);
+        labelMensaje.setBorder(null);
+        labelMensaje.setFocusable(false);
         labelMensaje.setFont(new Font("Courier New", Font.BOLD, 14));
+        labelMensaje.setBackground(new Color(214, 217, 223));
+        labelMensaje.setPreferredSize(new Dimension(700, 120));
+        labelMensaje.setWrapStyleWord(true);
         labelResumen = new JTextArea();
         labelResumen.setEditable(false);
         labelResumen.setLineWrap(false);
         labelResumen.setFont(new Font("Courier New", Font.BOLD, 14));
         scrollResumen = new JScrollPane(labelResumen);
-        scrollResumen.setBounds(POSICION_TABLA_X, 10, 800, 300);
         scrollResumen.setFont(new Font("Courier New", Font.BOLD, 14));
         botonSiguienteMatriz = new JButton("Siguiente Paso");
         botonSiguienteMatriz.setFont(new Font("Courier New", Font.BOLD, 14));
@@ -156,7 +166,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         botonSiguienteResumen.setFont(new Font("Courier New", Font.BOLD, 14));
         botonAnteriorResumen = new JButton("Paso Anterior");
         botonAnteriorResumen.setFont(new Font("Courier New", Font.BOLD, 14));
-        botonCopiarPaso = new JButton("Copiar Paso");
+        botonCopiarPaso = new JButton("Copiar Paso Anterior");
         botonCopiarPaso.setFont(new Font("Courier New", Font.BOLD, 14));
         botonCopiarTodo = new JButton("Copiar Todo");
         botonCopiarTodo.setFont(new Font("Courier New", Font.BOLD, 14));
@@ -250,21 +260,100 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
      * componentes a la pantalla principal.
      */
     public void agregarComponentes() {
-        panelBotonesMatriz.add(botonAnteriorMatriz);
-        panelBotonesMatriz.add(botonSiguienteMatriz);
+        GridBagConstraints propiedades = new GridBagConstraints();
+        
+        propiedades.gridx = 0;
+        propiedades.gridy = 0;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        panelBotonesMatriz.add(botonAnteriorMatriz, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 1;
+        propiedades.gridy = 0;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        panelBotonesMatriz.add(botonSiguienteMatriz, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 2;
+        propiedades.gridy = 0;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 1;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.fill = GridBagConstraints.VERTICAL;
+        propiedades.weighty = 1;
+        panelBotonesMatriz.add(labelOperaciones, propiedades);
+        
         panelBotonesResumen.add(botonAnteriorResumen);
         panelBotonesResumen.add(botonSiguienteResumen);
         panelBotonesResumen.add(botonCopiarPaso);
         panelBotonesResumen.add(botonCopiarTodo);
         panelPestana.addTab("Matriz Numérica", pestanaMatriz);
         panelPestana.addTab("Resumen de pasos", pestanaResumen);
-        pestanaMatriz.add(labelMensaje);
-        pestanaMatriz.add(panelTabla);
-        pestanaMatriz.add(panelRadios);
-        pestanaMatriz.add(panelBotonesMatriz);
-        pestanaMatriz.add(labelOperaciones);
-        pestanaResumen.add(scrollResumen);
-        pestanaResumen.add(panelBotonesResumen);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 0;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.fill = GridBagConstraints.BOTH;
+        pestanaMatriz.add(labelMensaje, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 1;
+        propiedades.gridwidth = 2;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.9;
+        propiedades.weighty = 0.9;
+        propiedades.fill = GridBagConstraints.BOTH;
+        pestanaMatriz.add(panelTabla, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 2;
+        propiedades.gridy = 1;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;
+        propiedades.fill = GridBagConstraints.BOTH;
+        propiedades.insets = new Insets(0, 10, 0, 10);
+        pestanaMatriz.add(panelRadios, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 3;
+        propiedades.gridwidth = 2;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;
+        propiedades.weighty = 0.5;
+        propiedades.fill = GridBagConstraints.BOTH;
+        pestanaMatriz.add(panelBotonesMatriz, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 0;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;
+        propiedades.weighty = 1;
+        propiedades.fill = GridBagConstraints.BOTH;
+        pestanaResumen.add(scrollResumen, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 1;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;
+        propiedades.weighty = 0.1;
+        pestanaResumen.add(panelBotonesResumen, propiedades);
+        
         menuRestricciones.add(itemMenuMenorIgual);
         menuRestricciones.add(itemMenuIgual);
         menuRestricciones.add(itemMenuMayorIgual);
@@ -295,8 +384,13 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
      *
      * @param mensaje mensaje por mostrar
      */
-    public void mostrarMensaje(String mensaje) {
-        labelMensaje.setText(mensaje);
+    private void mostrarMensaje(String mensaje) {
+        String informacion = "+ Seleccione una casilla para pivotar haciendo clic sobre ella.\n"+
+                             "+ Utilice el teclado para modificar la entrada seleccionada, luego presione Enter\n" +
+                             "+ Presione el botón \"Siguiente Paso\" para pivotar en la casilla seleccionada.\n"+ 
+                             "+ Agregue una restricción mediante el menú en la parte superior de la pantalla.\n"+ 
+                             "+ Cierre esta ventana para volver al menú principal."   ;
+        labelMensaje.setText(informacion + "\n\n" + mensaje);
     }
 
     /**
@@ -321,18 +415,13 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
     public void colocarComponentes(int cantFilas, int cantColumnas) {
         int anchoTablaNumeros = ANCHO_CASILLA * cantColumnas;
         int altoTablaNumeros = ALTO_CASILLA * cantFilas;
-        panelTabla.setBounds(POSICION_TABLA_X, POSICION_TABLA_Y, anchoTablaNumeros, altoTablaNumeros);
         int posicionRadiosX1 = POSICION_TABLA_X + anchoTablaNumeros + ESPACIO_TABLAS;
         int posicionRadiosY1 = POSICION_TABLA_Y;
         int anchoTablaRadios = ANCHO_CASILLA;
         int altoTablaRadios = altoTablaNumeros;
-        panelRadios.setBounds(posicionRadiosX1, posicionRadiosY1, anchoTablaRadios, altoTablaRadios);
         panelRadios.setBackground(Color.white);
-        panelBotonesMatriz.setBounds(POSICION_TABLA_X, POSICION_TABLA_Y + altoTablaRadios, 300, 40);
-        labelOperaciones.setBounds(POSICION_TABLA_X + 300, POSICION_TABLA_Y + altoTablaRadios + 5, 250, 100);
-        labelOperaciones.setBackground(new Color(214, 217, 223));
+        labelOperaciones.setPreferredSize(new Dimension(200, 70));
         Dimension dimension = this.getSize();
-        this.setSize(Math.max(anchoTablaNumeros + anchoTablaRadios + 200, dimension.width), Math.max(altoTablaNumeros * 2 + 100, dimension.height));
     }
 
     public void mostrarMatriz(DtoSimplex dto) {
@@ -385,20 +474,22 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Simplex Educativo");
 
+        panelPestana.setAutoscrolls(true);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
+                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -505,6 +596,9 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                         }
                         break;
                     case '\n':
+                        if (keyBuffer.toString().isEmpty()) {
+                            return;
+                        }
                         if (esNumeroEntero(keyBuffer.toString())) {
                             matrizFracciones[coordenada.y][coordenada.x] = keyBuffer.toString();
                             controlador.modificarEntradaMatriz(coordenada.y, coordenada.x, keyBuffer.toString());

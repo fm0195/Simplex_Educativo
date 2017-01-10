@@ -31,7 +31,7 @@ public class BranchAndBoundControlador extends AbstractControlador {
         pasoActual = listaPasos.size() - 1;
         vista.mostrarMatriz(listaPasos.get(pasoActual));
         if (!listaPasos.get(pasoActual).esFactible()) {
-            vista.mostrarMensajeError("El problema no es factible. ", "Infactibilidad");
+            vista.mostrarMensajeError("\"El problema no es factible.\n La función -w no posee el valor 0 en el RHS al terminar la primera fase.", "Infactibilidad");
         } else if (listaPasos.get(pasoActual).esFinalizado()) {
             vista.mostrarMensajeInformacion("Se ha logrado llegar a un óptimo.", "Finalizado");
             DtoSimplex solucion = listaPasos.get(pasoActual);
@@ -67,7 +67,7 @@ public class BranchAndBoundControlador extends AbstractControlador {
         vista.mostrarMatriz(listaPasos.get(pasoActual));
 
         if (!listaPasos.get(pasoActual).esFactible()) {
-            vista.mostrarMensajeError("El problema no es factible. ", "Infactibilidad");
+            vista.mostrarMensajeError("El problema no es factible.\n La función -w no posee el valor 0 en el RHS al terminar la primera fase.", "Infactibilidad");
         }  else if (listaPasos.get(pasoActual).esFinalizado()) {
             vista.mostrarMensajeInformacion("Se ha logrado llegar a un óptimo.", "Finalizado");
             DtoSimplex solucion = listaPasos.get(pasoActual);
