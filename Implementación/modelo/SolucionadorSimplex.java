@@ -852,7 +852,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 Point seleccion = dto.getCoordenadaPivote();
                 String entrante = nombreColumnas[seleccion.x];
                 String saliente = nombreFilas[seleccion.y];
-                dto.setMensaje("Variable entrante: "+entrante+" Variable saliente: "+saliente);
+                dto.setMensaje("Variable entrante: "+entrante+"\nVariable saliente: "+saliente);
             } else {
                 if (!dto.esDosfases()) {
                     dto.setSolucion(obtenerSolucion(dto));

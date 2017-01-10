@@ -81,6 +81,8 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
     JButton botonCopiarPaso;
     JMenuBar barraMenu;
     JMenu menuRestricciones;
+    JMenu menuAyuda;
+    JMenuItem itemMenuFAQ;
     JMenuItem itemMenuMayorIgual;
     JMenuItem itemMenuMenorIgual;
     JMenuItem itemMenuIgual;
@@ -133,7 +135,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         panelBotonesMatriz = new JPanel(new GridBagLayout());
         panelBotonesResumen = new JPanel();
         pestanaResumen = new JPanel(new GridBagLayout());
-        pestanaResumen.setFont(new Font("Courier New", Font.BOLD, 14));
+        pestanaResumen.setFont(new Font("Courier New", Font.BOLD, 16));
         pestanaMatriz = new JPanel(new GridBagLayout());
         
         labelOperaciones = new JTextArea();
@@ -141,43 +143,45 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         labelOperaciones.setLineWrap(true);
         labelOperaciones.setBorder(null);
         labelOperaciones.setFocusable(false);
-        labelOperaciones.setFont(new Font("Courier New", Font.BOLD, 14));
+        labelOperaciones.setFont(new Font("Courier New", Font.BOLD, 16));
         labelOperaciones.setBackground(new Color(214, 217, 223));
         labelMensaje = new JTextArea();
         labelMensaje.setEditable(false);
         labelMensaje.setLineWrap(true);
         labelMensaje.setBorder(null);
         labelMensaje.setFocusable(false);
-        labelMensaje.setFont(new Font("Courier New", Font.BOLD, 14));
+        labelMensaje.setFont(new Font("Courier New", Font.BOLD, 16));
         labelMensaje.setBackground(new Color(214, 217, 223));
-        labelMensaje.setPreferredSize(new Dimension(700, 120));
+        labelMensaje.setPreferredSize(new Dimension(700, 80));
         labelMensaje.setWrapStyleWord(true);
         labelResumen = new JTextArea();
         labelResumen.setEditable(false);
         labelResumen.setLineWrap(false);
-        labelResumen.setFont(new Font("Courier New", Font.BOLD, 14));
+        labelResumen.setFont(new Font("Courier New", Font.BOLD, 16));
         scrollResumen = new JScrollPane(labelResumen);
-        scrollResumen.setFont(new Font("Courier New", Font.BOLD, 14));
+        scrollResumen.setFont(new Font("Courier New", Font.BOLD, 16));
         botonSiguienteMatriz = new JButton("Siguiente Paso");
-        botonSiguienteMatriz.setFont(new Font("Courier New", Font.BOLD, 14));
+        botonSiguienteMatriz.setFont(new Font("Courier New", Font.BOLD, 16));
         botonAnteriorMatriz = new JButton("Paso Anterior");
-        botonAnteriorMatriz.setFont(new Font("Courier New", Font.BOLD, 14));
+        botonAnteriorMatriz.setFont(new Font("Courier New", Font.BOLD, 16));
         botonSiguienteResumen = new JButton("Siguiente Paso");
-        botonSiguienteResumen.setFont(new Font("Courier New", Font.BOLD, 14));
+        botonSiguienteResumen.setFont(new Font("Courier New", Font.BOLD, 16));
         botonAnteriorResumen = new JButton("Paso Anterior");
-        botonAnteriorResumen.setFont(new Font("Courier New", Font.BOLD, 14));
+        botonAnteriorResumen.setFont(new Font("Courier New", Font.BOLD, 16));
         botonCopiarPaso = new JButton("Copiar Paso Anterior");
-        botonCopiarPaso.setFont(new Font("Courier New", Font.BOLD, 14));
+        botonCopiarPaso.setFont(new Font("Courier New", Font.BOLD, 16));
         botonCopiarTodo = new JButton("Copiar Todo");
-        botonCopiarTodo.setFont(new Font("Courier New", Font.BOLD, 14));
+        botonCopiarTodo.setFont(new Font("Courier New", Font.BOLD, 16));
         panelTabla.setBackground(Color.WHITE);
         botonAnteriorMatriz.setFocusable(false);
         botonSiguienteMatriz.setFocusable(false);
         barraMenu = new JMenuBar();
         menuRestricciones = new JMenu("Agregar restricción");
+        menuAyuda = new JMenu("Ayuda");
         itemMenuMayorIgual = new JMenuItem(">=");
         itemMenuMenorIgual= new JMenuItem("<=");
         itemMenuIgual= new JMenuItem("=");
+        itemMenuFAQ = new JMenuItem("FAQ");
     }
 
     /**
@@ -253,6 +257,60 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                 controlador.agregarRestriccion(sym.MENORIGUAL);
             }
         });
+        
+        itemMenuFAQ.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                JScrollPane scrollpane = new JScrollPane(); 
+                String informacion = "¿Cómo vuelvo al menú principal?\n" +
+                                    "\n" +
+                                    "  + Cierre la ventana actual para volver. \n" +
+                                    "\n" +
+                                    "¿Qué estoy viendo en la pantalla actual?\n" +
+                                    "\n" +
+                                    "+ En la pantalla actual se muestra la representación matricial del problema o matriz ingresados. \n" +
+                                    "  En la fila superior se indican los nombres de las variables que representan \n" +
+                                    "  cada columna. En la primera columna se listan los números de las restricciones o filas ingresadas,\n" +
+                                    "  mientras que en la segundo columna se listan las variables básicas del problema. La columna con \n" +
+                                    "  la etiqueta \"RHS\" simboliza el lado derecho del sistema de ecuaciones ingresado. \n" +
+                                    "\n" +
+                                    "¿Por qué hay una entrada de color rojo? \n" +
+                                    "\n" +
+                                    "+ La entrada marcada con color rojo representa la posicion en la matriz sobre la que se realizará\n" +
+                                    "  el siguiente pivoteo. \n" +
+                                    "\n" +
+                                    "¿Puedo escoger el lugar donde se realizará el próximo pivoteo?\n" +
+                                    "\n" +
+                                    "+ Sí. Para ello debe hacer click sobre la entrada de la matriz que desee seleccionar como pivote. \n" +
+                                    "  Esta funcionalidad solamente está activada si las variables artificiales ya han sido\n" +
+                                    "  reducidas a 0 durante la primera fase del Simplex, o bien si ingresó una matriz. \n" +
+                                    "\n" +
+                                    "  ¿Cómo realizo el pivoteo?\n" +
+                                    "  \n" +
+                                    "  + Haga clic en el botón \"Siguiente Paso\". \n" +
+                                    "\n" +
+                                    "¿Puedo modificar una entrada de la matriz una vez iniciado el algoritmo?\n" +
+                                    "\n" +
+                                    "  + Sí. Para ello, debe seleccionar la casilla que desea modificar y utilizar el teclado\n" +
+                                    "    numérico para cambiar el valor. Al terminar de ingresar el nuevo número, debe presionar la tecla Enter\n" +
+                                    "    y el sistema alertará si el valor fue actualizado correctamente. \n" +
+                                    "\n" +
+                                    "¿Puedo agregar una restricción una vez iniciado el algoritmo?\n" +
+                                    "\n" +
+                                    "  + Sí, pero solamente durante el primer paso del algoritmo. Además, las restricciones \">=\" ó \"=\"\n" +
+                                    "    solamente pueden ser agregadas en problemas de dos fases. \n" +
+                                    "\n" +
+                                    "¿Cómo sé cuándo el algoritmo ha terminado?\n" +
+                                    "  + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo. ";
+                JTextArea areaTexto = new JTextArea();
+                areaTexto.setText(informacion);
+                areaTexto.setWrapStyleWord(true);
+                scrollpane.add(areaTexto);
+                scrollpane.getViewport().add(areaTexto);
+                JOptionPane.showMessageDialog(null, scrollpane, "FAQ",  
+                                              JOptionPane.PLAIN_MESSAGE);
+            }
+        });
     }
 
     /**
@@ -303,6 +361,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         propiedades.gridwidth = 1;
         propiedades.gridheight = 1;
         propiedades.fill = GridBagConstraints.BOTH;
+        propiedades.insets = new Insets(20, 0, 0, 0);
         pestanaMatriz.add(labelMensaje, propiedades);
         
         propiedades = new GridBagConstraints();
@@ -333,6 +392,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         propiedades.weightx = 0.1;
         propiedades.weighty = 0.5;
         propiedades.fill = GridBagConstraints.BOTH;
+        propiedades.insets = new Insets(20, 0, 0, 0);
         pestanaMatriz.add(panelBotonesMatriz, propiedades);
         
         propiedades = new GridBagConstraints();
@@ -357,7 +417,9 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         menuRestricciones.add(itemMenuMenorIgual);
         menuRestricciones.add(itemMenuIgual);
         menuRestricciones.add(itemMenuMayorIgual);
+        menuAyuda.add(itemMenuFAQ);
         barraMenu.add(menuRestricciones);
+        barraMenu.add(menuAyuda);
         this.setJMenuBar(barraMenu);
     }
 
@@ -385,12 +447,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
      * @param mensaje mensaje por mostrar
      */
     private void mostrarMensaje(String mensaje) {
-        String informacion = "+ Seleccione una casilla para pivotar haciendo clic sobre ella.\n"+
-                             "+ Utilice el teclado para modificar la entrada seleccionada, luego presione Enter\n" +
-                             "+ Presione el botón \"Siguiente Paso\" para pivotar en la casilla seleccionada.\n"+ 
-                             "+ Agregue una restricción mediante el menú en la parte superior de la pantalla.\n"+ 
-                             "+ Cierre esta ventana para volver al menú principal."   ;
-        labelMensaje.setText(informacion + "\n\n" + mensaje);
+        labelMensaje.setText("\n" + mensaje);
     }
 
     /**
@@ -420,7 +477,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         int anchoTablaRadios = ANCHO_CASILLA;
         int altoTablaRadios = altoTablaNumeros;
         panelRadios.setBackground(Color.white);
-        labelOperaciones.setPreferredSize(new Dimension(200, 70));
+        labelOperaciones.setPreferredSize(new Dimension(230, 70));
         Dimension dimension = this.getSize();
     }
 
@@ -482,14 +539,14 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
+                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 1003, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+                .addComponent(panelPestana, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -509,7 +566,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                 label.setBorder(BorderFactory.createLineBorder(Color.black));
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 label.setVerticalAlignment(SwingConstants.CENTER);
-                label.setFont(new Font("Courier New", Font.BOLD, 14));;
+                label.setFont(new Font("Courier New", Font.BOLD, 16));
                 matrizLabels[i][j] = label;
                 panelTabla.add(label);
             }
@@ -766,14 +823,14 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         label.setBorder(BorderFactory.createLineBorder(Color.black));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font("Courier New", Font.BOLD, 14));
+        label.setFont(new Font("Courier New", Font.BOLD, 16));
         panelRadios.add(label);
         for (int i = 0; i < cantRestricciones; i++) {
             label = new JLabel();
             label.setBorder(BorderFactory.createLineBorder(Color.black));
             label.setHorizontalAlignment(SwingConstants.CENTER);
             label.setVerticalAlignment(SwingConstants.CENTER);
-            label.setFont(new Font("Courier New", Font.BOLD, 14));
+            label.setFont(new Font("Courier New", Font.BOLD, 16));
             matrizRadios[i] = label;
             panelRadios.add(label);
         }

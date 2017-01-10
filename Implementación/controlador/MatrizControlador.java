@@ -57,6 +57,7 @@ public class MatrizControlador extends AbstractControlador {
         pasoActual = 0;
         listaPasos = new ArrayList<>();
         listaPasos.add(dto);
+        dto.setMensaje("1. Haga clic en la entrada sobre la cual desea pivotar.\n2. Pivotee haciendo clic en el boton \"Siguiente Paso\"");
         vista.mostrarMatriz(listaPasos.get(pasoActual));
     }
 
@@ -75,6 +76,7 @@ public class MatrizControlador extends AbstractControlador {
             listaPasos.set(pasoActual + 1, siguientePaso);
         }
         pasoActual++;
+        siguientePaso.setMensaje("1. Haga clic en la entrada sobre la cual desea pivotar.\n2. Pivotee haciendo clic en el boton \"Siguiente Paso\"");
         vista.mostrarMatriz(listaPasos.get(pasoActual));
     }
 

@@ -456,7 +456,7 @@ public class DtoSimplex {
     }
 
     public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
+        this.mensaje = "Información: \n" + mensaje;
     }
 
     public void setListaDesigualdades(int[] listaDesigualdades) {
