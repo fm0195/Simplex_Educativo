@@ -1,5 +1,6 @@
 package modelo;
 
+import modelo.AbstractFraccion;
 import dto.DtoSimplex;
 import java.util.ArrayList;
 import modelo.parser.sym;
@@ -105,7 +106,7 @@ public class SolucionadorBranchAndBound extends SolucionadorSimplex {
                         if (hoja.getValorZ().mayorIgualQue(nodoNoAcotado.getValorZ())) {
                             nodoNoAcotado.setAcotado(true);
                         }
-                    } else{ 
+                    } else {
                         AbstractFraccion valorZ1 = hoja.getValorZ().clonar();
                         valorZ1.hacerNegativa();
                         AbstractFraccion valorZ2 = nodoNoAcotado.getValorZ().clonar();
@@ -158,7 +159,7 @@ public class SolucionadorBranchAndBound extends SolucionadorSimplex {
         resultado.setIndiceProblema(indiceProblema);
         resultado.setValorZ(valorZ);
         resultado.setValorVariables(valorVariables);
-        resultado.setFactible(solucion.esFactible());
+        resultado.setFactible(solucion.esFactible() && solucion.esAcotado());
         return resultado;
     }
 
@@ -276,8 +277,14 @@ public class SolucionadorBranchAndBound extends SolucionadorSimplex {
             if (hoja.esFactible() && !hoja.esAcotado() && hoja.esSolucionEntera() == esSolucionEntera) {
                 if (resultado == -1) {
                     resultado = contador;
-                } else if (hoja.getValorZ().menorIgualQue(hojas.get(resultado).getValorZ())) {
-                    resultado = contador;
+                } else {
+                    AbstractFraccion valorZ1 = hoja.getValorZ().clonar();
+                    valorZ1.hacerNegativa();
+                    AbstractFraccion valorZ2 = hojas.get(resultado).getValorZ().clonar();
+                    valorZ2.hacerNegativa();
+                    if (valorZ1.menorIgualQue(valorZ2)) {
+                        resultado = contador;
+                    }
                 }
             }
         }
@@ -569,7 +576,7 @@ class NodoBranchAndBound {
     public String obtenerRestriccion() {
         String resultado = "";
         if (padre == null) {
-            return "No es necesaria.\n";
+            return "No es necesario.\n";
         }
         String[] columnas = problema.getNombreColumnas();
         resultado = columnas[indiceVariableRestrccion] + " ";
@@ -594,7 +601,7 @@ class NodoBranchAndBound {
      */
     public String valorVariables(String espacio) {
         AbstractFraccion valorZ = this.valorZ.clonar();
-        if(!problema.esMaximización()){
+        if (!problema.esMaximización()) {
             valorZ.hacerNegativa();
         }
         String resultado = espacio + "z = " + valorZ.toString(problema.esFormatoFraccional()) + '\n';
