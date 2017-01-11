@@ -1,10 +1,12 @@
 package modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Yordan Jiménez
  */
-public abstract class AbstractFraccion {
+public abstract class AbstractFraccion implements Serializable{
 
     private int numerador;
     private int denominador = 1;

@@ -1,6 +1,7 @@
 package dto;
 
 import java.awt.Point;
+import java.io.Serializable;
 import modelo.AbstractFraccion;
 import modelo.Fraccion;
 
@@ -8,7 +9,7 @@ import modelo.Fraccion;
  *
  * @author Yordan Jiménez
  */
-public class DtoSimplex {
+public class DtoSimplex implements Serializable{
 
     private AbstractFraccion[][] matriz;
     private String nombreColumnas[];

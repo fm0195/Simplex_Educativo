@@ -22,6 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import dto.DtoSimplex;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.ScrollPaneConstants;
 
 /**
@@ -51,6 +54,9 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
     boolean esPrimeraFase = false;
     final int POSICION_X = 20;
     final int POSICION_Y = 50;
+    JMenuBar barraMenu;
+    JMenuItem itemMenuFAQ;
+    JMenu menuAyuda;
 
     /**
      * Pantalla de pasos intermedios utilizada para dibujar la matriz de pasos y
@@ -113,7 +119,10 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
         botonCopiarArbol.setFont(new Font("Courier New", Font.BOLD, 14));
         botonCopiarMensaje = new JButton("Copiar Mensaje");
         botonCopiarMensaje.setFont(new Font("Courier New", Font.BOLD, 14));
-        super.setSize(1000, this.getHeight());
+        barraMenu = new JMenuBar();
+        menuAyuda = new JMenu("Ayuda");
+        itemMenuFAQ = new JMenuItem("FAQ");
+        super.setSize(1000, this.getHeight()+30);
     }
 
     /**
@@ -154,6 +163,36 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
                 clpbrd.setContents(stringSelection, null);
             }
         });
+        
+        itemMenuFAQ.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                JScrollPane scrollpane = new JScrollPane(); 
+                String informacion = "¿Cómo vuelvo al menú principal?\n" +
+                                    "\n" +
+                                    "  + Cierre la ventana actual para volver. \n" +
+                                    "\n" +
+                                    "¿Qué estoy viendo en la pantalla actual?\n" +
+                                    "\n" +
+                                    "+  En la pantalla actual se muestra la representación de un arbol en cadena de texto,\n"
+                                    + " donde se agrega las restricciones que el algoritmo de Branch And Bound genera para obtener la \n"
+                                    + " solución óptima entera. Además cada nodo del arbol, representado por Problema x.x.., muestra las\n"
+                                    + " restricciones agregadas por el algoritmo. La sección de mensaje se podrá informar de las acciones\n"
+                                    + " que ha tomado el algoritmo." +
+                                    "\n" +
+                                    "¿Cómo sé cuándo el algoritmo ha terminado?\n" +
+                                    "  + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo. "
+                                    + "\n"+
+                                    "";
+                JTextArea areaTexto = new JTextArea();
+                areaTexto.setText(informacion);
+                areaTexto.setWrapStyleWord(true);
+                scrollpane.add(areaTexto);
+                scrollpane.getViewport().add(areaTexto);
+                JOptionPane.showMessageDialog(null, scrollpane, "FAQ",  
+                                              JOptionPane.PLAIN_MESSAGE);
+            }
+        });
     }
 
     /**
@@ -171,6 +210,9 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
         pestanaResumen.add(etiquetaArbol);
         pestanaResumen.add(etiquetaMensaje);
         pestanaResumen.add(panelBotonesResumen);
+         menuAyuda.add(itemMenuFAQ);
+        barraMenu.add(menuAyuda);
+        this.setJMenuBar(barraMenu);
     }
 
     /**

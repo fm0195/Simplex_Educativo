@@ -1,12 +1,13 @@
 package modelo;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
 /**
  *
  * @author Yordan Jiménez
  */
-public class Fraccion extends AbstractFraccion {
+public class Fraccion extends AbstractFraccion implements Serializable{
 
     public Fraccion() {
         super(0, 1);

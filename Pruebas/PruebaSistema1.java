@@ -8,11 +8,11 @@ import java.awt.event.InputEvent;
 import java.lang.reflect.Field;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import vista.PantallaPasoIntermedio;
 import vista.PantallaPrincipal;
@@ -44,6 +44,34 @@ public class PruebaSistema1 {
         Thread.sleep(1000);
         if (area == null) {
             fail("Error no se encontro el área para ingreso del texto.");
+            return;
+        }
+        
+        field = pantallaPrincipal.getClass().getDeclaredField("radioFraccion");
+        field.setAccessible(true);
+        JRadioButton radioFraccion = (JRadioButton) field.get(pantallaPrincipal);
+        if (radioFraccion == null) {
+            fail("Error no se encontro el radio para tipo de salida.");
+            return;
+        }
+        radioFraccion.doClick();
+        Thread.sleep(1000);
+        
+        field = pantallaPrincipal.getClass().getDeclaredField("radioSimplex");
+        field.setAccessible(true);
+        JRadioButton radioSimplex = (JRadioButton) field.get(pantallaPrincipal);
+        if (radioSimplex == null) {
+            fail("Error no se encontro el radio para solucion Simplex.");
+            return;
+        }
+        radioSimplex.doClick();
+        Thread.sleep(1000);
+        
+        field = pantallaPrincipal.getClass().getDeclaredField("radioMostrarPasos");
+        field.setAccessible(true);
+        JRadioButton radioMostrarPasos = (JRadioButton) field.get(pantallaPrincipal);
+        if (radioMostrarPasos == null) {
+            fail("Error no se encontro el radio para solucion directa.");
             return;
         }
 

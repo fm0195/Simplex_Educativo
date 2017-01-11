@@ -1,7 +1,7 @@
 package pruebas;
 
-import modelo.Fraccion;
 import modelo.AbstractFraccion;
+import modelo.Fraccion;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;

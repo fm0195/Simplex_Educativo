@@ -10,18 +10,19 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 import vista.PantallaPasoIntermedio;
 import vista.PantallaPrincipal;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import vista.PantallaPasoIntermedioBranchBound;
 
-public class PruebaSistema2 {
+public class PruebaSistema8 {
 
     private PantallaPrincipal pantallaPrincipal = null;
 
-    public PruebaSistema2() {
+    public PruebaSistema8() {
     }
 
     @Before
@@ -37,15 +38,15 @@ public class PruebaSistema2 {
         Field field = pantallaPrincipal.getClass().getDeclaredField("areaTexto");
         field.setAccessible(true);
         JTextArea area = (JTextArea) field.get(pantallaPrincipal);
-        area.setText("max z = -1 x1 - 2 x2\n"
-                + "3 x1 + 4 x2 <= 20\n"
-                + "2 x1 - 1 x2 >= 2");
-        Thread.sleep(1000);
         if (area == null) {
             fail("Error no se encontro el área para ingreso del texto.");
             return;
         }
-        
+        area.setText("max z = 3 x1 + 4 x2\n"
+                + "2 x1 +   x2 <= 6\n"
+                + "2 x1 + 3 x2 <= 9");
+        Thread.sleep(1000);
+
         field = pantallaPrincipal.getClass().getDeclaredField("radioFraccion");
         field.setAccessible(true);
         JRadioButton radioFraccion = (JRadioButton) field.get(pantallaPrincipal);
@@ -55,17 +56,17 @@ public class PruebaSistema2 {
         }
         radioFraccion.doClick();
         Thread.sleep(1000);
-        
-        field = pantallaPrincipal.getClass().getDeclaredField("radioSimplex");
+
+        field = pantallaPrincipal.getClass().getDeclaredField("radioBB");
         field.setAccessible(true);
-        JRadioButton radioSimplex = (JRadioButton) field.get(pantallaPrincipal);
-        if (radioSimplex == null) {
-            fail("Error no se encontro el radio para solucion Simplex.");
+        JRadioButton radioBB = (JRadioButton) field.get(pantallaPrincipal);
+        if (radioBB == null) {
+            fail("Error no se encontro el radio para solucion Gomory.");
             return;
         }
-        radioSimplex.doClick();
+        radioBB.doClick();
         Thread.sleep(1000);
-        
+
         field = pantallaPrincipal.getClass().getDeclaredField("radioMostrarPasos");
         field.setAccessible(true);
         JRadioButton radioMostrarPasos = (JRadioButton) field.get(pantallaPrincipal);
@@ -79,12 +80,12 @@ public class PruebaSistema2 {
         field = pantallaPrincipal.getClass().getDeclaredField("botonSimplex");
         field.setAccessible(true);
         JButton solucionar = (JButton) field.get(pantallaPrincipal);
-        solucionar.doClick();
-        Thread.sleep(1000);
         if (solucionar == null) {
             fail("Error no se encontro el boton para solucionar.");
             return;
         }
+        solucionar.doClick();
+        Thread.sleep(1000);
 
         field = pantallaPrincipal.getClass().getDeclaredField("controlador");
         field.setAccessible(true);
@@ -96,23 +97,25 @@ public class PruebaSistema2 {
 
         field = AbstractControlador.class.getDeclaredField("vista");
         field.setAccessible(true);
-        PantallaPasoIntermedio pantallaSiguiente = (PantallaPasoIntermedio) (IVista) field.get(controlador);
+        PantallaPasoIntermedioBranchBound pantallaSiguiente = (PantallaPasoIntermedioBranchBound) (IVista) field.get(controlador);
         if (pantallaSiguiente == null) {
             fail("Error no se encontro la vista de paso a paso.");
             return;
         }
 
-        field = pantallaSiguiente.getClass().getDeclaredField("botonSiguienteMatriz");
+        field = pantallaSiguiente.getClass().getDeclaredField("botonSiguienteResumen");
         field.setAccessible(true);
-        JButton sgtePaso = (JButton) field.get(pantallaSiguiente);
-        if (sgtePaso == null) {
+        JButton botonSiguienteResumen = (JButton) field.get(pantallaSiguiente);
+        if (botonSiguienteResumen == null) {
             fail("Error no se encontro el boton para el siguiente paso.");
             return;
         }
-        sgtePaso.doClick();
+        botonSiguienteResumen.doClick();
+        Thread.sleep(1000);
+        botonSiguienteResumen.doClick();
         Thread.sleep(1000);
         Robot bot = new Robot();
-        bot.mouseMove(sgtePaso.getLocationOnScreen().x, sgtePaso.getLocationOnScreen().y);
+        bot.mouseMove(botonSiguienteResumen.getLocationOnScreen().x, botonSiguienteResumen.getLocationOnScreen().y);
         bot.mousePress(InputEvent.BUTTON1_MASK); //press the left mouse button
         bot.mouseRelease(InputEvent.BUTTON1_MASK);
         Thread.sleep(1000);
@@ -120,34 +123,54 @@ public class PruebaSistema2 {
         field = pantallaSiguiente.getClass().getDeclaredField("labelResumen");
         field.setAccessible(true);
         JTextArea resumen = (JTextArea) field.get(pantallaSiguiente);
-        if (solucionar == null) {
+        if (resumen == null) {
             fail("Error no se encontro el texto de resumen.");
             return;
         }
         String resultadoObtenido = resumen.getText();
-        String resultadoCorrecto = "------------------------------------------------------------------------------\n"
-                + "|  BVS   x1          x2          s3          s4          a5          RHS     |\n"
-                + "------------------------------------------------------------------------------\n"
-                + "|  -w    0           0           0           0           1           0       |\n"
-                + "|  z    1           2           0           0           0           0       |\n"
-                + "|  s3    3           4           1           0           0           20      |\n"
-                + "|  a5    2           -1          0           -1          1           2       |\n"
-                + "------------------------------------------------------------------------------\n"
-                + "------------------------------------------------------------------------------\n"
-                + "|  BVS   x1          x2          s3          s4          a5          RHS     |\n"
-                + "------------------------------------------------------------------------------\n"
-                + "|  -w    -2          1           0           1           0           -2      |\n"
-                + "|  z    1           2           0           0           0           0       |\n"
-                + "|  s3    3           4           1           0           0           20      |\n"
-                + "|  a5    2           -1          0           -1          1           2       |\n"
-                + "------------------------------------------------------------------------------\n"
-                + "------------------------------------------------------------------\n"
-                + "|  BVS   x1          x2          s3          s4          RHS     |\n"
-                + "------------------------------------------------------------------\n"
-                + "|  z    0           5/2         0           1/2         -1      |\n"
-                + "|  s3    0           11/2        1           3/2         17      |\n"
-                + "|  x1    1           -1/2        0           -1/2        1       |\n"
-                + "------------------------------------------------------------------\n";
+        String resultadoCorrecto = "Problema 1\n"
+                + "  z = 51/4\n"
+                + "  x1 = 9/4\n"
+                + "  x2 = 3/2\n"
+                + "  Restricción: No es necesario.\n"
+                + "\n"
+                + "     Problema 1.1\n"
+                + "       z = 23/2\n"
+                + "       x1 = 5/2\n"
+                + "       x2 = 1\n"
+                + "       Restricción: x2 <= 1\n"
+                + "       *Problema Acotado\n"
+                + "\n"
+                + "     Problema 1.2\n"
+                + "       z = 25/2\n"
+                + "       x1 = 3/2\n"
+                + "       x2 = 2\n"
+                + "       Restricción: x2 >= 2\n"
+                + "\n"
+                + "          Problema 1.2.1\n"
+                + "            z = 37/3\n"
+                + "            x1 = 1\n"
+                + "            x2 = 7/3\n"
+                + "            Restricción: x1 <= 1\n"
+                + "\n"
+                + "               Problema 1.2.1.1\n"
+                + "                 z = 11\n"
+                + "                 x1 = 1\n"
+                + "                 x2 = 2\n"
+                + "                 Restricción: x2 <= 2\n"
+                + "\n"
+                + "               Problema 1.2.1.2\n"
+                + "                 z = 12\n"
+                + "                 x1 = 0\n"
+                + "                 x2 = 3\n"
+                + "                 Restricción: x2 >= 3\n"
+                + "                 *Solución Óptima.\n"
+                + "\n"
+                + "          Problema 1.2.2\n"
+                + "            Restricción: x1 >= 2\n"
+                + "            *Problema No Factible\n"
+                + "\n"
+                + "";
         assertTrue(resultadoObtenido.equals(resultadoCorrecto));
 
     }
