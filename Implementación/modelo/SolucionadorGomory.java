@@ -93,7 +93,7 @@ public class SolucionadorGomory extends SolucionadorSimplex {
             return true;
         }
         String solucion = obtenerSolucion(dto);
-        return !solucion.contains("/") && !solucion.contains(".") && !solucion.contains(",");
+        return !solucion.contains("/") && !solucion.contains(".") && !solucion.contains(",") && dto.esFinalizado();
     }
 
     private int obtenerIndiceRestriccionCorte(DtoSimplex dto) {
