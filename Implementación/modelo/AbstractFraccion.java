@@ -1,13 +1,15 @@
 package modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Yordan Jiménez
  */
-public abstract class AbstractFraccion {
+public abstract class AbstractFraccion implements Serializable{
 
-    private double numerador;
-    private double denominador = 1;
+    private int numerador;
+    private int denominador = 1;
 
     /**
      * Inicializa una instancia de la clase fracción con ambos valores
@@ -16,7 +18,7 @@ public abstract class AbstractFraccion {
      * @param numerador Valor a insertar en el atributo numerador.
      * @param denominador Valor a insertar en el atributo denominador.
      */
-    public AbstractFraccion(double numerador, double denominador) {
+    public AbstractFraccion(int numerador, int denominador) {
         if (denominador == 0) {
             throw new ArithmeticException("División entre 0 no permitida.");
         }
@@ -33,8 +35,8 @@ public abstract class AbstractFraccion {
      * @param numerador
      */
     public AbstractFraccion(double numerador) {
-        if (numerador == Double.MAX_VALUE) {
-            this.numerador = numerador;
+        if(numerador == Double.MAX_VALUE) {
+            this.numerador = Integer.MAX_VALUE;
             this.denominador = 1;
             return;
         }
@@ -42,11 +44,11 @@ public abstract class AbstractFraccion {
         int digitsDec = s.length() - 1 - s.indexOf('.');
         int denom = 1;
         for (int i = 0; i < digitsDec; i++) {
-            numerador *= 10;
+            numerador *= 10;    
             denom *= 10;
         }
-        int divisorComun = obtenerMayorDivisorComun(numerador, denom);
-        this.numerador = numerador / divisorComun;
+        int divisorComun = obtenerMayorDivisorComun((int)(numerador), denom);
+        this.numerador = ((int)(numerador)) / divisorComun;
         this.denominador = denom / divisorComun;
         validarSignos();
     }
@@ -100,7 +102,7 @@ public abstract class AbstractFraccion {
      * @return Volor numérico que representa el divisor mayor existente.
      * @see https://en.wikipedia.org/wiki/Euclidean_algorithm
      */
-    protected abstract int obtenerMayorDivisorComun(double numero1, double numero2);
+    protected abstract int obtenerMayorDivisorComun(int numero1, int numero2);
 
     /**
      * Compara la igualdad entre dos fracciones.
@@ -109,8 +111,12 @@ public abstract class AbstractFraccion {
      * @return Valor booleano que indica si son iguales o no.
      */
     public boolean iguales(AbstractFraccion fraccion2) {
-        return this.numerador == fraccion2.getNumerador()
-                && this.denominador == fraccion2.getDenominador();
+        double numerador1 = this.numerador;
+        double denominador1 = this.denominador;
+        double numerador2 = fraccion2.getNumerador();
+        int denominador2 = fraccion2.getDenominador();
+        return numerador1 / denominador1
+                ==  numerador2 / denominador2;
     }
 
     /**
@@ -121,8 +127,12 @@ public abstract class AbstractFraccion {
      * @return Valor booleano que indica si es menor o no.
      */
     public boolean menorQue(AbstractFraccion fraccion2) {
-        return this.numerador / this.denominador
-                < fraccion2.getNumerador() / fraccion2.getDenominador();
+        double numerador1 = this.numerador;
+        double denominador1 = this.denominador;
+        double numerador2 = fraccion2.getNumerador();
+        int denominador2 = fraccion2.getDenominador();
+        return numerador1 / denominador1
+                <  numerador2 / denominador2;
     }
 
     /**
@@ -133,8 +143,12 @@ public abstract class AbstractFraccion {
      * @return Valor booleano que indica si es mayor o no.
      */
     public boolean mayorQue(AbstractFraccion fraccion2) {
-        return this.numerador / this.denominador
-                > fraccion2.getNumerador() / fraccion2.getDenominador();
+        double numerador1 = this.numerador;
+        double denominador1 = this.denominador;
+        double numerador2 = fraccion2.getNumerador();
+        int denominador2 = fraccion2.getDenominador();
+        return numerador1 / denominador1
+                >  numerador2 / denominador2;
     }
 
     /**
@@ -145,8 +159,12 @@ public abstract class AbstractFraccion {
      * @return Valor booleano que indica si es mayor igual o no.
      */
     public boolean mayorIgualQue(AbstractFraccion fraccion2) {
-        return this.numerador / this.denominador
-                >= fraccion2.getNumerador() / fraccion2.getDenominador();
+        double numerador1 = this.numerador;
+        double denominador1 = this.denominador;
+        double numerador2 = fraccion2.getNumerador();
+        int denominador2 = fraccion2.getDenominador();
+        return numerador1 / denominador1
+                >=  numerador2 / denominador2;
     }
 
     /**
@@ -157,8 +175,12 @@ public abstract class AbstractFraccion {
      * @return Valor booleano que indica si es mwnor igual o no.
      */
     public boolean menorIgualQue(AbstractFraccion fraccion2) {
-        return this.numerador / this.denominador
-                <= fraccion2.getNumerador() / fraccion2.getDenominador();
+        double numerador1 = this.numerador;
+        double denominador1 = this.denominador;
+        double numerador2 = fraccion2.getNumerador();
+        int denominador2 = fraccion2.getDenominador();
+        return numerador1 / denominador1
+                <=  numerador2 / denominador2;
     }
 
     /**
@@ -183,7 +205,7 @@ public abstract class AbstractFraccion {
      *
      * @return Numerador de la fracción.
      */
-    public double getNumerador() {
+    public int getNumerador() {
         return numerador;
     }
 
@@ -192,16 +214,26 @@ public abstract class AbstractFraccion {
      *
      * @return Denominador de la fracción.
      */
-    public double getDenominador() {
+    public int getDenominador() {
         return denominador;
     }
-
     /**
      * Genera el inverso multiplicativo de una fracción.
-     *
      * @return Fracción con numerador y denominador intercambiados.
      */
     public abstract AbstractFraccion obtenerInverso();
+    
+    /**
+     * Separa la parte decimal de la parte entera de una fracción.
+     * @return Fraccion con el valor de la parte entera.
+     */
+    public abstract AbstractFraccion obtenerParteEntera();
+    
+    /**
+     * Separa la parte decimal de la parte entera de una fracción.
+     * @return Fraccion con el valor de la parte decimal.
+     */
+    public abstract AbstractFraccion obtenerParteDecimal();
 
     /**
      * Valida los signos dejando el signo negativo en el numerador.
@@ -215,16 +247,15 @@ public abstract class AbstractFraccion {
     }
 
     /**
-     * Restorn el string con el siguiente formato. nuemrador/denominador
-     *
+     * Restorn el string con el siguiente formato.
+     *          nuemrador/denominador
      * @return String con formato Fraccional.
      */
     public abstract String toString();
-
+    
     /**
-     * Retorna el String de la fracción indicando si desea el formato decimal o
+     * Retorna el String de la fracción indicando si desea el formato decimal o 
      * el fraccional
-     *
      * @param fraccional Indica el formato de salida.
      * @return String con el formato indicado
      */

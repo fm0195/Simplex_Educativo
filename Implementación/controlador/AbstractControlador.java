@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import modelo.AbstractSolucionadorSimplex;
 import dto.DtoSimplex;
 import modelo.parser.IParser;
+import modelo.parser.sym;
 
 /**
  *
@@ -64,10 +65,10 @@ public abstract class AbstractControlador {
         pasoActual = listaPasos.size() - 1;
         vista.mostrarMatriz(listaPasos.get(pasoActual));
         if (!listaPasos.get(pasoActual).esFactible()) {
-            vista.mostrarMensajeError("El problema no es factible. ", "Infactibilidad");
+            vista.mostrarMensajeError("El problema no es factible.\nLa función -w no posee el valor 0 en el RHS al terminar la primera fase.", "Infactibilidad");
         } else {
             if (!listaPasos.get(pasoActual).esAcotado()) {
-                vista.mostrarMensajeError("El problema no esta acotado. ", "No acotado");
+                vista.mostrarMensajeError("El problema no esta acotado.\nRadios de la columna actual son todos infinito.", "No acotado");
             } else {
                 if (listaPasos.get(pasoActual).esFinalizado()) {
                     vista.mostrarMensajeInformacion("Problema finalizado. \n" + listaPasos.get(pasoActual).getSolucion(), "Finalizado");
@@ -118,10 +119,10 @@ public abstract class AbstractControlador {
         vista.mostrarMatriz(listaPasos.get(pasoActual));
 
         if (!listaPasos.get(pasoActual).esFactible()) {
-            vista.mostrarMensajeError("El problema no es factible. ", "Infactibilidad");
+            vista.mostrarMensajeError("El problema no es factible.\nLa función -w no posee el valor 0 en el RHS al terminar la primera fase.", "Infactibilidad");
         } else {
             if (!listaPasos.get(pasoActual).esAcotado()) {
-                vista.mostrarMensajeError("El problema no esta acotado. ", "No acotado");
+                vista.mostrarMensajeError("El problema no esta acotado.\nRadios de la columna actual son todos infinito.", "No acotado");
             } else {
                 if (listaPasos.get(pasoActual).esFinalizado()) {
                     vista.mostrarMensajeInformacion("Problema finalizado. \n" + listaPasos.get(pasoActual).getSolucion(), "Finalizado");
@@ -188,9 +189,7 @@ public abstract class AbstractControlador {
             if (resultado[i].compareTo(String.valueOf(Integer.MIN_VALUE)) == 0) {
                 resultado[i] = "-oo";
             }
-            String maxDouble = String.format("%.2f", Double.MAX_VALUE);
-            String actual = resultado[i];
-            if (resultado[i].compareTo(String.valueOf(Integer.MAX_VALUE)) == 0 || resultado[i].compareTo(String.format("%.2f", Double.MAX_VALUE)) == 0) {
+            if (resultado[i].compareTo(String.valueOf(Integer.MAX_VALUE)) == 0) {
                 resultado[i] = "oo";
             }
         }
@@ -221,14 +220,14 @@ public abstract class AbstractControlador {
      */
     public void modificarEntradaMatriz(int fila, int columna,
             String valor) {
-        double numerador;
-        double denominador = 1;
+        int numerador;
+        int denominador = 1;
         if (valor.contains("/")) {
             String[] split = valor.split("/");
-            numerador = Double.valueOf(split[0]);
-            denominador = Double.valueOf(split[1]);
+            numerador = Integer.valueOf(split[0]);
+            denominador = Integer.valueOf(split[1]);
         } else {
-            numerador = Double.valueOf(valor);
+            numerador = Integer.valueOf(valor);
         }
         listaPasos.get(pasoActual).setEntradaMatriz(fila, columna, numerador, denominador);
     }
@@ -250,5 +249,25 @@ public abstract class AbstractControlador {
             resultado += listaPasos.get(i).toString() + "\n";
         }
         return resultado;
+    }
+    
+    /**
+     * Agrega una restricción &gt;=, &lt= ó = al problema actual. 
+     *
+     * @param tipo valor numérico para identificar el tipo de restricción agregada
+     */
+    public void agregarRestriccion(int tipo){
+        DtoSimplex actual = listaPasos.get(pasoActual);
+        if (!actual.esDosfases() && (tipo == sym.MAYORIGUAL || tipo == sym.IGUAL)) {
+            vista.mostrarMensajeError("No puede agregar esta restricción en un problema de una fase.", "Problema de una fase");
+            return;
+        }
+        if (pasoActual != 0) {
+            vista.mostrarMensajeError("Solamente puede agregar restricciones al inicio del algoritmo.", "Problema iniciado");
+            return;
+        }
+        DtoSimplex resultado = solucionador.agregarRestriccion(listaPasos.get(pasoActual), tipo);
+        listaPasos.set(pasoActual, resultado);
+        vista.mostrarMatriz(resultado);
     }
 }

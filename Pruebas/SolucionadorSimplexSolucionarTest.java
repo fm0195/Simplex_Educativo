@@ -1,12 +1,12 @@
 package pruebas;
 
+import modelo.AbstractFraccion;
 import dto.DtoSimplex;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import modelo.AbstractFraccion;
 import modelo.Fraccion;
 import modelo.SolucionadorSimplex;
 import modelo.parser.IParser;
@@ -565,20 +565,6 @@ public class SolucionadorSimplexSolucionarTest {
         dtoRes22.setVariablesHolgura(2);
         dtoRes22.setMensaje("Primera etapa de las dos fases, se eliminan los 1's de las variables artificiales");
 
-        DtoSimplex dtoRes23 = new DtoSimplex(sol23,
-                new String[]{"x1", "x2", "s3", "s4", "a5"},
-                new String[]{"-w", "z", "s3", "x1"});
-        dtoRes23.setAcotado(true);
-        dtoRes23.setBloqueoDosFases(false);
-        dtoRes23.setFactible(true);
-        dtoRes23.setDosfases(true);
-        dtoRes23.setFinalizado(false);
-        dtoRes23.setCoordenadaPivote(new Point(0, 3));
-        dtoRes23.setArtificialActual(5);
-        dtoRes23.setVariablesBasicas(3);
-        dtoRes23.setVariablesHolgura(2);
-        dtoRes23.setMensaje("Operaciones fila realizadas.");
-
         DtoSimplex dtoRes24 = new DtoSimplex(sol24,
                 new String[]{"x1", "x2", "s3", "s4"},
                 new String[]{"z", "s3", "x1"});
@@ -1135,7 +1121,7 @@ public class SolucionadorSimplexSolucionarTest {
         dtoRes54.setMensaje("El problema no posee una solución acotada. Revise las restricciones");
         return Arrays.asList(new Object[][]{
             {dto1, new DtoSimplex[]{dtoRes11, dtoRes12, dtoRes13, dtoRes14}},
-            {dto2, new DtoSimplex[]{dtoRes21, dtoRes22, dtoRes23, dtoRes24}},
+            {dto2, new DtoSimplex[]{dtoRes21, dtoRes22, dtoRes24}},
             {dto3, new DtoSimplex[]{dtoRes31, dtoRes32, dtoRes33, dtoRes34}},
             {dto4, new DtoSimplex[]{dtoRes41, dtoRes42, dtoRes43}},
             {dto5, new DtoSimplex[]{dtoRes51, dtoRes52, dtoRes53, dtoRes54}}

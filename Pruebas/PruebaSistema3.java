@@ -42,6 +42,16 @@ public class PruebaSistema3 {
             fail("Error no se encontro el área para ingreso del texto.");
             return;
         }
+        
+        field = pantallaPrincipal.getClass().getDeclaredField("radioFraccion");
+        field.setAccessible(true);
+        JRadioButton radioFraccion = (JRadioButton) field.get(pantallaPrincipal);
+        if (radioFraccion == null) {
+            fail("Error no se encontro el radio para tipo de salida.");
+            return;
+        }
+        radioFraccion.doClick();
+        Thread.sleep(1000);
 
         field = pantallaPrincipal.getClass().getDeclaredField("radioMatriz");
         field.setAccessible(true);

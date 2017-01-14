@@ -57,6 +57,7 @@ public class MatrizControlador extends AbstractControlador {
         pasoActual = 0;
         listaPasos = new ArrayList<>();
         listaPasos.add(dto);
+        dto.setMensaje("1. Haga clic en la entrada sobre la cual desea pivotar.\n2. Pivotee haciendo clic en el boton \"Siguiente Paso\"");
         vista.mostrarMatriz(listaPasos.get(pasoActual));
     }
 
@@ -75,6 +76,7 @@ public class MatrizControlador extends AbstractControlador {
             listaPasos.set(pasoActual + 1, siguientePaso);
         }
         pasoActual++;
+        siguientePaso.setMensaje("1. Haga clic en la entrada sobre la cual desea pivotar.\n2. Pivotee haciendo clic en el boton \"Siguiente Paso\"");
         vista.mostrarMatriz(listaPasos.get(pasoActual));
     }
 
@@ -174,7 +176,7 @@ public class MatrizControlador extends AbstractControlador {
         AbstractFraccion nuevaFraccion;
         if (valor.contains("/")) {
             String[] split = valor.split("/");
-            nuevaFraccion = new Fraccion(Double.valueOf(split[0]), Double.valueOf(split[1]));
+            nuevaFraccion = new Fraccion(Integer.valueOf(split[0]), Integer.valueOf(split[1]));
         } else {
             nuevaFraccion = new Fraccion(Double.valueOf(valor));
         }

@@ -54,6 +54,26 @@ public class PruebaSistema4 {
             fail("Error no se encontro el boton para solucionar.");
             return;
         }
+        
+        field = pantallaPrincipal.getClass().getDeclaredField("radioFraccion");
+        field.setAccessible(true);
+        JRadioButton radioFraccion = (JRadioButton) field.get(pantallaPrincipal);
+        if (radioFraccion == null) {
+            fail("Error no se encontro el radio para tipo de salida.");
+            return;
+        }
+        radioFraccion.doClick();
+        Thread.sleep(1000);
+        
+        field = pantallaPrincipal.getClass().getDeclaredField("radioSimplex");
+        field.setAccessible(true);
+        JRadioButton radioSimplex = (JRadioButton) field.get(pantallaPrincipal);
+        if (radioSimplex == null) {
+            fail("Error no se encontro el radio para solucion Simplex.");
+            return;
+        }
+        radioSimplex.doClick();
+        Thread.sleep(1000);
 
         field = pantallaPrincipal.getClass().getDeclaredField("radioSolucionDirecta");
         field.setAccessible(true);
@@ -130,15 +150,6 @@ public class PruebaSistema4 {
                 + "|  s3    1           0           1           0           0           0           2       |\n"
                 + "|  x2    0           1           0           -1          1           0           3       |\n"
                 + "|  a6    1           0           0           1           -1          1           1       |\n"
-                + "------------------------------------------------------------------------------------------\n"
-                + "------------------------------------------------------------------------------------------\n"
-                + "|  BVS   x1          x2          s3          s4          a5          a6          RHS     |\n"
-                + "------------------------------------------------------------------------------------------\n"
-                + "|  -w    0           0           0           0           1           1           0       |\n"
-                + "|  z    0           0           0           5           -5          15          45      |\n"
-                + "|  s3    0           0           1           -1          1           -1          1       |\n"
-                + "|  x2    0           1           0           -1          1           0           3       |\n"
-                + "|  x1    1           0           0           1           -1          1           1       |\n"
                 + "------------------------------------------------------------------------------------------\n"
                 + "------------------------------------------------------------------\n"
                 + "|  BVS   x1          x2          s3          s4          RHS     |\n"

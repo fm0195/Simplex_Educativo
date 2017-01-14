@@ -1,8 +1,8 @@
 package pruebas;
 
+import modelo.AbstractFraccion;
 import dto.DtoSimplex;
 import java.io.IOException;
-import modelo.AbstractFraccion;
 import modelo.parser.IParser;
 import modelo.parser.sym;
 import java.util.Arrays;
@@ -156,7 +156,7 @@ public class ParserTest {
     }
 
     private double valorFraccion(AbstractFraccion fraccion) {
-        return fraccion.getNumerador() / fraccion.getDenominador();
+        return (double)fraccion.getNumerador() / (double)fraccion.getDenominador();
     }
 
 }

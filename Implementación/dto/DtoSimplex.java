@@ -1,6 +1,7 @@
 package dto;
 
 import java.awt.Point;
+import java.io.Serializable;
 import modelo.AbstractFraccion;
 import modelo.Fraccion;
 
@@ -8,7 +9,7 @@ import modelo.Fraccion;
  *
  * @author Yordan Jiménez
  */
-public class DtoSimplex {
+public class DtoSimplex implements Serializable{
 
     private AbstractFraccion[][] matriz;
     private String nombreColumnas[];
@@ -29,9 +30,24 @@ public class DtoSimplex {
     private Point coordenadaPivote;
     private String solucion;
     private String mensaje;
+    
+    /**
+     * Inicializa una instancia de un objeto de tranferencia de datos, con la solucion,
+     * mensaje, valor de factibilidad y valor de finalizado indicados.
+     * @param solucion String que indica la solucion.
+     * @param mensaje String con mensaje a mostrar.
+     * @param factible Valor booleano que indica si el problema es factible.
+     * @param finalizado  Valor boolean que indica si el problema esta finalizado.
+     */
+    public DtoSimplex(String solucion,String mensaje, boolean factible, boolean finalizado){
+        this.mensaje = mensaje;
+        this.solucion = solucion;
+        this.factible = factible;
+        this.finalizado = finalizado;
+    }
 
     /**
-     * Instancia un objeto de transferencia de datos con todos los atributos no
+     * Instancia un objeto de transferencia de datos con los atributos no
      * vacíos.
      *
      * @param Fraccion Matriz de fracciones que representa al problema de
@@ -48,7 +64,7 @@ public class DtoSimplex {
     }
 
     /**
-     * Instancia un objeto de transferencia de datos con todos los atributos no
+     * Instancia un objeto de transferencia de datos con los atributos no
      * vacíos.
      *
      * @param matriz Matriz de fracciones que representa al problema de
@@ -56,7 +72,7 @@ public class DtoSimplex {
      * @param nombreColumnas Etiquetas que identifican las variables en cada
      * columna.
      * @param listaDesigualdades identifica numeracamente el tipo de desigualdad
-     * de la restriccion, >=, <= o =
+     * de la restriccion, &lt;=, &gt;= o =
      * @param maximizacion indica si el problema es de maximizacion o
      * minimizacion
      */
@@ -88,6 +104,50 @@ public class DtoSimplex {
         this.coordenadaPivote = pivote;
     }
 
+    /**
+     * Constructor privado utilizado para reaalizar un clonado profundo de la
+     * instancia.
+     *
+     * @param matriz Matriz de fracciones que representa al problema de
+     * programación lineal.
+     * @param nombreColumnas Etiquetas que identifican las variables en cada
+     * columna.
+     * @param listaDesigualdades identifica numeracamente el tipo de desigualdad
+     * de la restriccion, >=, <= o =
+     * @param maximizacion Indica el tipo de problema, si es o no de
+     * maximizacion.
+     * @param variablesBasicas Cantidad de variables basicas.
+     * @param variablesHolgura Cantidad de variables de holgura.
+     * @param dosFases Representa el tipo de metodo de simplex que se va
+     * realizar.
+     * @param acotado Indica si el problema esta acotado.
+     * @param factible Indica si el problema es factible.
+     * @param finalizado Indica si el problema esta finalizado.
+     * @param bloqueoDosFases Indica si el problema se encuentra en la primera
+     * iteración del metodo simplex de dos fases.
+     * @param formatoFraccional Indica el formato de salida de los datos.
+     */
+    private DtoSimplex(AbstractFraccion[][] matriz, String[] nombreColumnas,
+            int[] listaDesigualdades, boolean maximizacion,
+            int variablesBasicas, int variablesHolgura, boolean dosFases,
+            boolean acotado, boolean factible, boolean finalizado,
+            boolean bloqueoDosFases, boolean formatoFraccional, 
+            int artificialActual) {
+        this.matriz = matriz;
+        this.nombreColumnas = nombreColumnas;
+        this.listaDesigualdades = listaDesigualdades;
+        this.maximizacion = maximizacion;
+        this.variablesBasicas = variablesBasicas;
+        this.variablesHolgura = variablesHolgura;
+        this.bloqueoDosFases = bloqueoDosFases;
+        this.acotado = acotado;
+        this.dosfases = dosFases;
+        this.factible = factible;
+        this.finalizado = finalizado;
+        this.formatoFraccional = formatoFraccional;
+        this.artificialActual = artificialActual;
+    }
+    
     /**
      * Constructor privado utilizado para reaalizar un clonado profundo de la
      * instancia.
@@ -294,6 +354,21 @@ public class DtoSimplex {
         resultado.setEsMatriz(esMatriz);
         return resultado;
     }
+    
+    /**
+     * Obtiene un objeto identico pero con distintas referencia, inerta nulo el
+     * valor de coordenada y nombre de filas..
+     *
+     * @return Nueva referencia del objeto.
+     */
+    public DtoSimplex clonarSinCompletarProfundo() {
+        DtoSimplex resultado = new DtoSimplex(clonarMatriz(), nombreColumnas.clone(),listaDesigualdades,
+                maximizacion, variablesBasicas, variablesHolgura, dosfases, acotado,
+                factible, finalizado, bloqueoDosFases, formatoFraccional,
+                artificialActual);
+        resultado.setEsMatriz(esMatriz);
+        return resultado;
+    }
 
     /**
      * Clona todos los elementos que pertenecen a la matriz, devolviendo una
@@ -355,7 +430,7 @@ public class DtoSimplex {
         return (resultado);
     }
 
-    public void setEntradaMatriz(int fila, int columna, double numerador, double denominador) {
+    public void setEntradaMatriz(int fila, int columna, int numerador, int denominador) {
         AbstractFraccion nuevaFraccion;
         nuevaFraccion = new Fraccion(numerador, denominador);
         matriz[fila][columna] = nuevaFraccion;
@@ -382,6 +457,10 @@ public class DtoSimplex {
     }
 
     public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
+        this.mensaje = "Información: \n" + mensaje;
+    }
+
+    public void setListaDesigualdades(int[] listaDesigualdades) {
+        this.listaDesigualdades = listaDesigualdades;
     }
 }

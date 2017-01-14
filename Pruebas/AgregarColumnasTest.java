@@ -1,8 +1,8 @@
 package pruebas;
 
+import modelo.AbstractFraccion;
 import java.util.Arrays;
 import java.util.Collection;
-import modelo.AbstractFraccion;
 import modelo.Fraccion;
 import modelo.SolucionadorSimplex;
 import org.junit.Test;

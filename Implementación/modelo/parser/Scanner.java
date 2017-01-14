@@ -923,7 +923,7 @@ zzForAction:{
      * Same as next_token but also prints the token to standard out for
      * debugging.
      *
-     * This code was contributed by Karl Meissner <meissnersd@yahoo.com>
+     * This code was contributed by Karl Meissner meissnersd@yahoo.com
      */
     public java_cup.runtime.Symbol debug_next_token() throws java.io.IOException {
         java_cup.runtime.Symbol s = next_token();

@@ -5,11 +5,11 @@
  */
 package pruebas;
 
+import modelo.AbstractFraccion;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-import modelo.AbstractFraccion;
 import dto.DtoSimplex;
 import modelo.Fraccion;
 import modelo.SolucionadorSimplex;
@@ -44,6 +44,9 @@ public class SolucionadorSimplexCalcularRadiosTest {
             fail("El solucionador no ha brindado un solución con la cantidad correcta"
                     + "de elementos");
         }
+        boolean res = UtilPruebas.arreglosIguales(solucionGenerada, resultado);
+        if(!res)
+            res = false;
         assertTrue(UtilPruebas.arreglosIguales(solucionGenerada, resultado));
     }
 

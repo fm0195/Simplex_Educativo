@@ -6,8 +6,12 @@
 package vista;
 
 import controlador.AbstractControlador;
+import controlador.BranchAndBoundControlador;
+import controlador.GomoryControlador;
 import controlador.SimplexControlador;
 import controlador.MatrizControlador;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import modelo.Fraccion;
 
 /**
@@ -18,6 +22,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private boolean fraccionario;
     private boolean gomory;
+    private boolean branchAndBound;
     private boolean solucionDirecta;
     private boolean matrizNumerica;
     private boolean solucionSimplex;
@@ -29,9 +34,29 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         this.solucionDirecta = false;
         this.gomory = false;
         initComponents();
-        this.radioGomory.setVisible(false);
-        this.radioBB.setVisible(false);
+        this.panelFormatoNumerico.setVisible(false);
+        this.panelMetodoSolucion.setVisible(false);
+        this.panelPasosIntermedios.setVisible(false);
+        this.botonSimplex.setVisible(false);
+        this.botonBorrar.setVisible(false);
         this.areaTexto.setText(problema);
+        this.areaTexto.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                panelFormatoNumerico.setVisible(true);
+                botonBorrar.setVisible(true);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                
+            }
+        });
     }
 
     /**
@@ -54,19 +79,28 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         labelFormato2 = new javax.swing.JLabel();
-        labelFormato = new javax.swing.JLabel();
-        radioFraccion = new javax.swing.JRadioButton();
-        radioDecimal = new javax.swing.JRadioButton();
-        labelEntero = new javax.swing.JLabel();
-        radioGomory = new javax.swing.JRadioButton();
-        radioBB = new javax.swing.JRadioButton();
-        labelPasosIntermedios = new javax.swing.JLabel();
-        radioMostrarPasos = new javax.swing.JRadioButton();
-        radioSolucionDirecta = new javax.swing.JRadioButton();
+        panelSpinners = new javax.swing.JPanel();
+        spinnerFilas = new javax.swing.JSpinner();
+        spinnerColumnas = new javax.swing.JSpinner();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        botonGenerar = new javax.swing.JButton();
         botonBorrar = new javax.swing.JButton();
         botonSimplex = new javax.swing.JButton();
-        radioSimplex = new javax.swing.JRadioButton();
+        panelFormatoNumerico = new javax.swing.JPanel();
+        radioDecimal = new javax.swing.JRadioButton();
+        radioFraccion = new javax.swing.JRadioButton();
+        labelFormato = new javax.swing.JLabel();
+        panelMetodoSolucion = new javax.swing.JPanel();
+        radioBB = new javax.swing.JRadioButton();
+        radioGomory = new javax.swing.JRadioButton();
         radioMatriz = new javax.swing.JRadioButton();
+        radioSimplex = new javax.swing.JRadioButton();
+        labelEntero = new javax.swing.JLabel();
+        panelPasosIntermedios = new javax.swing.JPanel();
+        radioSolucionDirecta = new javax.swing.JRadioButton();
+        radioMostrarPasos = new javax.swing.JRadioButton();
+        labelPasosIntermedios = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -99,7 +133,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
         jTextArea1.setRows(5);
-        jTextArea1.setText("Ejemplo de Simplex:\n(0) max z = 15 x1 + 10 x2\n(1)            x1          <= 2\n(2)                    x2  >= 3\n(3)            x1 +    x2   = 4\n\nEjemplo de Matriz:\n1   2   3\n4   5   6");
+        jTextArea1.setText("Ejemplo de Simplex:\n max z = 15 x1 + 10 x2\n            x1          <= 2\n                    x2  >= 3\n            x1 +    x2   = 4\n\nEjemplo de Matriz:\n1   2   3\n4   5   6");
         jTextArea1.setBorder(null);
         jTextArea1.setCaretColor(new java.awt.Color(214, 217, 223));
         jScrollPane2.setViewportView(jTextArea1);
@@ -107,17 +141,79 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         labelFormato2.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
         labelFormato2.setText("Por favor ingrese un problema:");
 
+        spinnerFilas.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        spinnerFilas.setModel(new javax.swing.SpinnerNumberModel(2, 2, null, 1));
+        spinnerFilas.setOpaque(false);
+        spinnerFilas.setValue(2);
+
+        spinnerColumnas.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        spinnerColumnas.setModel(new javax.swing.SpinnerNumberModel(2, 2, null, 1));
+        spinnerColumnas.setValue(2);
+
+        jLabel1.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        jLabel1.setText("Filas");
+
+        jLabel2.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        jLabel2.setText("Columnas");
+
+        botonGenerar.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        botonGenerar.setText("Generar Matriz");
+        botonGenerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonGenerarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelSpinnersLayout = new javax.swing.GroupLayout(panelSpinners);
+        panelSpinners.setLayout(panelSpinnersLayout);
+        panelSpinnersLayout.setHorizontalGroup(
+            panelSpinnersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSpinnersLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelSpinnersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelSpinnersLayout.createSequentialGroup()
+                        .addGroup(panelSpinnersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelSpinnersLayout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSpinnersLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(25, 25, 25)))
+                        .addGroup(panelSpinnersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(spinnerFilas, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                            .addComponent(spinnerColumnas)))
+                    .addComponent(botonGenerar))
+                .addGap(19, 19, 19))
+        );
+        panelSpinnersLayout.setVerticalGroup(
+            panelSpinnersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSpinnersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelSpinnersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spinnerFilas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelSpinnersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spinnerColumnas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonGenerar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(labelFormato1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-                    .addComponent(labelFormato2)
-                    .addComponent(jScrollPane2))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(labelFormato1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                        .addComponent(labelFormato2)
+                        .addComponent(jScrollPane2))
+                    .addComponent(panelSpinners, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -130,74 +226,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                .addGap(19, 19, 19))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelSpinners, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        labelFormato.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        labelFormato.setText("Escoja el formato numérico");
-
-        grupoFormato.add(radioFraccion);
-        radioFraccion.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioFraccion.setSelected(true);
-        radioFraccion.setText("Fracción");
-        radioFraccion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioFraccionActionPerformed(evt);
-            }
-        });
-
-        grupoFormato.add(radioDecimal);
-        radioDecimal.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioDecimal.setText("Decimal");
-        radioDecimal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioDecimalActionPerformed(evt);
-            }
-        });
-
-        labelEntero.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        labelEntero.setText("Escoja el metodo de solucion");
-
-        grupoSolucion.add(radioGomory);
-        radioGomory.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioGomory.setText("Cortes de Gomory");
-        radioGomory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioGomoryActionPerformed(evt);
-            }
-        });
-
-        grupoSolucion.add(radioBB);
-        radioBB.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioBB.setText("Branch and Bound");
-        radioBB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioBBActionPerformed(evt);
-            }
-        });
-
-        labelPasosIntermedios.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        labelPasosIntermedios.setText("¿Desea mostrar los pasos intermedios?");
-
-        grupoPasos.add(radioMostrarPasos);
-        radioMostrarPasos.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioMostrarPasos.setSelected(true);
-        radioMostrarPasos.setText("Mostrar Pasos");
-        radioMostrarPasos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioMostrarPasosActionPerformed(evt);
-            }
-        });
-
-        grupoPasos.add(radioSolucionDirecta);
-        radioSolucionDirecta.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioSolucionDirecta.setText("Solucion Directa");
-        radioSolucionDirecta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioSolucionDirectaActionPerformed(evt);
-            }
-        });
 
         botonBorrar.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
         botonBorrar.setLabel("Borrar");
@@ -215,13 +248,69 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        grupoSolucion.add(radioSimplex);
-        radioSimplex.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        radioSimplex.setSelected(true);
-        radioSimplex.setText("Simplex de Dos Fases");
-        radioSimplex.addActionListener(new java.awt.event.ActionListener() {
+        grupoFormato.add(radioDecimal);
+        radioDecimal.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioDecimal.setText("Decimal");
+        radioDecimal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioSimplexActionPerformed(evt);
+                radioDecimalActionPerformed(evt);
+            }
+        });
+
+        grupoFormato.add(radioFraccion);
+        radioFraccion.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioFraccion.setText("Fracción");
+        radioFraccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioFraccionActionPerformed(evt);
+            }
+        });
+
+        labelFormato.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        labelFormato.setText("Escoja el formato numérico");
+
+        javax.swing.GroupLayout panelFormatoNumericoLayout = new javax.swing.GroupLayout(panelFormatoNumerico);
+        panelFormatoNumerico.setLayout(panelFormatoNumericoLayout);
+        panelFormatoNumericoLayout.setHorizontalGroup(
+            panelFormatoNumericoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFormatoNumericoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelFormatoNumericoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelFormato)
+                    .addGroup(panelFormatoNumericoLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(panelFormatoNumericoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(radioFraccion)
+                            .addComponent(radioDecimal))))
+                .addGap(48, 48, 48))
+        );
+        panelFormatoNumericoLayout.setVerticalGroup(
+            panelFormatoNumericoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelFormatoNumericoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelFormato)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radioFraccion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radioDecimal)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        grupoSolucion.add(radioBB);
+        radioBB.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioBB.setText("Branch and Bound");
+        radioBB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioBBActionPerformed(evt);
+            }
+        });
+
+        grupoSolucion.add(radioGomory);
+        radioGomory.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioGomory.setText("Cortes de Gomory");
+        radioGomory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioGomoryActionPerformed(evt);
             }
         });
 
@@ -234,66 +323,125 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        grupoSolucion.add(radioSimplex);
+        radioSimplex.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioSimplex.setText("Simplex de Dos Fases");
+        radioSimplex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioSimplexActionPerformed(evt);
+            }
+        });
+
+        labelEntero.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        labelEntero.setText("Escoja el metodo de solucion");
+
+        javax.swing.GroupLayout panelMetodoSolucionLayout = new javax.swing.GroupLayout(panelMetodoSolucion);
+        panelMetodoSolucion.setLayout(panelMetodoSolucionLayout);
+        panelMetodoSolucionLayout.setHorizontalGroup(
+            panelMetodoSolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMetodoSolucionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelMetodoSolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelEntero)
+                    .addGroup(panelMetodoSolucionLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(panelMetodoSolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(radioBB)
+                            .addComponent(radioSimplex)
+                            .addComponent(radioMatriz)
+                            .addComponent(radioGomory))))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        panelMetodoSolucionLayout.setVerticalGroup(
+            panelMetodoSolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMetodoSolucionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelEntero)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radioSimplex)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioMatriz)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(radioGomory)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioBB))
+        );
+
+        grupoPasos.add(radioSolucionDirecta);
+        radioSolucionDirecta.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioSolucionDirecta.setText("Solucion Directa");
+        radioSolucionDirecta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioSolucionDirectaActionPerformed(evt);
+            }
+        });
+
+        grupoPasos.add(radioMostrarPasos);
+        radioMostrarPasos.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        radioMostrarPasos.setText("Mostrar Pasos");
+        radioMostrarPasos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioMostrarPasosActionPerformed(evt);
+            }
+        });
+
+        labelPasosIntermedios.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        labelPasosIntermedios.setText("¿Desea mostrar los pasos intermedios?");
+
+        javax.swing.GroupLayout panelPasosIntermediosLayout = new javax.swing.GroupLayout(panelPasosIntermedios);
+        panelPasosIntermedios.setLayout(panelPasosIntermediosLayout);
+        panelPasosIntermediosLayout.setHorizontalGroup(
+            panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPasosIntermediosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelPasosIntermedios)
+                    .addGroup(panelPasosIntermediosLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(radioMostrarPasos)
+                            .addComponent(radioSolucionDirecta)))))
+        );
+        panelPasosIntermediosLayout.setVerticalGroup(
+            panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPasosIntermediosLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(labelPasosIntermedios)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radioMostrarPasos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioSolucionDirecta)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelFormato)
-                            .addComponent(labelEntero)
-                            .addComponent(botonSimplex)
-                            .addComponent(botonBorrar)
-                            .addComponent(labelPasosIntermedios)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(radioFraccion)
-                                    .addComponent(radioDecimal)
-                                    .addComponent(radioMostrarPasos)
-                                    .addComponent(radioSolucionDirecta)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(radioMatriz)
-                            .addComponent(radioBB)
-                            .addComponent(radioGomory)
-                            .addComponent(radioSimplex))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(botonBorrar)
+                    .addComponent(panelPasosIntermedios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonSimplex)
+                    .addComponent(panelFormatoNumerico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelMetodoSolucion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(labelFormato)
+                .addContainerGap()
+                .addComponent(panelFormatoNumerico, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(radioFraccion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(radioDecimal)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(labelEntero)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(radioSimplex)
-                .addGap(5, 5, 5)
-                .addComponent(radioMatriz)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(radioGomory)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(radioBB)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(labelPasosIntermedios)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(radioMostrarPasos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(radioSolucionDirecta)
+                .addComponent(panelMetodoSolucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelPasosIntermedios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(botonSimplex)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonBorrar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -303,36 +451,40 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void radioFraccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioFraccionActionPerformed
         fraccionario = true;
+        panelMetodoSolucion.setVisible(true);
     }//GEN-LAST:event_radioFraccionActionPerformed
 
     private void radioDecimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioDecimalActionPerformed
         fraccionario = false;
+        panelMetodoSolucion.setVisible(true);
     }//GEN-LAST:event_radioDecimalActionPerformed
 
     private void radioGomoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioGomoryActionPerformed
         gomory = true;
+        branchAndBound = false;
         solucionSimplex = false;
         matrizNumerica = false;
-        labelPasosIntermedios.setVisible(true);
-        radioMostrarPasos.setVisible(true);
-        radioSolucionDirecta.setVisible(true);
+        panelPasosIntermedios.setVisible(true);
+        botonSimplex.setVisible(false);
     }//GEN-LAST:event_radioGomoryActionPerformed
 
     private void radioBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioBBActionPerformed
         gomory = false;
+        branchAndBound = true;
         solucionSimplex = false;
         matrizNumerica = false;
-        labelPasosIntermedios.setVisible(true);
-        radioMostrarPasos.setVisible(true);
-        radioSolucionDirecta.setVisible(true);
+        panelPasosIntermedios.setVisible(true);
+        botonSimplex.setVisible(false);
     }//GEN-LAST:event_radioBBActionPerformed
 
     private void radioMostrarPasosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMostrarPasosActionPerformed
         solucionDirecta = false;
+        botonSimplex.setVisible(true);
     }//GEN-LAST:event_radioMostrarPasosActionPerformed
 
     private void radioSolucionDirectaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioSolucionDirectaActionPerformed
         solucionDirecta = true;
+        botonSimplex.setVisible(true);
     }//GEN-LAST:event_radioSolucionDirectaActionPerformed
 
     private void botonSimplexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSimplexActionPerformed
@@ -357,27 +509,70 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             controlador.siguientePaso(areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", ""), fraccionario);
             this.dispose();
         }
+        if (gomory) {
+            controlador = new GomoryControlador();
+            if (solucionDirecta) {
+                controlador.setVista(new PantallaPasoIntermedio(controlador));
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                controlador.solucionar(texto, fraccionario);
+                this.dispose();
+            } else {
+                controlador.setVista(new PantallaPasoIntermedio(controlador));
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                controlador.siguientePaso(texto, fraccionario);
+                this.dispose();
+            }
+        }
+        if (branchAndBound) {
+            controlador = new BranchAndBoundControlador();
+            if (solucionDirecta) {
+                controlador.setVista(new PantallaPasoIntermedioBranchBound(controlador));
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                controlador.solucionar(texto, fraccionario);
+                this.dispose();
+            } else {
+                controlador.setVista(new PantallaPasoIntermedioBranchBound(controlador));
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                controlador.siguientePaso(texto, fraccionario);
+                this.dispose();
+            }
+        }
     }//GEN-LAST:event_botonSimplexActionPerformed
 
     private void botonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarActionPerformed
         areaTexto.setText("");
+        panelFormatoNumerico.setVisible(false);
+        panelMetodoSolucion.setVisible(false);
+        panelPasosIntermedios.setVisible(false);
+        botonBorrar.setVisible(false);
     }//GEN-LAST:event_botonBorrarActionPerformed
 
     private void radioSimplexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioSimplexActionPerformed
         solucionSimplex = true;
         matrizNumerica = false;
-        labelPasosIntermedios.setVisible(true);
-        radioMostrarPasos.setVisible(true);
-        radioSolucionDirecta.setVisible(true);
+        panelPasosIntermedios.setVisible(true);
+        botonSimplex.setVisible(false);
     }//GEN-LAST:event_radioSimplexActionPerformed
 
     private void radioMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMatrizActionPerformed
         solucionSimplex = false;
         matrizNumerica = true;
-        labelPasosIntermedios.setVisible(false);
-        radioMostrarPasos.setVisible(false);
-        radioSolucionDirecta.setVisible(false);
+        panelPasosIntermedios.setVisible(false);
+        botonSimplex.setVisible(true);
     }//GEN-LAST:event_radioMatrizActionPerformed
+
+    private void botonGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGenerarActionPerformed
+        String resultado = "";
+        int filas = (int) spinnerFilas.getValue();
+        int columnas = (int) spinnerColumnas.getValue();
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                resultado += (1+j+i) + " ";
+            }
+            resultado += "\n";
+        }
+        areaTexto.setText(resultado);
+    }//GEN-LAST:event_botonGenerarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -418,10 +613,13 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaTexto;
     private javax.swing.JButton botonBorrar;
+    private javax.swing.JButton botonGenerar;
     private javax.swing.JButton botonSimplex;
     private javax.swing.ButtonGroup grupoFormato;
     private javax.swing.ButtonGroup grupoPasos;
     private javax.swing.ButtonGroup grupoSolucion;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -432,6 +630,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel labelFormato1;
     private javax.swing.JLabel labelFormato2;
     private javax.swing.JLabel labelPasosIntermedios;
+    private javax.swing.JPanel panelFormatoNumerico;
+    private javax.swing.JPanel panelMetodoSolucion;
+    private javax.swing.JPanel panelPasosIntermedios;
+    private javax.swing.JPanel panelSpinners;
     private javax.swing.JRadioButton radioBB;
     private javax.swing.JRadioButton radioDecimal;
     private javax.swing.JRadioButton radioFraccion;
@@ -440,5 +642,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioMostrarPasos;
     private javax.swing.JRadioButton radioSimplex;
     private javax.swing.JRadioButton radioSolucionDirecta;
+    private javax.swing.JSpinner spinnerColumnas;
+    private javax.swing.JSpinner spinnerFilas;
     // End of variables declaration//GEN-END:variables
 }
