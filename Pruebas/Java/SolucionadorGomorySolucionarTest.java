@@ -1,6 +1,5 @@
 package pruebas;
 
-import pruebas.*;
 import dto.DtoSimplex;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,7 +9,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import modelo.AbstractSolucionadorSimplex;
 import modelo.SolucionadorGomory;
-import modelo.SolucionadorSimplex;
 import modelo.parser.IParser;
 import modelo.parser.SimplexParser;
 import org.junit.Test;

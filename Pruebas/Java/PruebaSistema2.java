@@ -45,7 +45,7 @@ public class PruebaSistema2 {
             fail("Error no se encontro el área para ingreso del texto.");
             return;
         }
-        
+
         field = pantallaPrincipal.getClass().getDeclaredField("radioFraccion");
         field.setAccessible(true);
         JRadioButton radioFraccion = (JRadioButton) field.get(pantallaPrincipal);
@@ -55,7 +55,7 @@ public class PruebaSistema2 {
         }
         radioFraccion.doClick();
         Thread.sleep(1000);
-        
+
         field = pantallaPrincipal.getClass().getDeclaredField("radioSimplex");
         field.setAccessible(true);
         JRadioButton radioSimplex = (JRadioButton) field.get(pantallaPrincipal);
@@ -65,7 +65,7 @@ public class PruebaSistema2 {
         }
         radioSimplex.doClick();
         Thread.sleep(1000);
-        
+
         field = pantallaPrincipal.getClass().getDeclaredField("radioMostrarPasos");
         field.setAccessible(true);
         JRadioButton radioMostrarPasos = (JRadioButton) field.get(pantallaPrincipal);
@@ -125,29 +125,30 @@ public class PruebaSistema2 {
             return;
         }
         String resultadoObtenido = resumen.getText();
-        String resultadoCorrecto = "------------------------------------------------------------------------------\n"
-                + "|  BVS   x1          x2          s3          s4          a5          RHS     |\n"
-                + "------------------------------------------------------------------------------\n"
-                + "|  -w    0           0           0           0           1           0       |\n"
-                + "|  z    1           2           0           0           0           0       |\n"
-                + "|  s3    3           4           1           0           0           20      |\n"
-                + "|  a5    2           -1          0           -1          1           2       |\n"
-                + "------------------------------------------------------------------------------\n"
-                + "------------------------------------------------------------------------------\n"
-                + "|  BVS   x1          x2          s3          s4          a5          RHS     |\n"
-                + "------------------------------------------------------------------------------\n"
-                + "|  -w    -2          1           0           1           0           -2      |\n"
-                + "|  z    1           2           0           0           0           0       |\n"
-                + "|  s3    3           4           1           0           0           20      |\n"
-                + "|  a5    2           -1          0           -1          1           2       |\n"
-                + "------------------------------------------------------------------------------\n"
-                + "------------------------------------------------------------------\n"
-                + "|  BVS   x1          x2          s3          s4          RHS     |\n"
-                + "------------------------------------------------------------------\n"
-                + "|  z    0           5/2         0           1/2         -1      |\n"
-                + "|  s3    0           11/2        1           3/2         17      |\n"
-                + "|  x1    1           -1/2        0           -1/2        1       |\n"
-                + "------------------------------------------------------------------\n";
+        String resultadoCorrecto = "------------------------------------------\n"
+                + "| BVS |  x1 |  x2 |  s3 |  s4 |  a5 | RHS |\n"
+                + "------------------------------------------\n"
+                + "|  -w |  0  |  0  |  0  |  0  |  1  |  0  |\n"
+                + "|  z  |  1  |  2  |  0  |  0  |  0  |  0  |\n"
+                + "|  s3 |  3  |  4  |  1  |  0  |  0  |  20 |\n"
+                + "|  a5 |  2  |  -1 |  0  |  -1 |  1  |  2  |\n"
+                + "------------------------------------------\n"
+                + "------------------------------------------\n"
+                + "| BVS |  x1 |  x2 |  s3 |  s4 |  a5 | RHS |\n"
+                + "------------------------------------------\n"
+                + "|  -w |  -2 |  1  |  0  |  1  |  0  |  -2 |\n"
+                + "|  z  |  1  |  2  |  0  |  0  |  0  |  0  |\n"
+                + "|  s3 |  3  |  4  |  1  |  0  |  0  |  20 |\n"
+                + "|  a5 |  2  |  -1 |  0  |  -1 |  1  |  2  |\n"
+                + "------------------------------------------\n"
+                + "------------------------------------------------\n"
+                + "|  BVS  |   x1  |   x2  |   s3  |   s4  |  RHS  |\n"
+                + "------------------------------------------------\n"
+                + "|   z   |   0   |  5/2  |   0   |  1/2  |   -1  |\n"
+                + "|   s3  |   0   |  11/2 |   1   |  3/2  |   17  |\n"
+                + "|   x1  |   1   |  -1/2 |   0   |  -1/2 |   1   |\n"
+                + "------------------------------------------------\n"
+                + "";
         assertTrue(resultadoObtenido.equals(resultadoCorrecto));
 
     }

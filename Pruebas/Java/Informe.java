@@ -18,7 +18,7 @@ import org.junit.runners.Suite;
     pruebas.ParserTest.class,
     pruebas.CrearNombreFilaTest.class, pruebas.SolucionadorSimplexSiguientesOperacionesTest.class, 
     pruebas.SolucionadorSimplexSolucionarTest.class, pruebas.SolucionarBranchAndBoundTest.class, 
-    pruebas.SolucionadorSimplexAgregarRestriccionTest.class, pruebas.SiguientePasoBranchAndBoundTest.class,
+    pruebas.AgregarRestriccionTest.class, pruebas.SiguientePasoBranchAndBoundTest.class,
     pruebas.AgregarColumnasTest.class,
     pruebas.VerificarFactibilidadTest.class,pruebas.NodoBranchAndBoundTest.class,
     pruebas.SolucionadorGomorySiguientePasoTest.class, pruebas.AgregarUnoMatrizTest.class,

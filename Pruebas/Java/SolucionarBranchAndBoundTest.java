@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import modelo.SolucionadorBranchAndBound;
-import modelo.parser.Parser;
+import modelo.parser.IParser;
+import modelo.parser.SimplexParser;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
@@ -41,7 +42,7 @@ public class SolucionarBranchAndBoundTest {
 
     @Parameterized.Parameters
     public static Collection parametros() throws IOException {
-        Parser parser = new Parser();
+        IParser parser = new SimplexParser();
         DtoSimplex dto1 = parser.parse("max z = 3 x1 + 4 x2\n"
                 + "2 x1 +   x2 <= 6\n"
                 + "2 x1 + 3 x2 <= 9");

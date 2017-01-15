@@ -364,38 +364,38 @@ public class SolucionadorSimplexCalcularRadiosTest {
         dtoRes14.setMensaje("El problema no posee solución óptima factible.");
         return Arrays.asList(new Object[][]{
             {dtoRes11, new String[]{
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(0).toString(true),
-                new Fraccion(2).toString(true),
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(7, 5).toString(true)
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(0).toString(false),
+                new Fraccion(2).toString(false),
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(7, 5).toString(false)
             }, 0},
             {dtoRes12, new String[]{
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion().toString(true),
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(4, 3).toString(true),
-                new Fraccion(7, 6).toString(true)
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion().toString(false),
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(4, 3).toString(false),
+                new Fraccion(7, 6).toString(false)
             }, 1},
             {dtoRes13, new String[]{
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(Double.MAX_VALUE).toString(true),}, 2},
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(Double.MAX_VALUE).toString(false),}, 2},
             {dtoRes14, new String[]{
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(4, 3).toString(true),
-                new Fraccion(7, 6).toString(true)
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(4, 3).toString(false),
+                new Fraccion(7, 6).toString(false)
             }, 1},
             {dtoRes14, new String[]{
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(Double.MAX_VALUE).toString(true),
-                new Fraccion(7, 5).toString(true)
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(Double.MAX_VALUE).toString(false),
+                new Fraccion(7, 5).toString(false)
             }, 0},});
     }
 
