@@ -45,6 +45,7 @@ import dto.DtoSimplex;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.BoxLayout;
+import javax.swing.JEditorPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -262,49 +263,49 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
             @Override
             public void actionPerformed(ActionEvent ae) {
                 JScrollPane scrollpane = new JScrollPane(); 
-                String informacion = "¿Cómo vuelvo al menú principal?\n" +
-                                    "\n" +
-                                    "  + Cierre la ventana actual para volver. \n" +
-                                    "\n" +
-                                    "¿Qué estoy viendo en la pantalla actual?\n" +
-                                    "\n" +
-                                    "+ En la pantalla actual se muestra la representación matricial del problema o matriz ingresados. \n" +
-                                    "  En la fila superior se indican los nombres de las variables que representan \n" +
-                                    "  cada columna. En la primera columna se listan los números de las restricciones o filas ingresadas,\n" +
-                                    "  mientras que en la segundo columna se listan las variables básicas del problema. La columna con \n" +
-                                    "  la etiqueta \"RHS\" simboliza el lado derecho del sistema de ecuaciones ingresado. \n" +
-                                    "\n" +
-                                    "¿Por qué hay una entrada de color rojo? \n" +
-                                    "\n" +
-                                    "+ La entrada marcada con color rojo representa la posicion en la matriz sobre la que se realizará\n" +
-                                    "  el siguiente pivoteo. \n" +
-                                    "\n" +
-                                    "¿Puedo escoger el lugar donde se realizará el próximo pivoteo?\n" +
-                                    "\n" +
-                                    "+ Sí. Para ello debe hacer click sobre la entrada de la matriz que desee seleccionar como pivote. \n" +
-                                    "  Esta funcionalidad solamente está activada si las variables artificiales ya han sido\n" +
-                                    "  reducidas a 0 durante la primera fase del Simplex, o bien si ingresó una matriz. \n" +
-                                    "\n" +
-                                    "  ¿Cómo realizo el pivoteo?\n" +
-                                    "  \n" +
-                                    "  + Haga clic en el botón \"Siguiente Paso\". \n" +
-                                    "\n" +
-                                    "¿Puedo modificar una entrada de la matriz una vez iniciado el algoritmo?\n" +
-                                    "\n" +
-                                    "  + Sí. Para ello, debe seleccionar la casilla que desea modificar y utilizar el teclado\n" +
-                                    "    numérico para cambiar el valor. Al terminar de ingresar el nuevo número, debe presionar la tecla Enter\n" +
-                                    "    y el sistema alertará si el valor fue actualizado correctamente. \n" +
-                                    "\n" +
-                                    "¿Puedo agregar una restricción una vez iniciado el algoritmo?\n" +
-                                    "\n" +
-                                    "  + Sí, pero solamente durante el primer paso del algoritmo. Además, las restricciones \">=\" ó \"=\"\n" +
-                                    "    solamente pueden ser agregadas en problemas de dos fases. \n" +
-                                    "\n" +
-                                    "¿Cómo sé cuándo el algoritmo ha terminado?\n" +
-                                    "  + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo. ";
-                JTextArea areaTexto = new JTextArea();
+                String informacion = "<b>¿Cómo vuelvo al menú principal?</b><br>" +
+                                    "<br>" +
+                                    "+ Cierre la ventana actual para volver. <br>" +
+                                    "<br>" +
+                                    "<b>¿Qué estoy viendo en la pantalla actual?</b><br>" +
+                                    "<br>" +
+                                    "  En la pantalla actual se muestra la representación matricial del problema o matriz ingresados. <br>" +
+                                    "  En la fila superior se indican los nombres de las variables que representan <br>" +
+                                    "  cada columna. En la primera columna se listan los números de las restricciones o filas ingresadas,<br>" +
+                                    "  mientras que en la segundo columna se listan las variables básicas del problema. La columna con <br>" +
+                                    "  la etiqueta \"RHS\" simboliza el lado derecho del sistema de ecuaciones ingresado. <br>" +
+                                    "<br>" +
+                                    "<b>¿Por qué hay una entrada de color rojo? </b><br>" +
+                                    "<br>" +
+                                    "+ La entrada marcada con color rojo representa la posicion en la matriz sobre la que se realizará<br>" +
+                                    "  el siguiente pivoteo. <br>" +
+                                    "<br>" +
+                                    "<b>¿Puedo escoger el lugar donde se realizará el próximo pivoteo?</b><br>" +
+                                    "<br>" +
+                                    "+ Sí. Para ello debe hacer click sobre la entrada de la matriz que desee seleccionar como pivote. <br>" +
+                                    "  Esta funcionalidad solamente está activada si las variables artificiales ya han sido<br>" +
+                                    "  reducidas a 0 durante la primera fase del Simplex, o bien si ingresó una matriz. <br>" +
+                                    "<br>" +
+                                    "  <b>¿Cómo realizo el pivoteo?</b><br>" +
+                                    "  <br>" +
+                                    "  + Haga clic en el botón \"Siguiente Paso\". <br>" +
+                                    "<br>" +
+                                    "<b>¿Puedo modificar una entrada de la matriz una vez iniciado el algoritmo?</b><br>" +
+                                    "<br>" +
+                                    "  + Sí. Para ello, debe seleccionar la casilla que desea modificar y utilizar el teclado<br>" +
+                                    "    numérico para cambiar el valor. Al terminar de ingresar el nuevo número, debe presionar la tecla Enter<br>" +
+                                    "    y el sistema alertará si el valor fue actualizado correctamente. <br>" +
+                                    "<br>" +
+                                    "<b>¿Puedo agregar una restricción una vez iniciado el algoritmo?</b><br>" +
+                                    "<br>" +
+                                    "  + Sí, pero solamente durante el primer paso del algoritmo. Además, las restricciones \">=\" ó \"=\"<br>" +
+                                    "    solamente pueden ser agregadas en problemas de dos fases. <br>" +
+                                    "<br>" +
+                                    "<b>¿Cómo sé cuándo el algoritmo ha terminado?</b><br>" +
+                                    "  + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo.";
+                JEditorPane areaTexto = new JEditorPane("text/html","");
                 areaTexto.setText(informacion);
-                areaTexto.setWrapStyleWord(true);
+                scrollpane.setPreferredSize(new Dimension (650, 400));
                 scrollpane.add(areaTexto);
                 scrollpane.getViewport().add(areaTexto);
                 JOptionPane.showMessageDialog(null, scrollpane, "FAQ",  
@@ -573,7 +574,8 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         }
     }
 
-    private void seleccionarCasilla(Point coordenada) {
+    private void seleccionarCasilla(Point pCoordenada) {
+        final Point coordenada = pCoordenada;
         if (coordenada.x < 0 && coordenada.y < 0) {
             coordenada.x = -1;
             coordenada.y = 0;

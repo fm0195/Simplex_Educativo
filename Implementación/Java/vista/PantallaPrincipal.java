@@ -550,6 +550,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void radioSimplexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioSimplexActionPerformed
         solucionSimplex = true;
         matrizNumerica = false;
+        branchAndBound = false;
+        gomory = false;
         panelPasosIntermedios.setVisible(true);
         botonSimplex.setVisible(false);
     }//GEN-LAST:event_radioSimplexActionPerformed
@@ -557,6 +559,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void radioMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMatrizActionPerformed
         solucionSimplex = false;
         matrizNumerica = true;
+        branchAndBound = false;
         panelPasosIntermedios.setVisible(false);
         botonSimplex.setVisible(true);
     }//GEN-LAST:event_radioMatrizActionPerformed

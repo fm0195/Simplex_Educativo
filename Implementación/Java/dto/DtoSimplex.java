@@ -1,7 +1,6 @@
-package dto;
+﻿package dto;
 
 import java.awt.Point;
-import java.io.Serializable;
 import modelo.AbstractFraccion;
 import modelo.Fraccion;
 
@@ -399,35 +398,108 @@ public class DtoSimplex implements Serializable{
     public String toString() {
         AbstractFraccion[][] matriz = getMatriz();
         String resultado = "";
+        String lineaHorizontal="";
         String[] arregloFilas = getNombreFilas();
         String[] arregloColumnas = getNombreColumnas();
-        String string = "";
-        string = "|  BVS   ";
-        for (int contador = 0; contador < arregloColumnas.length; contador++) {
-            string += arregloColumnas[contador];
-            string += "          ";
-        }
-        string += esMatriz ? " |\n" : "RHS     |\n";
-        String lineaHorizontal = "";
-        for (int i = 1; i < string.length(); i++) {
-            lineaHorizontal += "-";
-        }
-
-        resultado += lineaHorizontal + "\n" + string + lineaHorizontal + "\n";
-        for (int contadorFila = 0; contadorFila < matriz.length; contadorFila++) {
-            string = "|  ";
-            string += arregloFilas[contadorFila];
-            string += "    ";
-            for (int contadorColumna = 0; contadorColumna < matriz[0].length; contadorColumna++) {
-                String numero = matriz[contadorFila][contadorColumna].toString(formatoFraccional);
-                string += numero;
-                string += "                        ".substring(numero.length(), 12);
+        String[][] matrizString = new String[matriz.length][matriz[0].length];
+        int anchoColumna = 0;
+        int anchoTotal = 0;
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                String actual = matriz[i][j].toString(formatoFraccional);
+                matrizString[i][j]=actual;
+                anchoColumna = anchoColumna < actual.length() ? actual.length() : anchoColumna;
             }
-            string = string.substring(0, string.length() - 4) + "|\n";
-            resultado += string;
         }
-        resultado += lineaHorizontal;
-        return (resultado);
+        anchoColumna += 4;
+        anchoTotal = anchoColumna * (arregloColumnas.length + 2);
+        for (int i = 0; i < anchoTotal; i++) {
+            lineaHorizontal+="-";
+        }
+        int columnaActual = 0;
+        int filaActual = 0;
+        resultado += lineaHorizontal+"\n|"; 
+        for (int i = 0; i <= arregloColumnas.length + 1; i++) {
+            String variable = i <= arregloColumnas.length ? arregloColumnas[columnaActual++] : "RHS";
+            int espacioIzq = (anchoColumna - variable.length()) / 2;
+            int espacioDer = espacioIzq + variable.length();
+            if (i == 0) {
+                espacioIzq = (anchoColumna - 3) / 2;
+                espacioDer = espacioIzq + 3;
+                for (int j = 0; j < anchoColumna; j++) {
+                    if (j < espacioIzq) {
+                        resultado += " ";
+                    }
+                    else if (j >= espacioIzq && j <= espacioDer){
+                        resultado += "BVS";
+                        j += 3;
+                    }
+                    else 
+                        resultado += " ";
+                }
+                resultado += "|";
+                columnaActual--;
+                continue;
+            }
+            for (int j = 0; j < anchoColumna; j++) {
+                if (j < espacioIzq) {
+                    resultado += " ";
+                }
+                else if (j >= espacioIzq && j <= espacioDer){
+                    resultado += variable;
+                    j += variable.length();
+                }
+                else 
+                    resultado += " ";
+            }
+            resultado += "|";
+        }
+        resultado += "\n" + lineaHorizontal + "\n";
+        
+        for (int i = 0; i < arregloFilas.length; i++) {
+            resultado += "|" ;
+            for (int j = 0; j < arregloColumnas.length + 2; j++) {
+                String variable;
+                int espacioIzq;
+                int espacioDer;
+                if (j == 0) {
+                    variable = arregloFilas[filaActual++];
+                    espacioIzq = (anchoColumna - variable.length()) / 2;
+                    espacioDer = espacioIzq + variable.length();
+                    for (int k = 0; k < anchoColumna; k++) {
+                        if (k < espacioIzq) {
+                            resultado += " ";
+                        }
+                        else if (k >= espacioIzq && k <= espacioDer){
+                            resultado += variable;
+                            k += variable.length();
+                        }
+                        else 
+                            resultado += " ";
+                    }
+                    resultado += "|";
+                    continue;
+                }
+                
+                variable = matrizString[i][j-1];
+                espacioIzq = (anchoColumna - variable.length()) / 2;
+                espacioDer = espacioIzq + variable.length();
+                for (int k = 0; k < anchoColumna; k++) {
+                    if (k < espacioIzq) {
+                        resultado += " ";
+                    }
+                    else if (k >= espacioIzq && k <= espacioDer){
+                        resultado += variable;
+                        k += variable.length();
+                    }
+                    else 
+                        resultado += " ";
+                }
+                resultado += "|"; 
+            }
+            resultado += "\n";
+        }
+        return resultado+lineaHorizontal;
     }
 
     public void setEntradaMatriz(int fila, int columna, int numerador, int denominador) {
