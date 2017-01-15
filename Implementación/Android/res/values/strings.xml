@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">Simplex Educativo</string>
+    <string name="Ayuda">Ayuda</string>>
+    <string name="FAQInicio">
+        1. ¿Como ingresar un problema de programación lineal con el formato correcto?\n\n
+            \t\t-Los problemas ingresados debe seguir el siguiente
+        \tformato:\n
+                \t\t\t\t(0) max  z = 15 x1 + 10 x2\n
+                \t\t\t\t(1) x1       &lt;= 2\n
+                \t\t\t\t(2)     x2  &lt;= 3\n
+                \t\t\t\t(3) x1 + x2  &lt;= 4\n
+           \t\t O tambien se puede omitir la enumeración de las
+        \tlineas:\n
+                \t\t\t\tmax  z = 15 x1 + 10 x2\n
+                \t\t\t\tx1       &lt;= 2\n
+                \t\t\t\t      x2  &lt;= 3\n
+                \t\t\t\tx1 + x2  &lt;= 4\n\n
+        2. ¿Que es el modo de solución?\n\n
+            \t\t- El modo de solución indica la forma de resolver el problema que se ingreso, existen dos maneras:\n
+            \t\t\t\t  Directa: Al seleccionar esta opción y oprimir el botón solucionar, se redireccionará directo a la solución
+                del problema.\n
+            \t\t\t\t  Por pasos: Al seleccionar esta opción y oprimir el botón solucionar, se redireccionará a la primera iteración
+            del problema donde se podrá observar las características resultantes al aplicar el algoritmo Simplex.\n\n
+        3.¿Que es el formato numérico?\n\n
+            \t\t- El formato numérico brinda el aspecto de los valores numéricos no enteros involucrados durante el desarrollo de la
+        solución. Existen dos opciones:\n
+            \t\t\t\t Fraccional: genera los valores no enteros con el formato de fracción, ejemplo: 2/8 \n
+            \t\t\t\t Decimal: genera los valores no entros con el formato con decimal, por ejemplo: 2.56.
+
+    </string>
+
+    <string name="FAQPasosIntermedios">
+     ¿Cómo vuelvo al menú principal?\n +
+                                    \n
+                                    + Oprime el boton con una \"X\" ubicado en la parte inferior de la pantalla o oprime el botón hacia atras del dispositivo. \n +
+                                    ¿Qué estoy viendo en la pantalla actual?\n +
+                                    \n
+                                    + En la pantalla actual se muestra el resumen del problema de programación lineal ingresados. \n +
+                                      En la fila superior se indican los nombres de las variables que representan, \n +
+                                      la primera columna se listan las variables básicas del problema. La columna con \n +
+                                      la etiqueta \"RHS\" simboliza el lado derecho del sistema de ecuaciones ingresado.\n+
++¿Que significa la sección de operaciones?\n+
+        \n+ Esta sección se muestran las operaciones siguientes que se van a aplicar sobre la tabla, enumeradas según la posición de las
+        filas ubicadas en la tabla. Si el programa se encuentra resolviendo un problema por medio del método de dos fases la enumeración comienza
+        desde el caracter \"0\'\", continuando luego con el enumerado normal.\n+
++¿Puedo copiar el texto generado?\n+
+        \n+ Si, continuo al título de cada sección se encuentra el botón respectivo para copiar.
+                                    \n +
+        \n +
+                                    ¿Cómo sé cuándo el algoritmo ha terminado?\n
+                                      + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo.
+    </string>
+</resources>
