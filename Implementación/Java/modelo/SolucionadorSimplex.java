@@ -1220,6 +1220,9 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 indiceUltimaArtificial = i;
                 numeroUltimaVariable = Math.max(numeroUltimaVariable, Integer.parseInt(nombresColumnas[i].substring(1)));
             }
+        }        
+        if(indiceUltimaArtificial == -1){
+            indiceUltimaArtificial = nombresColumnas.length-1;
         }
         for (int i = 0; i < nuevoNombresColumnas.length; i++) {
             if(i <= indiceUltimaHolgura)
