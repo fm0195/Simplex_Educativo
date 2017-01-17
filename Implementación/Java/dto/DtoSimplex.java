@@ -1,6 +1,6 @@
-﻿package dto;
-
+package dto;
 import java.awt.Point;
+import java.io.Serializable;
 import modelo.AbstractFraccion;
 import modelo.Fraccion;
 
@@ -412,7 +412,7 @@ public class DtoSimplex implements Serializable{
             }
         }
         anchoColumna += 4;
-        anchoTotal = anchoColumna * (arregloColumnas.length + 2);
+        anchoTotal = anchoColumna * (arregloColumnas.length + (esMatriz ? 1 : 2));
         for (int i = 0; i < anchoTotal; i++) {
             lineaHorizontal+="-";
         }
@@ -420,6 +420,8 @@ public class DtoSimplex implements Serializable{
         int filaActual = 0;
         resultado += lineaHorizontal+"\n|"; 
         for (int i = 0; i <= arregloColumnas.length + 1; i++) {
+            if(i==arregloColumnas.length + 1 && esMatriz)
+                break;
             String variable = i <= arregloColumnas.length ? arregloColumnas[columnaActual++] : "RHS";
             int espacioIzq = (anchoColumna - variable.length()) / 2;
             int espacioDer = espacioIzq + variable.length();
@@ -459,6 +461,8 @@ public class DtoSimplex implements Serializable{
         for (int i = 0; i < arregloFilas.length; i++) {
             resultado += "|" ;
             for (int j = 0; j < arregloColumnas.length + 2; j++) {
+                if(j==arregloColumnas.length + 1 && esMatriz)
+                    break;
                 String variable;
                 int espacioIzq;
                 int espacioDer;
@@ -480,7 +484,6 @@ public class DtoSimplex implements Serializable{
                     resultado += "|";
                     continue;
                 }
-                
                 variable = matrizString[i][j-1];
                 espacioIzq = (anchoColumna - variable.length()) / 2;
                 espacioDer = espacioIzq + variable.length();

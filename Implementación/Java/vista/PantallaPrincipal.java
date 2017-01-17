@@ -50,11 +50,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
             @Override
             public void removeUpdate(DocumentEvent e) {
+                insertUpdate(e);
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                
+                insertUpdate(e);
             }
         });
     }
@@ -570,7 +571,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         int columnas = (int) spinnerColumnas.getValue();
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                resultado += (1+j+i) + " ";
+                resultado += (int) Math.floor(Math.random() * 101) + " ";
             }
             resultado += "\n";
         }

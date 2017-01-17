@@ -843,8 +843,10 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             matriz = realizarOperaciones(matriz, fila, columna);
             dto.setCoordenadaPivote(siguientePivoteo(dto));
             dto.setMatriz(matriz);
-            String nombreColumna = dto.getNombreColumna(columna);
-            dto.setNombreFila(fila, nombreColumna);
+            if(!dto.esMatriz()) {
+                String nombreColumna = dto.getNombreColumna(columna);
+                dto.setNombreFila(fila, nombreColumna);
+            }
             if (dto.esMatriz() || !validarSimplexTerminado(dto.getMatriz()[0])) {
                 dto = siguientesOperaciones(dto);
                 String[] nombreColumnas = dto.getNombreColumnas();
@@ -1135,6 +1137,32 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         }
         return resultado;
     }
+    
+    /**
+     * * Agrega una fila de fracciones con valor cero, al final de la matriz
+     * indicada. 
+     * @param matriz Matriz de elementos AbstractFraccion donde seagregará la fila. 
+     * @return Matriz con elementos tipo AbstractFraccion con la nueva fila 
+     * agregada.
+     */
+    private AbstractFraccion[][] agregarFila(AbstractFraccion[][] matriz, int posicion) {
+        AbstractFraccion[][] resultado = new AbstractFraccion[matriz.length + 1][matriz[0].length];
+        for (int contadorFila = 0; contadorFila < resultado.length; contadorFila++) {
+            if (contadorFila == posicion) {
+                for (int contador = 0; contador < resultado[0].length; contador++) {
+                    resultado[contadorFila][contador] = new Fraccion();
+                }
+            } else {
+                int contadorLocal = contadorFila < posicion ? contadorFila : contadorFila - 1;
+                AbstractFraccion[] fila = matriz[contadorLocal].clone();
+                for (int contadorColumna = 0; contadorColumna < fila.length; contadorColumna++) {
+                    AbstractFraccion elemento = fila[contadorColumna];
+                    resultado[contadorFila][contadorColumna] = elemento;
+                }
+            }
+        }
+        return resultado;
+    }
 
     @Override
     public DtoSimplex agregarRestriccion(DtoSimplex dto, int tipo) {
@@ -1258,6 +1286,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
     private DtoSimplex agregarIgual(DtoSimplex dto) {
         DtoSimplex dtoLocal = dto.clonarProfundo();
         int indiceUltimaArtificial = 0;
+        
         int numeroUltimaVariable = 0;
         String[] nombresColumnas = dtoLocal.getNombreColumnas();
         String[] nuevoNombresColumnas = new String[nombresColumnas.length+1];
@@ -1291,6 +1320,28 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
         dtoLocal.setVariablesHolgura(dtoLocal.getVariablesHolgura()+1);
         dtoLocal.setArtificialActual(dtoLocal.getVariablesBasicas() + dtoLocal.getVariablesHolgura());
         return dtoLocal;
+    }
+
+    @Override
+    public DtoSimplex agregarFila(DtoSimplex dto, int posicion) {
+        String[] nuevoNombreFilas = new String[dto.getNombreFilas().length+1];
+        for (int i = 0; i < nuevoNombreFilas.length; i++) {
+            nuevoNombreFilas[i] = "-";
+        }
+        dto.setMatriz(this.agregarFila(dto.getMatriz(), posicion));
+        dto.setNombreFilas(nuevoNombreFilas);
+        return dto;
+    }
+
+    @Override
+    public DtoSimplex agregarColumna(DtoSimplex dto, int posicion) {
+        String[] nuevoNombreColumnas = new String[dto.getNombreColumnas().length];
+        for (int i = 0; i < nuevoNombreColumnas.length; i++) {
+            nuevoNombreColumnas[i] = "-";
+        }
+        dto.setMatriz(this.agregarColumnas(dto.getMatriz(), 1, posicion));
+        dto.setNombreColumnas(nuevoNombreColumnas);
+        return dto;
     }
     
         

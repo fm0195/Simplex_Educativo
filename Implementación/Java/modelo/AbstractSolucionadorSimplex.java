@@ -80,4 +80,8 @@ public abstract class AbstractSolucionadorSimplex {
      */
     public abstract DtoSimplex agregarRestriccion(DtoSimplex dto, int tipo);
 
+    public abstract DtoSimplex agregarFila(DtoSimplex dto, int posicion);
+    
+    public abstract DtoSimplex agregarColumna(DtoSimplex dto, int posicion);
+
 }

@@ -83,6 +83,8 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
     JMenuBar barraMenu;
     JMenu menuRestricciones;
     JMenu menuAyuda;
+    JMenu menuAgregarFila;
+    JMenu menuAgregarColumna;
     JMenuItem itemMenuFAQ;
     JMenuItem itemMenuMayorIgual;
     JMenuItem itemMenuMenorIgual;
@@ -100,6 +102,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
     final StringBuilder resumenPasoAnterior;
     private int ESPACIO_TABLAS = 10;
     boolean esPrimeraFase = false;
+    boolean esMatriz = false;
 
     /**
      * Pantalla de pasos intermedios utilizada para dibujar la matriz de pasos y
@@ -179,6 +182,8 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         barraMenu = new JMenuBar();
         menuRestricciones = new JMenu("Agregar restricción");
         menuAyuda = new JMenu("Ayuda");
+        menuAgregarFila = new JMenu("Agregar Fila");
+        menuAgregarColumna = new JMenu("Agregar Columna");
         itemMenuMayorIgual = new JMenuItem(">=");
         itemMenuMenorIgual= new JMenuItem("<=");
         itemMenuIgual= new JMenuItem("=");
@@ -300,6 +305,10 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                                     "<br>" +
                                     "  + Sí, pero solamente durante el primer paso del algoritmo. Además, las restricciones \">=\" ó \"=\"<br>" +
                                     "    solamente pueden ser agregadas en problemas de dos fases. <br>" +
+                                    "<br>" +
+                                    "<b>¿Puedo agregar una fila o columna nuevas a una matriz?</b><br>" +
+                                    "<br>" +
+                                    "  + Sí, puede agregarlas en cualquier momento mediante la barra de menú. <br>" +
                                     "<br>" +
                                     "<b>¿Cómo sé cuándo el algoritmo ha terminado?</b><br>" +
                                     "  + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo.";
@@ -471,19 +480,43 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
      * @param cantColumnas cantidad de columnas de la matriz mostrada.
      */
     public void colocarComponentes(int cantFilas, int cantColumnas) {
-        int anchoTablaNumeros = ANCHO_CASILLA * cantColumnas;
-        int altoTablaNumeros = ALTO_CASILLA * cantFilas;
-        int posicionRadiosX1 = POSICION_TABLA_X + anchoTablaNumeros + ESPACIO_TABLAS;
-        int posicionRadiosY1 = POSICION_TABLA_Y;
-        int anchoTablaRadios = ANCHO_CASILLA;
-        int altoTablaRadios = altoTablaNumeros;
+        if (esMatriz) {
+            barraMenu.removeAll();
+            menuAgregarFila.removeAll();
+            menuAgregarColumna.removeAll();
+            for (int i = 0; i < cantFilas; i++) {
+                final int numero = i;
+                JMenuItem item = new JMenuItem("Fila "+i);
+                item.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        controlador.agregarFila(numero);
+                    }
+                });
+                menuAgregarFila.add(item);
+            }
+            for (int i = 0; i < cantColumnas-1; i++) {
+                final int numero = i;
+                JMenuItem item = new JMenuItem("Columna "+i);
+                item.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        controlador.agregarColumna(numero);
+                    }
+                });
+                menuAgregarColumna.add(item);
+            }
+            barraMenu.add(menuAgregarFila);
+            barraMenu.add(menuAgregarColumna);
+            barraMenu.add(menuAyuda);
+        }
         panelRadios.setBackground(Color.white);
         labelOperaciones.setPreferredSize(new Dimension(230, 70));
-        Dimension dimension = this.getSize();
     }
 
     public void mostrarMatriz(DtoSimplex dto) {
         this.esPrimeraFase = dto.esDosfases();
+        this.esMatriz = dto.esMatriz();
         String[][] matriz = dto.getMatrizString();
         String[] nombresColumnas = dto.getNombreColumnas();
         String[] nombresFilas = dto.getNombreFilas();
@@ -513,7 +546,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         //muestra las proximas operaciones basadas en el pivote actual. 
         mostrarOperacion(dto.getOperaciones());
         //colocar los componentes en sus respectivas posiciones.
-        colocarComponentes(cantFilas, cantColumnas);
+        colocarComponentes(cantFilas-1, cantColumnas-2);
 
         panelTabla.validate();
         panelTabla.repaint();

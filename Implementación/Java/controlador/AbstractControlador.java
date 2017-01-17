@@ -270,4 +270,16 @@ public abstract class AbstractControlador {
         listaPasos.set(pasoActual, resultado);
         vista.mostrarMatriz(resultado);
     }
+    
+    public void agregarFila(int posicion) {
+        DtoSimplex resultado = solucionador.agregarFila(listaPasos.get(pasoActual), posicion);
+        listaPasos.set(pasoActual, resultado);
+        vista.mostrarMatriz(resultado);
+    }
+    
+    public void agregarColumna(int posicion){
+        DtoSimplex resultado = solucionador.agregarColumna(listaPasos.get(pasoActual), posicion);
+        listaPasos.set(pasoActual, resultado);
+        vista.mostrarMatriz(resultado);
+    }
 }
