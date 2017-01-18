@@ -100,7 +100,6 @@ public abstract class AbstractFraccion implements Serializable{
      * @param numero1 Valor numérico para comparar.
      * @param numero2 Valor numérico para comparar.
      * @return Volor numérico que representa el divisor mayor existente.
-     * @see https://en.wikipedia.org/wiki/Euclidean_algorithm
      */
     protected abstract int obtenerMayorDivisorComun(int numero1, int numero2);
 

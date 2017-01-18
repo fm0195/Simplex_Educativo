@@ -252,7 +252,7 @@ public abstract class AbstractControlador {
     }
     
     /**
-     * Agrega una restricción &gt;=, &lt= ó = al problema actual. 
+     * Agrega una restricción &gt;=, &lt;= ó = al problema actual. 
      *
      * @param tipo valor numérico para identificar el tipo de restricción agregada
      */
@@ -271,12 +271,20 @@ public abstract class AbstractControlador {
         vista.mostrarMatriz(resultado);
     }
     
+    /**
+     * Agrega un fila al Dto actual en la posición indicada por parametro. 
+     * @param posicion el lugar donde será insertada la nueva fila
+     */
     public void agregarFila(int posicion) {
         DtoSimplex resultado = solucionador.agregarFila(listaPasos.get(pasoActual), posicion);
         listaPasos.set(pasoActual, resultado);
         vista.mostrarMatriz(resultado);
     }
     
+    /**
+     * Agrega un columna al Dto actual en la posición indicada por parametro
+     * @param posicion el lugar donde será insertada la nueva columna
+     */
     public void agregarColumna(int posicion){
         DtoSimplex resultado = solucionador.agregarColumna(listaPasos.get(pasoActual), posicion);
         listaPasos.set(pasoActual, resultado);

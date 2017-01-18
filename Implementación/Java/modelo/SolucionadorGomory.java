@@ -60,7 +60,15 @@ public class SolucionadorGomory extends SolucionadorSimplex {
     public String[] calcularRadio(DtoSimplex dto, int columna) {
         return super.calcularRadio(dto, columna);
     }
-
+    
+    /**
+     * Completa el DTO para la próxima iteración una vez que una restricción nueva
+     * (corte de gomory) ha sido agregada a la matriz. Completar el DTO implica
+     * actualizar los atributos para que reflejen el estado actual del problema y
+     * actualizar los nombres de las filas y columnas 
+     * @param dto el DTO que será completado. 
+     * @return el DTO completo. 
+     */
     public DtoSimplex completarDto(DtoSimplex dto) {
         DtoSimplex dtoRes = dto.clonarProfundo();
         AbstractFraccion[][] matriz = dtoRes.clonarProfundo().getMatriz();

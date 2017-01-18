@@ -11,6 +11,10 @@ import modelo.parser.SimplexParser;
  */
 public class BranchAndBoundControlador extends AbstractControlador {
 
+    /**
+     * Instancia el controlador que resuelve problemas lineales por medio del
+     * algoritmo Branch and Bound
+     */
     public BranchAndBoundControlador() {
         this.solucionador = new SolucionadorBranchAndBound();
         this.parser = new SimplexParser();

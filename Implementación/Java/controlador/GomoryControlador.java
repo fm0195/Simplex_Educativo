@@ -15,6 +15,11 @@ import modelo.parser.SimplexParser;
  * @author fm010
  */
 public class GomoryControlador extends AbstractControlador {
+
+    /**
+     * Instancia el controlador que resuelve problemas lineales por medio del
+     * algoritmo Cortes de Gomory
+     */
     public GomoryControlador() {
         this.solucionador = new SolucionadorGomory();
         this.parser = new SimplexParser();

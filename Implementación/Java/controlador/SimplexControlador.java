@@ -9,6 +9,10 @@ import modelo.parser.SimplexParser;
  */
 public class SimplexControlador extends AbstractControlador {
 
+    /**
+     * Instancia el controlador que resuelve problemas lineales por medio del
+     * algoritmo Simplex.
+     */
     public SimplexControlador() {
         this.solucionador = new SolucionadorSimplex();
         this.parser = new SimplexParser();

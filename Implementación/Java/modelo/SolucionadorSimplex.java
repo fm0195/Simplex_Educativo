@@ -600,6 +600,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
      * @param matriz Matriz con los coeficientes del problema de programación
      * lineal.
      * @param cantidad Cantidad de columnas que se agregarán a la matriz.
+     * @param posicion Posición donde será agregada la nueva columna. 
      * @return Nueva matriz con las columnas que representan las variables de
      * holgura y artificiales.
      */
