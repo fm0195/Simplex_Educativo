@@ -55,11 +55,14 @@ public class PaginaInicial extends AppCompatActivity {
     public void acercaDe (View view){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setTitle("Acerca de");
-        builder1.setMessage("Simplex Educativo para plataforma móvil\n" +
-                "Realizado por:\n" +
-                "\tYordan Jiménez\n" +
-                "\tFernando Molina\n" +
-                "Versión 1.0");
+        builder1.setMessage("Simplex Educativo para plataforma móvil\n"+
+                "Proyecto de Ingeniería de Software\n"+
+                "Realizado por:\n\n" +
+                "\tYordan Jiménez - jjimenez1937@gmail.com\n" +
+                "\tFernando Molina - fm0105@gmail.com\n\n" +
+                "Versión 1.0\n"+
+                "Instituto Tecnológico de Costa Rica\n" +
+                "Enero 2017");
         builder1.setCancelable(true);
 
         builder1.setNegativeButton(
