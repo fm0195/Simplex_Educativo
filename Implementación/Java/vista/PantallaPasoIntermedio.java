@@ -85,6 +85,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
     JMenu menuAyuda;
     JMenu menuAgregarFila;
     JMenu menuAgregarColumna;
+    JMenuItem itemMenuAcercaDe;
     JMenuItem itemMenuFAQ;
     JMenuItem itemMenuMayorIgual;
     JMenuItem itemMenuMenorIgual;
@@ -188,6 +189,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         itemMenuMenorIgual= new JMenuItem("<=");
         itemMenuIgual= new JMenuItem("=");
         itemMenuFAQ = new JMenuItem("FAQ");
+        itemMenuAcercaDe = new JMenuItem("Acerca de");
     }
 
     /**
@@ -274,7 +276,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                                     "<br>" +
                                     "<b>¿Qué estoy viendo en la pantalla actual?</b><br>" +
                                     "<br>" +
-                                    "  En la pantalla actual se muestra la representación matricial del problema o matriz ingresados. <br>" +
+                                    "+ En la pantalla actual se muestra la representación matricial del problema o matriz ingresados. <br>" +
                                     "  En la fila superior se indican los nombres de las variables que representan <br>" +
                                     "  cada columna. En la primera columna se listan los números de las restricciones o filas ingresadas,<br>" +
                                     "  mientras que en la segundo columna se listan las variables básicas del problema. La columna con <br>" +
@@ -310,7 +312,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                                     "<br>" +
                                     "  + Sí, puede agregarlas en cualquier momento mediante la barra de menú. <br>" +
                                     "<br>" +
-                                    "<b>¿Cómo sé cuándo el algoritmo ha terminado?</b><br>" +
+                                    "<b>¿Cómo sé cuándo el algoritmo ha terminado?</b><br><br>" +
                                     "  + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo.";
                 JEditorPane areaTexto = new JEditorPane("text/html","");
                 areaTexto.setText(informacion);
@@ -319,6 +321,20 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                 scrollpane.getViewport().add(areaTexto);
                 JOptionPane.showMessageDialog(null, scrollpane, "FAQ",  
                                               JOptionPane.PLAIN_MESSAGE);
+                scrollpane.getVerticalScrollBar().setValue(0);
+                areaTexto.setCaretPosition(0);
+            }
+        });
+        
+        itemMenuAcercaDe.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String mensaje = "Simplex Educativo version 1.0\n\n"
+                        + "Desarrollado por:\n\n"
+                        + "+ Yordan Jimenez - jjimenez1937@gmail.com\n"
+                        + "+ Fernando Molina - fm0105@gmail.com\n\n"
+                        + "Instituto Tecnológico de Costa Rica\n\nEnero 2017";
+                JOptionPane.showMessageDialog(null, mensaje, "Acerca de", JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }
@@ -427,6 +443,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         menuRestricciones.add(itemMenuMenorIgual);
         menuRestricciones.add(itemMenuIgual);
         menuRestricciones.add(itemMenuMayorIgual);
+        menuAyuda.add(itemMenuAcercaDe);
         menuAyuda.add(itemMenuFAQ);
         barraMenu.add(menuRestricciones);
         barraMenu.add(menuAyuda);

@@ -418,10 +418,13 @@ public class DtoSimplex implements Serializable{
         }
         int columnaActual = 0;
         int filaActual = 0;
-        resultado += lineaHorizontal+"\n|"; 
+        resultado += lineaHorizontal+"\n"; 
         for (int i = 0; i <= arregloColumnas.length + 1; i++) {
-            if(i==arregloColumnas.length + 1 && esMatriz)
+            if(i==arregloColumnas.length + 1 && esMatriz){
+                resultado = resultado.substring(0, resultado.length()-1);
+                resultado += " ";
                 break;
+            }
             String variable = i <= arregloColumnas.length ? arregloColumnas[columnaActual++] : "RHS";
             int espacioIzq = (anchoColumna - variable.length()) / 2;
             int espacioDer = espacioIzq + variable.length();
@@ -433,13 +436,13 @@ public class DtoSimplex implements Serializable{
                         resultado += " ";
                     }
                     else if (j >= espacioIzq && j <= espacioDer){
-                        resultado += "BVS";
+                        resultado += "BVS ";
                         j += 3;
                     }
                     else 
                         resultado += " ";
                 }
-                resultado += "|";
+                resultado += " ";
                 columnaActual--;
                 continue;
             }
@@ -454,12 +457,12 @@ public class DtoSimplex implements Serializable{
                 else 
                     resultado += " ";
             }
-            resultado += "|";
+            resultado += " ";
         }
         resultado += "\n" + lineaHorizontal + "\n";
         
         for (int i = 0; i < arregloFilas.length; i++) {
-            resultado += "|" ;
+            resultado += " " ;
             for (int j = 0; j < arregloColumnas.length + 2; j++) {
                 if(j==arregloColumnas.length + 1 && esMatriz)
                     break;
@@ -481,7 +484,7 @@ public class DtoSimplex implements Serializable{
                         else 
                             resultado += " ";
                     }
-                    resultado += "|";
+                    resultado += " ";
                     continue;
                 }
                 variable = matrizString[i][j-1];
@@ -498,7 +501,7 @@ public class DtoSimplex implements Serializable{
                     else 
                         resultado += " ";
                 }
-                resultado += "|"; 
+                resultado += " "; 
             }
             resultado += "\n";
         }

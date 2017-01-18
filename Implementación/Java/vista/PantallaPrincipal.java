@@ -349,8 +349,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                         .addGroup(panelMetodoSolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(radioBB)
                             .addComponent(radioSimplex)
-                            .addComponent(radioMatriz)
-                            .addComponent(radioGomory))))
+                            .addComponent(radioGomory)
+                            .addComponent(radioMatriz))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         panelMetodoSolucionLayout.setVerticalGroup(
@@ -358,10 +358,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             .addGroup(panelMetodoSolucionLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelEntero)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(radioSimplex)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(7, 7, 7)
                 .addComponent(radioMatriz)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioSimplex)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(radioGomory)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -571,7 +571,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         int columnas = (int) spinnerColumnas.getValue();
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                resultado += (int) Math.floor(Math.random() * 101) + " ";
+                resultado += (int) Math.floor(Math.random() * 101) + "\t";
             }
             resultado += "\n";
         }

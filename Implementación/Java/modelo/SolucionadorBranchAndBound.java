@@ -581,7 +581,7 @@ class NodoBranchAndBound {
     public String obtenerRestriccion() {
         String resultado = "";
         if (padre == null) {
-            return "No es necesario.\n";
+            return "No es necesario\n";
         }
         String[] columnas = problema.getNombreColumnas();
         resultado = columnas[indiceVariableRestrccion] + " ";

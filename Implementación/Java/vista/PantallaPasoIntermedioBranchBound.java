@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import dto.DtoSimplex;
+import javax.swing.JEditorPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -56,6 +57,7 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
     final int POSICION_Y = 50;
     JMenuBar barraMenu;
     JMenuItem itemMenuFAQ;
+    JMenuItem itemMenuAcercaDe;
     JMenu menuAyuda;
 
     /**
@@ -89,7 +91,7 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
         panelBotonesResumen.setBounds(POSICION_X - 5, 320, 550, 140);
         pestanaResumen = new JPanel(null);
         pestanaResumen.setFont(new Font("Courier New", Font.BOLD, 14));
-        etiquetaArbol = new JLabel("Arbol generado.");
+        etiquetaArbol = new JLabel("Arbol generado");
         etiquetaArbol.setFont(new Font("Courier New", Font.BOLD, 14));
         etiquetaArbol.setBounds(10, 10, 200, 15);
         etiquetaMensaje = new JLabel("Mensaje.");
@@ -122,6 +124,7 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
         barraMenu = new JMenuBar();
         menuAyuda = new JMenu("Ayuda");
         itemMenuFAQ = new JMenuItem("FAQ");
+        itemMenuAcercaDe = new JMenuItem("Acerca de");
         super.setSize(1000, this.getHeight()+30);
     }
 
@@ -168,29 +171,39 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
             @Override
             public void actionPerformed(ActionEvent ae) {
                 JScrollPane scrollpane = new JScrollPane(); 
-                String informacion = "¿Cómo vuelvo al menú principal?\n" +
-                                    "\n" +
-                                    "  + Cierre la ventana actual para volver. \n" +
-                                    "\n" +
-                                    "¿Qué estoy viendo en la pantalla actual?\n" +
-                                    "\n" +
-                                    "+  En la pantalla actual se muestra la representación de un arbol en cadena de texto,\n"
-                                    + " donde se agrega las restricciones que el algoritmo de Branch And Bound genera para obtener la \n"
-                                    + " solución óptima entera. Además cada nodo del arbol, representado por Problema x.x.., muestra las\n"
-                                    + " restricciones agregadas por el algoritmo. La sección de mensaje se podrá informar de las acciones\n"
+                String informacion = "<b>¿Cómo vuelvo al menú principal?</b><br>" +
+                                    "<br>" +
+                                    "+Cierre la ventana actual para volver. <br>" +
+                                    "<br>" +
+                                    "<b>¿Qué estoy viendo en la pantalla actual?</b><br>" +
+                                    "<br>" +
+                                    "+  En la pantalla actual se muestra la representación de un arbol en cadena de texto,<br>"
+                                    + " donde se agrega las restricciones que el algoritmo de Branch And Bound genera para obtener la <br>"
+                                    + " solución óptima entera. Además cada nodo del arbol, representado por Problema x.x.., muestra las<br>"
+                                    + " restricciones agregadas por el algoritmo. La sección de mensaje se podrá informar de las acciones<br>"
                                     + " que ha tomado el algoritmo." +
-                                    "\n" +
-                                    "¿Cómo sé cuándo el algoritmo ha terminado?\n" +
+                                    "<br>" +
+                                    "<b>¿Cómo sé cuándo el algoritmo ha terminado?</b><br><br>" +
                                     "  + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo. "
-                                    + "\n"+
-                                    "";
-                JTextArea areaTexto = new JTextArea();
+                                    + "<br>";
+                JEditorPane areaTexto = new JEditorPane("text/html","");
                 areaTexto.setText(informacion);
-                areaTexto.setWrapStyleWord(true);
                 scrollpane.add(areaTexto);
                 scrollpane.getViewport().add(areaTexto);
                 JOptionPane.showMessageDialog(null, scrollpane, "FAQ",  
                                               JOptionPane.PLAIN_MESSAGE);
+            }
+        });
+        
+        itemMenuAcercaDe.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String mensaje = "Simplex Educativo version 1.0\n\n"
+                        + "Desarrollado por:\n\n"
+                        + "+ Yordan Jimenez - jjimenez1937@gmail.com\n"
+                        + "+ Fernando Molina - fm0105@gmail.com\n\n"
+                        + "Instituto Tecnológico de Costa Rica\n\nEnero 2017";
+                JOptionPane.showMessageDialog(null, mensaje, "Acerca de", JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }
@@ -210,7 +223,8 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
         pestanaResumen.add(etiquetaArbol);
         pestanaResumen.add(etiquetaMensaje);
         pestanaResumen.add(panelBotonesResumen);
-         menuAyuda.add(itemMenuFAQ);
+        menuAyuda.add(itemMenuAcercaDe);
+        menuAyuda.add(itemMenuFAQ);
         barraMenu.add(menuAyuda);
         this.setJMenuBar(barraMenu);
     }

@@ -405,9 +405,9 @@
                           <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="radioBB" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="radioSimplex" min="-2" max="-2" attributes="0"/>
-                              <Component id="radioMatriz" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="radioSimplex" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="radioGomory" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="radioMatriz" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -420,10 +420,10 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="labelEntero" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="radioSimplex" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                   <Component id="radioMatriz" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="radioSimplex" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="radioGomory" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>

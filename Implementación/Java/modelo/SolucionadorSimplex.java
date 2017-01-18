@@ -120,11 +120,11 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             dto.setCoordenadaPivote(new Point(dto.getVariablesHolgura()
                     + dto.getVariablesBasicas() - 1, artificiales.get(0) + 1));
             dto.setOperaciones(siguientesOperacionesInicioDosfases(artificiales.get(0)));
-            dto.setMensaje("Agregada fila -w, holguras 's' y artificiales 'a'.");
+            dto.setMensaje("Agregada fila -w, holguras 's' y artificiales 'a'");
         } else {
             dto.setCoordenadaPivote(siguientePivoteo(dto));
             dto = siguientesOperaciones(dto);
-            dto.setMensaje("Agregadas variables de holgura 's' al problema original.");
+            dto.setMensaje("Agregadas variables de holgura 's' al problema original");
         }
         dto.setMatriz(matriz);
         return dto;
@@ -859,7 +859,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
             } else {
                 if (!dto.esDosfases()) {
                     dto.setSolucion(obtenerSolucion(dto));
-                    dto.setMensaje("Estado óptimo.");
+                    dto.setMensaje("Estado óptimo");
                     dto.setFinalizado(true);
                 } else {
                     String[] nombreColumnas = dto.getNombreColumnas();
@@ -899,7 +899,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 if (finalizado) {
                     dto.setSolucion(obtenerSolucion(dto));
                 }
-                dto.setMensaje("Primera fase finalizada, eliminadas variables artificiales y fila w. " + (finalizado ? "Estado óptimo. " : ""));
+                dto.setMensaje("Primera fase finalizada, eliminadas variables artificiales y fila w " + (finalizado ? "Estado óptimo " : ""));
                 dto.setCoordenadaPivote(siguientePivoteo(dto));
                 dto = siguientesOperaciones(dto);
             } else {
@@ -919,13 +919,13 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 boolean factible = verificarFactibilidad(dto.getMatriz()[0]);
                 dto.setFactible(factible);
                 if (!factible) {
-                    dto.setMensaje("El problema no posee solución óptima factible.");
+                    dto.setMensaje("El problema no posee solución óptima factible");
                 }
             }
             return dto;
         } else {
             dto.setFactible(false);
-            dto.setMensaje("El problema no posee solución óptima factible.");
+            dto.setMensaje("El problema no posee solución óptima factible");
             return dto;
         }
     }
@@ -1179,7 +1179,7 @@ public class SolucionadorSimplex extends AbstractSolucionadorSimplex {
                 dtoLocal = agregarIgual(dtoLocal);
                 break;
         }
-        dtoLocal.setMensaje("Restricción agregada.");
+        dtoLocal.setMensaje("Restricción agregada");
         return dtoLocal;
     }
     

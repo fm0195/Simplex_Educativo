@@ -111,7 +111,12 @@ public class Fraccion extends AbstractFraccion implements Serializable{
            }else
                return toString();
        }else{
-           return new DecimalFormat("#.##").format(((double)getNumerador() / (double)getDenominador()));//String.format("%.2f", ((double)getNumerador() / (double)getDenominador()));
+           if (getNumerador() == 0) {
+                return "0";
+           }else if(getDenominador() == 1){
+               return String.valueOf((int) getNumerador());
+           }else
+                return new DecimalFormat("0.00").format(((double)getNumerador() / (double)getDenominador()));
        }
     }
 
