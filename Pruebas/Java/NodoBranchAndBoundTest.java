@@ -367,7 +367,7 @@ public class NodoBranchAndBoundTest {
         System.out.println(s);
 
         return Arrays.asList(new Object[][]{
-            {nodo1, "No es necesario.\n", "No es necesario.\n", " ",
+            {nodo1, "No es necesario\n", "No es necesario\n", " ",
                 " z = 21/5\n"
                 + " x1 = 1\n"
                 + " x2 = 2/5\n"
@@ -377,22 +377,22 @@ public class NodoBranchAndBoundTest {
                 + "       z = 21/5\n"
                 + "       x1 = 1\n"
                 + "       x2 = 2/5\n"
-                + "       Restricción: No es necesario.\n"
+                + "       Restricción: No es necesario\n"
                 + "       *Problema Acotado\n"
                 + "\n"
                 + ""},
-            {nodo2, "No es necesario.\n", "No es necesario.\n", "",
+            {nodo2, "No es necesario\n", "No es necesario\n", "",
                 "z = -5\n"
                 + "x1 = 7\n"
                 + "x2 = 6/5\n"
                 + "",
                 4,
                 "    Problema 2.2\n"
-                + "      Restricción: No es necesario.\n"
+                + "      Restricción: No es necesario\n"
                 + "      *Problema No Factible\n"
                 + "\n"
                 + ""},
-            {nodo3, "No es necesario.\n", "No es necesario.\n", "   ",
+            {nodo3, "No es necesario\n", "No es necesario\n", "   ",
                 "   z = 85\n"
                 + "   x1 = 4/5\n"
                 + "   x2 = 5\n"
@@ -402,7 +402,7 @@ public class NodoBranchAndBoundTest {
                 + "     z = 85\n"
                 + "     x1 = 4/5\n"
                 + "     x2 = 5\n"
-                + "     Restricción: No es necesario.\n"
+                + "     Restricción: No es necesario\n"
                 + "\n"
                 + ""},
             {nodo4, "x1 <= 97\n", "x1 <= 97\n", "    ",
