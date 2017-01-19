@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
  *
  * @author Yordan Jiménez
  */
-public class Fraccion extends AbstractFraccion implements Serializable{
+public class Fraccion extends AbstractFraccion implements Serializable {
 
     public Fraccion() {
         super(0, 1);
@@ -103,21 +103,27 @@ public class Fraccion extends AbstractFraccion implements Serializable{
 
     @Override
     public String toString(boolean fraccional) {
-       if(fraccional){
-           if (getNumerador() == 0) {
+        if (fraccional) {
+            if (getNumerador() == 0) {
                 return "0";
-           }else if(getDenominador() == 1){
-               return String.valueOf((int) getNumerador());
-           }else
-               return toString();
-       }else{
-           if (getNumerador() == 0) {
+            } else {
+                if (getDenominador() == 1) {
+                    return String.valueOf((int) getNumerador());
+                } else {
+                    return toString();
+                }
+            }
+        } else {
+            if (getNumerador() == 0) {
                 return "0";
-           }else if(getDenominador() == 1){
-               return String.valueOf((int) getNumerador());
-           }else
-                return new DecimalFormat("0.00").format(((double)getNumerador() / (double)getDenominador()));
-       }
+            } else {
+                if (getDenominador() == 1) {
+                    return String.valueOf((int) getNumerador());
+                } else {
+                    return new DecimalFormat("0.00").format(((double) getNumerador() / (double) getDenominador()));
+                }
+            }
+        }
     }
 
     @Override
@@ -125,10 +131,10 @@ public class Fraccion extends AbstractFraccion implements Serializable{
         int nuevoNumerador = getNumerador() % getDenominador();
         return new Fraccion(nuevoNumerador, getDenominador());
     }
-    
-     @Override
+
+    @Override
     public AbstractFraccion obtenerParteEntera() {
-        double monto = ((double)getNumerador()) / ((double) getDenominador());
+        double monto = ((double) getNumerador()) / ((double) getDenominador());
         AbstractFraccion resultado = new Fraccion((int) Math.floor(monto));
         return resultado;
     }

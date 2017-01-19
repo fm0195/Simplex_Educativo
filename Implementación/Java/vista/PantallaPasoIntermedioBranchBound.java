@@ -46,7 +46,7 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
     JPanel panelBotonesResumen;
     JButton botonSiguienteResumen;
     JButton botonAnteriorResumen;
-    JButton botonCopiarArbol;    
+    JButton botonCopiarArbol;
     JButton botonCopiarMensaje;
     JLabel etiquetaArbol;
     JLabel etiquetaMensaje;
@@ -125,7 +125,7 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
         menuAyuda = new JMenu("Ayuda");
         itemMenuFAQ = new JMenuItem("FAQ");
         itemMenuAcercaDe = new JMenuItem("Acerca de");
-        super.setSize(1000, this.getHeight()+30);
+        super.setSize(1000, this.getHeight() + 30);
     }
 
     /**
@@ -156,7 +156,7 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
                 clpbrd.setContents(stringSelection, null);
             }
         });
-        
+
         botonCopiarMensaje.addActionListener(new ActionListener() {
 
             @Override
@@ -166,35 +166,35 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
                 clpbrd.setContents(stringSelection, null);
             }
         });
-        
+
         itemMenuFAQ.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                JScrollPane scrollpane = new JScrollPane(); 
-                String informacion = "<b>¿Cómo vuelvo al menú principal?</b><br>" +
-                                    "<br>" +
-                                    "+Cierre la ventana actual para volver. <br>" +
-                                    "<br>" +
-                                    "<b>¿Qué estoy viendo en la pantalla actual?</b><br>" +
-                                    "<br>" +
-                                    "+  En la pantalla actual se muestra la representación de un arbol en cadena de texto,<br>"
-                                    + " donde se agrega las restricciones que el algoritmo de Branch And Bound genera para obtener la <br>"
-                                    + " solución óptima entera. Además cada nodo del arbol, representado por Problema x.x.., muestra las<br>"
-                                    + " restricciones agregadas por el algoritmo. La sección de mensaje se podrá informar de las acciones<br>"
-                                    + " que ha tomado el algoritmo." +
-                                    "<br>" +
-                                    "<b>¿Cómo sé cuándo el algoritmo ha terminado?</b><br><br>" +
-                                    "  + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo. "
-                                    + "<br>";
-                JEditorPane areaTexto = new JEditorPane("text/html","");
+                JScrollPane scrollpane = new JScrollPane();
+                String informacion = "<b>¿Cómo vuelvo al menú principal?</b><br>"
+                        + "<br>"
+                        + "+Cierre la ventana actual para volver. <br>"
+                        + "<br>"
+                        + "<b>¿Qué estoy viendo en la pantalla actual?</b><br>"
+                        + "<br>"
+                        + "+  En la pantalla actual se muestra la representación de un arbol en cadena de texto,<br>"
+                        + " donde se agrega las restricciones que el algoritmo de Branch And Bound genera para obtener la <br>"
+                        + " solución óptima entera. Además cada nodo del arbol, representado por Problema x.x.., muestra las<br>"
+                        + " restricciones agregadas por el algoritmo. La sección de mensaje se podrá informar de las acciones<br>"
+                        + " que ha tomado el algoritmo."
+                        + "<br>"
+                        + "<b>¿Cómo sé cuándo el algoritmo ha terminado?</b><br><br>"
+                        + "  + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo. "
+                        + "<br>";
+                JEditorPane areaTexto = new JEditorPane("text/html", "");
                 areaTexto.setText(informacion);
                 scrollpane.add(areaTexto);
                 scrollpane.getViewport().add(areaTexto);
-                JOptionPane.showMessageDialog(null, scrollpane, "FAQ",  
-                                              JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null, scrollpane, "FAQ",
+                        JOptionPane.PLAIN_MESSAGE);
             }
         });
-        
+
         itemMenuAcercaDe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -286,7 +286,6 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final javax.swing.JTabbedPane panelPestana = new javax.swing.JTabbedPane();

@@ -36,13 +36,15 @@ public class BranchAndBoundControlador extends AbstractControlador {
         vista.mostrarMatriz(listaPasos.get(pasoActual));
         if (!listaPasos.get(pasoActual).esFactible()) {
             vista.mostrarMensajeError("\"El problema no es factible.\n La función -w no posee el valor 0 en el RHS al terminar la primera fase.", "Infactibilidad");
-        } else if (listaPasos.get(pasoActual).esFinalizado()) {
-            vista.mostrarMensajeInformacion("Se ha logrado llegar a un óptimo.", "Finalizado");
-            DtoSimplex solucion = listaPasos.get(pasoActual);
-            String optima = problemaOriginal+"\nRestricciones agregadas:\n"+solucion.getSolucion();
-            optima = "Solución óptima.\n" + optima;
-            solucion = new DtoSimplex(optima,solucion.getMensaje(), solucion.esFactible(), solucion.esFinalizado());
-            vista.mostrarMatriz(solucion);
+        } else {
+            if (listaPasos.get(pasoActual).esFinalizado()) {
+                vista.mostrarMensajeInformacion("Se ha logrado llegar a un óptimo.", "Finalizado");
+                DtoSimplex solucion = listaPasos.get(pasoActual);
+                String optima = problemaOriginal + "\nRestricciones agregadas:\n" + solucion.getSolucion();
+                optima = "Solución óptima.\n" + optima;
+                solucion = new DtoSimplex(optima, solucion.getMensaje(), solucion.esFactible(), solucion.esFinalizado());
+                vista.mostrarMatriz(solucion);
+            }
         }
         return listaPasos;
     }
@@ -72,13 +74,15 @@ public class BranchAndBoundControlador extends AbstractControlador {
 
         if (!listaPasos.get(pasoActual).esFactible()) {
             vista.mostrarMensajeError("El problema no es factible.\n La función -w no posee el valor 0 en el RHS al terminar la primera fase.", "Infactibilidad");
-        }  else if (listaPasos.get(pasoActual).esFinalizado()) {
-            vista.mostrarMensajeInformacion("Se ha logrado llegar a un óptimo.", "Finalizado");
-            DtoSimplex solucion = listaPasos.get(pasoActual);
-            String optima = problemaOriginal+"\nRestricciones agregadas:\n"+solucion.getSolucion();
-            optima = "Solución óptima.\n" + optima;
-            solucion = new DtoSimplex(optima,solucion.getMensaje(), solucion.esFactible(), solucion.esFinalizado());
-            vista.mostrarMatriz(solucion);
+        } else {
+            if (listaPasos.get(pasoActual).esFinalizado()) {
+                vista.mostrarMensajeInformacion("Se ha logrado llegar a un óptimo.", "Finalizado");
+                DtoSimplex solucion = listaPasos.get(pasoActual);
+                String optima = problemaOriginal + "\nRestricciones agregadas:\n" + solucion.getSolucion();
+                optima = "Solución óptima.\n" + optima;
+                solucion = new DtoSimplex(optima, solucion.getMensaje(), solucion.esFactible(), solucion.esFinalizado());
+                vista.mostrarMatriz(solucion);
+            }
         }
     }
 

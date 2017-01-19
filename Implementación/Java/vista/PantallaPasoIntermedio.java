@@ -124,7 +124,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         this.keyBuffer = new StringBuilder();
         this.resumenPasoAnterior = new StringBuilder();
         this.casillaSeleccionada = new Point();
-        
+
         initVariables();
         agregarActionListeners();
         agregarComponentes();
@@ -142,7 +142,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         pestanaResumen = new JPanel(new GridBagLayout());
         pestanaResumen.setFont(new Font("Courier New", Font.BOLD, 16));
         pestanaMatriz = new JPanel(new GridBagLayout());
-        
+
         labelOperaciones = new JTextArea();
         labelOperaciones.setEditable(false);
         labelOperaciones.setLineWrap(true);
@@ -186,8 +186,8 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         menuAgregarFila = new JMenu("Agregar Fila");
         menuAgregarColumna = new JMenu("Agregar Columna");
         itemMenuMayorIgual = new JMenuItem(">=");
-        itemMenuMenorIgual= new JMenuItem("<=");
-        itemMenuIgual= new JMenuItem("=");
+        itemMenuMenorIgual = new JMenuItem("<=");
+        itemMenuIgual = new JMenuItem("=");
         itemMenuFAQ = new JMenuItem("FAQ");
         itemMenuAcercaDe = new JMenuItem("Acerca de");
     }
@@ -265,67 +265,67 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                 controlador.agregarRestriccion(sym.MENORIGUAL);
             }
         });
-        
+
         itemMenuFAQ.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                JScrollPane scrollpane = new JScrollPane(); 
-                String informacion = "<b>¿Cómo vuelvo al menú principal?</b><br>" +
-                                    "<br>" +
-                                    "+ Cierre la ventana actual para volver. <br>" +
-                                    "<br>" +
-                                    "<b>¿Qué estoy viendo en la pantalla actual?</b><br>" +
-                                    "<br>" +
-                                    "+ En la pantalla actual se muestra la representación matricial del problema o matriz ingresados. <br>" +
-                                    "  En la fila superior se indican los nombres de las variables que representan <br>" +
-                                    "  cada columna. En la primera columna se listan los números de las restricciones o filas ingresadas,<br>" +
-                                    "  mientras que en la segundo columna se listan las variables básicas del problema. La columna con <br>" +
-                                    "  la etiqueta \"RHS\" simboliza el lado derecho del sistema de ecuaciones ingresado. <br>" +
-                                    "<br>" +
-                                    "<b>¿Por qué hay una entrada de color rojo? </b><br>" +
-                                    "<br>" +
-                                    "+ La entrada marcada con color rojo representa la posicion en la matriz sobre la que se realizará<br>" +
-                                    "  el siguiente pivoteo. <br>" +
-                                    "<br>" +
-                                    "<b>¿Puedo escoger el lugar donde se realizará el próximo pivoteo?</b><br>" +
-                                    "<br>" +
-                                    "+ Sí. Para ello debe hacer click sobre la entrada de la matriz que desee seleccionar como pivote. <br>" +
-                                    "  Esta funcionalidad solamente está activada si las variables artificiales ya han sido<br>" +
-                                    "  reducidas a 0 durante la primera fase del Simplex, o bien si ingresó una matriz. <br>" +
-                                    "<br>" +
-                                    "  <b>¿Cómo realizo el pivoteo?</b><br>" +
-                                    "  <br>" +
-                                    "  + Haga clic en el botón \"Siguiente Paso\". <br>" +
-                                    "<br>" +
-                                    "<b>¿Puedo modificar una entrada de la matriz una vez iniciado el algoritmo?</b><br>" +
-                                    "<br>" +
-                                    "  + Sí. Para ello, debe seleccionar la casilla que desea modificar y utilizar el teclado<br>" +
-                                    "    numérico para cambiar el valor. Al terminar de ingresar el nuevo número, debe presionar la tecla Enter<br>" +
-                                    "    y el sistema alertará si el valor fue actualizado correctamente. <br>" +
-                                    "<br>" +
-                                    "<b>¿Puedo agregar una restricción una vez iniciado el algoritmo?</b><br>" +
-                                    "<br>" +
-                                    "  + Sí, pero solamente durante el primer paso del algoritmo. Además, las restricciones \">=\" ó \"=\"<br>" +
-                                    "    solamente pueden ser agregadas en problemas de dos fases. <br>" +
-                                    "<br>" +
-                                    "<b>¿Puedo agregar una fila o columna nuevas a una matriz?</b><br>" +
-                                    "<br>" +
-                                    "  + Sí, puede agregarlas en cualquier momento mediante la barra de menú. <br>" +
-                                    "<br>" +
-                                    "<b>¿Cómo sé cuándo el algoritmo ha terminado?</b><br><br>" +
-                                    "  + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo.";
-                JEditorPane areaTexto = new JEditorPane("text/html","");
+                JScrollPane scrollpane = new JScrollPane();
+                String informacion = "<b>¿Cómo vuelvo al menú principal?</b><br>"
+                        + "<br>"
+                        + "+ Cierre la ventana actual para volver. <br>"
+                        + "<br>"
+                        + "<b>¿Qué estoy viendo en la pantalla actual?</b><br>"
+                        + "<br>"
+                        + "+ En la pantalla actual se muestra la representación matricial del problema o matriz ingresados. <br>"
+                        + "  En la fila superior se indican los nombres de las variables que representan <br>"
+                        + "  cada columna. En la primera columna se listan los números de las restricciones o filas ingresadas,<br>"
+                        + "  mientras que en la segundo columna se listan las variables básicas del problema. La columna con <br>"
+                        + "  la etiqueta \"RHS\" simboliza el lado derecho del sistema de ecuaciones ingresado. <br>"
+                        + "<br>"
+                        + "<b>¿Por qué hay una entrada de color rojo? </b><br>"
+                        + "<br>"
+                        + "+ La entrada marcada con color rojo representa la posicion en la matriz sobre la que se realizará<br>"
+                        + "  el siguiente pivoteo. <br>"
+                        + "<br>"
+                        + "<b>¿Puedo escoger el lugar donde se realizará el próximo pivoteo?</b><br>"
+                        + "<br>"
+                        + "+ Sí. Para ello debe hacer click sobre la entrada de la matriz que desee seleccionar como pivote. <br>"
+                        + "  Esta funcionalidad solamente está activada si las variables artificiales ya han sido<br>"
+                        + "  reducidas a 0 durante la primera fase del Simplex, o bien si ingresó una matriz. <br>"
+                        + "<br>"
+                        + "  <b>¿Cómo realizo el pivoteo?</b><br>"
+                        + "  <br>"
+                        + "  + Haga clic en el botón \"Siguiente Paso\". <br>"
+                        + "<br>"
+                        + "<b>¿Puedo modificar una entrada de la matriz una vez iniciado el algoritmo?</b><br>"
+                        + "<br>"
+                        + "  + Sí. Para ello, debe seleccionar la casilla que desea modificar y utilizar el teclado<br>"
+                        + "    numérico para cambiar el valor. Al terminar de ingresar el nuevo número, debe presionar la tecla Enter<br>"
+                        + "    y el sistema alertará si el valor fue actualizado correctamente. <br>"
+                        + "<br>"
+                        + "<b>¿Puedo agregar una restricción una vez iniciado el algoritmo?</b><br>"
+                        + "<br>"
+                        + "  + Sí, pero solamente durante el primer paso del algoritmo. Además, las restricciones \">=\" ó \"=\"<br>"
+                        + "    solamente pueden ser agregadas en problemas de dos fases. <br>"
+                        + "<br>"
+                        + "<b>¿Puedo agregar una fila o columna nuevas a una matriz?</b><br>"
+                        + "<br>"
+                        + "  + Sí, puede agregarlas en cualquier momento mediante la barra de menú. <br>"
+                        + "<br>"
+                        + "<b>¿Cómo sé cuándo el algoritmo ha terminado?</b><br><br>"
+                        + "  + El sistema alertará mediante un mensaje que se ha llegado a un estado óptimo.";
+                JEditorPane areaTexto = new JEditorPane("text/html", "");
                 areaTexto.setText(informacion);
-                scrollpane.setPreferredSize(new Dimension (650, 400));
+                scrollpane.setPreferredSize(new Dimension(650, 400));
                 scrollpane.add(areaTexto);
                 scrollpane.getViewport().add(areaTexto);
-                JOptionPane.showMessageDialog(null, scrollpane, "FAQ",  
-                                              JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null, scrollpane, "FAQ",
+                        JOptionPane.PLAIN_MESSAGE);
                 scrollpane.getVerticalScrollBar().setValue(0);
                 areaTexto.setCaretPosition(0);
             }
         });
-        
+
         itemMenuAcercaDe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -345,7 +345,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
      */
     public void agregarComponentes() {
         GridBagConstraints propiedades = new GridBagConstraints();
-        
+
         propiedades.gridx = 0;
         propiedades.gridy = 0;
         propiedades.gridwidth = 1;
@@ -353,7 +353,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         propiedades.weightx = 0.1;
         propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
         panelBotonesMatriz.add(botonAnteriorMatriz, propiedades);
-        
+
         propiedades = new GridBagConstraints();
         propiedades.gridx = 1;
         propiedades.gridy = 0;
@@ -362,7 +362,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         propiedades.weightx = 0.1;
         propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
         panelBotonesMatriz.add(botonSiguienteMatriz, propiedades);
-        
+
         propiedades = new GridBagConstraints();
         propiedades.gridx = 2;
         propiedades.gridy = 0;
@@ -373,14 +373,14 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         propiedades.fill = GridBagConstraints.VERTICAL;
         propiedades.weighty = 1;
         panelBotonesMatriz.add(labelOperaciones, propiedades);
-        
+
         panelBotonesResumen.add(botonAnteriorResumen);
         panelBotonesResumen.add(botonSiguienteResumen);
         panelBotonesResumen.add(botonCopiarPaso);
         panelBotonesResumen.add(botonCopiarTodo);
         panelPestana.addTab("Matriz Numérica", pestanaMatriz);
         panelPestana.addTab("Resumen de pasos", pestanaResumen);
-        
+
         propiedades = new GridBagConstraints();
         propiedades.gridx = 0;
         propiedades.gridy = 0;
@@ -389,7 +389,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         propiedades.fill = GridBagConstraints.BOTH;
         propiedades.insets = new Insets(20, 0, 0, 0);
         pestanaMatriz.add(labelMensaje, propiedades);
-        
+
         propiedades = new GridBagConstraints();
         propiedades.gridx = 0;
         propiedades.gridy = 1;
@@ -399,7 +399,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         propiedades.weighty = 0.9;
         propiedades.fill = GridBagConstraints.BOTH;
         pestanaMatriz.add(panelTabla, propiedades);
-        
+
         propiedades = new GridBagConstraints();
         propiedades.gridx = 2;
         propiedades.gridy = 1;
@@ -409,7 +409,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         propiedades.fill = GridBagConstraints.BOTH;
         propiedades.insets = new Insets(0, 10, 0, 10);
         pestanaMatriz.add(panelRadios, propiedades);
-        
+
         propiedades = new GridBagConstraints();
         propiedades.gridx = 0;
         propiedades.gridy = 3;
@@ -420,7 +420,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         propiedades.fill = GridBagConstraints.BOTH;
         propiedades.insets = new Insets(20, 0, 0, 0);
         pestanaMatriz.add(panelBotonesMatriz, propiedades);
-        
+
         propiedades = new GridBagConstraints();
         propiedades.gridx = 0;
         propiedades.gridy = 0;
@@ -430,7 +430,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         propiedades.weighty = 1;
         propiedades.fill = GridBagConstraints.BOTH;
         pestanaResumen.add(scrollResumen, propiedades);
-        
+
         propiedades = new GridBagConstraints();
         propiedades.gridx = 0;
         propiedades.gridy = 1;
@@ -439,7 +439,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         propiedades.weightx = 0.1;
         propiedades.weighty = 0.1;
         pestanaResumen.add(panelBotonesResumen, propiedades);
-        
+
         menuRestricciones.add(itemMenuMenorIgual);
         menuRestricciones.add(itemMenuIgual);
         menuRestricciones.add(itemMenuMayorIgual);
@@ -503,7 +503,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
             menuAgregarColumna.removeAll();
             for (int i = 0; i < cantFilas; i++) {
                 final int numero = i;
-                JMenuItem item = new JMenuItem("Fila "+i);
+                JMenuItem item = new JMenuItem("Fila " + i);
                 item.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent ae) {
@@ -512,9 +512,9 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                 });
                 menuAgregarFila.add(item);
             }
-            for (int i = 0; i < cantColumnas-1; i++) {
+            for (int i = 0; i < cantColumnas - 1; i++) {
                 final int numero = i;
-                JMenuItem item = new JMenuItem("Columna "+i);
+                JMenuItem item = new JMenuItem("Columna " + i);
                 item.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent ae) {
@@ -563,7 +563,7 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         //muestra las proximas operaciones basadas en el pivote actual. 
         mostrarOperacion(dto.getOperaciones());
         //colocar los componentes en sus respectivas posiciones.
-        colocarComponentes(cantFilas-1, cantColumnas-2);
+        colocarComponentes(cantFilas - 1, cantColumnas - 2);
 
         panelTabla.validate();
         panelTabla.repaint();

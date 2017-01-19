@@ -250,13 +250,14 @@ public abstract class AbstractControlador {
         }
         return resultado;
     }
-    
+
     /**
-     * Agrega una restricción &gt;=, &lt;= ó = al problema actual. 
+     * Agrega una restricción &gt;=, &lt;= ó = al problema actual.
      *
-     * @param tipo valor numérico para identificar el tipo de restricción agregada
+     * @param tipo valor numérico para identificar el tipo de restricción
+     * agregada
      */
-    public void agregarRestriccion(int tipo){
+    public void agregarRestriccion(int tipo) {
         DtoSimplex actual = listaPasos.get(pasoActual);
         if (!actual.esDosfases() && (tipo == sym.MAYORIGUAL || tipo == sym.IGUAL)) {
             vista.mostrarMensajeError("No puede agregar esta restricción en un problema de una fase.", "Problema de una fase");
@@ -270,9 +271,10 @@ public abstract class AbstractControlador {
         listaPasos.set(pasoActual, resultado);
         vista.mostrarMatriz(resultado);
     }
-    
+
     /**
-     * Agrega un fila al Dto actual en la posición indicada por parametro. 
+     * Agrega un fila al Dto actual en la posición indicada por parametro.
+     *
      * @param posicion el lugar donde será insertada la nueva fila
      */
     public void agregarFila(int posicion) {
@@ -280,12 +282,13 @@ public abstract class AbstractControlador {
         listaPasos.set(pasoActual, resultado);
         vista.mostrarMatriz(resultado);
     }
-    
+
     /**
      * Agrega un columna al Dto actual en la posición indicada por parametro
+     *
      * @param posicion el lugar donde será insertada la nueva columna
      */
-    public void agregarColumna(int posicion){
+    public void agregarColumna(int posicion) {
         DtoSimplex resultado = solucionador.agregarColumna(listaPasos.get(pasoActual), posicion);
         listaPasos.set(pasoActual, resultado);
         vista.mostrarMatriz(resultado);

@@ -6,7 +6,7 @@ import java.io.Serializable;
  *
  * @author Yordan Jiménez
  */
-public abstract class AbstractFraccion implements Serializable{
+public abstract class AbstractFraccion implements Serializable {
 
     private int numerador;
     private int denominador = 1;
@@ -35,7 +35,7 @@ public abstract class AbstractFraccion implements Serializable{
      * @param numerador
      */
     public AbstractFraccion(double numerador) {
-        if(numerador == Double.MAX_VALUE) {
+        if (numerador == Double.MAX_VALUE) {
             this.numerador = Integer.MAX_VALUE;
             this.denominador = 1;
             return;
@@ -44,11 +44,11 @@ public abstract class AbstractFraccion implements Serializable{
         int digitsDec = s.length() - 1 - s.indexOf('.');
         int denom = 1;
         for (int i = 0; i < digitsDec; i++) {
-            numerador *= 10;    
+            numerador *= 10;
             denom *= 10;
         }
-        int divisorComun = obtenerMayorDivisorComun((int)(numerador), denom);
-        this.numerador = ((int)(numerador)) / divisorComun;
+        int divisorComun = obtenerMayorDivisorComun((int) (numerador), denom);
+        this.numerador = ((int) (numerador)) / divisorComun;
         this.denominador = denom / divisorComun;
         validarSignos();
     }
@@ -115,7 +115,7 @@ public abstract class AbstractFraccion implements Serializable{
         double numerador2 = fraccion2.getNumerador();
         int denominador2 = fraccion2.getDenominador();
         return numerador1 / denominador1
-                ==  numerador2 / denominador2;
+                == numerador2 / denominador2;
     }
 
     /**
@@ -131,7 +131,7 @@ public abstract class AbstractFraccion implements Serializable{
         double numerador2 = fraccion2.getNumerador();
         int denominador2 = fraccion2.getDenominador();
         return numerador1 / denominador1
-                <  numerador2 / denominador2;
+                < numerador2 / denominador2;
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class AbstractFraccion implements Serializable{
         double numerador2 = fraccion2.getNumerador();
         int denominador2 = fraccion2.getDenominador();
         return numerador1 / denominador1
-                >  numerador2 / denominador2;
+                > numerador2 / denominador2;
     }
 
     /**
@@ -163,7 +163,7 @@ public abstract class AbstractFraccion implements Serializable{
         double numerador2 = fraccion2.getNumerador();
         int denominador2 = fraccion2.getDenominador();
         return numerador1 / denominador1
-                >=  numerador2 / denominador2;
+                >= numerador2 / denominador2;
     }
 
     /**
@@ -179,7 +179,7 @@ public abstract class AbstractFraccion implements Serializable{
         double numerador2 = fraccion2.getNumerador();
         int denominador2 = fraccion2.getDenominador();
         return numerador1 / denominador1
-                <=  numerador2 / denominador2;
+                <= numerador2 / denominador2;
     }
 
     /**
@@ -216,20 +216,24 @@ public abstract class AbstractFraccion implements Serializable{
     public int getDenominador() {
         return denominador;
     }
+
     /**
      * Genera el inverso multiplicativo de una fracción.
+     *
      * @return Fracción con numerador y denominador intercambiados.
      */
     public abstract AbstractFraccion obtenerInverso();
-    
+
     /**
      * Separa la parte decimal de la parte entera de una fracción.
+     *
      * @return Fraccion con el valor de la parte entera.
      */
     public abstract AbstractFraccion obtenerParteEntera();
-    
+
     /**
      * Separa la parte decimal de la parte entera de una fracción.
+     *
      * @return Fraccion con el valor de la parte decimal.
      */
     public abstract AbstractFraccion obtenerParteDecimal();
@@ -246,15 +250,16 @@ public abstract class AbstractFraccion implements Serializable{
     }
 
     /**
-     * Restorn el string con el siguiente formato.
-     *          nuemrador/denominador
+     * Restorn el string con el siguiente formato. nuemrador/denominador
+     *
      * @return String con formato Fraccional.
      */
     public abstract String toString();
-    
+
     /**
-     * Retorna el String de la fracción indicando si desea el formato decimal o 
+     * Retorna el String de la fracción indicando si desea el formato decimal o
      * el fraccional
+     *
      * @param fraccional Indica el formato de salida.
      * @return String con el formato indicado
      */

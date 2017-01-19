@@ -22,7 +22,7 @@ public class MatrizParser implements IParser {
     @Override
     public DtoSimplex parse(String value) throws IOException {
         ArrayList<ArrayList<AbstractFraccion>> matriz = new ArrayList<>();
-        matriz.add(new ArrayList<>());
+        matriz.add(new ArrayList<AbstractFraccion>());
         Scanner scanner = new Scanner(new StringReader(value));
         Symbol token = scanner.next_token();
         boolean esNegativo = false;
@@ -52,7 +52,7 @@ public class MatrizParser implements IParser {
                         throw new IllegalArgumentException("Diferente numero de elementos en las filas.");
                     }
                 }
-                matriz.add(new ArrayList<>());
+                matriz.add(new ArrayList<AbstractFraccion>());
                 filaActual++;
             }
             token = scanner.next_token();

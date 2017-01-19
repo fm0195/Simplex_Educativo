@@ -23,11 +23,11 @@ public class Simplex_Educativo {
      */
     public static void main(String[] args) throws Exception {
         IParser parser = new SimplexParser();
-        DtoSimplex res = parser.parse("(0) max z = -15/4 x1 + -10 x2 + x4 + x5 + x6\n" +
-                        "(1) -1 x1        <= -2\n" +
-                        "(2) -3     x2    >= -4\n" +
-                        "(3) -5 x1 + -6 x2 = -7");
+        DtoSimplex res = parser.parse("(0) max z = -15/4 x1 + -10 x2 + x4 + x5 + x6\n"
+                + "(1) -1 x1        <= -2\n"
+                + "(2) -3     x2    >= -4\n"
+                + "(3) -5 x1 + -6 x2 = -7");
         System.out.println(res);
     }
-    
+
 }

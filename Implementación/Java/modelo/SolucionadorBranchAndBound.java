@@ -60,18 +60,20 @@ public class SolucionadorBranchAndBound extends SolucionadorSimplex {
             mensaje += "Valor de las variables:\n";
             mensaje += optimo.valorVariables("");
             optimo.setOptimo(true);
-        } else if (!factible) {
-            mensaje = "El problema no posee una solución entera óptima factible.";
         } else {
-            int indiceSiguienteNodo = buscarNodo(dto.esMaximización(), false);
-            AbstractFraccion[] ValorVariables= hojas.get(indiceSiguienteNodo).getValorVariables();
-            ValorVariables = obtenerParteDecimal(ValorVariables);
-            int indiceAhora = obtenerIndiceDelValorMayor(ValorVariables, 0, 0);
-            String variable = dto.getNombreColumnas()[indiceAhora];
-            String problema = "Problema " + hojas.get(indiceSiguienteNodo).getIndiceProblema();
-            mensaje = "Se iteró sobre el arbol de soluciones.\n Siguiente Iteración :"
-                    + problema + "\n"
-                    +"Sobre la variable: "+variable+"\n";
+            if (!factible) {
+                mensaje = "El problema no posee una solución entera óptima factible.";
+            } else {
+                int indiceSiguienteNodo = buscarNodo(dto.esMaximización(), false);
+                AbstractFraccion[] ValorVariables = hojas.get(indiceSiguienteNodo).getValorVariables();
+                ValorVariables = obtenerParteDecimal(ValorVariables);
+                int indiceAhora = obtenerIndiceDelValorMayor(ValorVariables, 0, 0);
+                String variable = dto.getNombreColumnas()[indiceAhora];
+                String problema = "Problema " + hojas.get(indiceSiguienteNodo).getIndiceProblema();
+                mensaje = "Se iteró sobre el arbol de soluciones.\n Siguiente Iteración :"
+                        + problema + "\n"
+                        + "Sobre la variable: " + variable + "\n";
+            }
         }
         DtoSimplex resultado = new DtoSimplex(mensaje, arbol.toStringRepeat(0), factible, finalizado);
         return resultado;
@@ -313,8 +315,10 @@ public class SolucionadorBranchAndBound extends SolucionadorSimplex {
             if (hoja.esFactible() && !hoja.esAcotado() && hoja.esSolucionEntera() == esSolucionEntera) {
                 if (resultado == -1) {
                     resultado = contador;
-                } else if (hoja.getValorZ().mayorQue(hojas.get(resultado).getValorZ())) {
-                    resultado = contador;
+                } else {
+                    if (hoja.getValorZ().mayorQue(hojas.get(resultado).getValorZ())) {
+                        resultado = contador;
+                    }
                 }
             }
         }

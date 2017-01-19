@@ -1,4 +1,5 @@
 package dto;
+
 import java.awt.Point;
 import java.io.Serializable;
 import modelo.AbstractFraccion;
@@ -8,7 +9,7 @@ import modelo.Fraccion;
  *
  * @author Yordan Jiménez
  */
-public class DtoSimplex implements Serializable{
+public class DtoSimplex implements Serializable {
 
     private AbstractFraccion[][] matriz;
     private String nombreColumnas[];
@@ -29,16 +30,18 @@ public class DtoSimplex implements Serializable{
     private Point coordenadaPivote;
     private String solucion;
     private String mensaje;
-    
+
     /**
-     * Inicializa una instancia de un objeto de tranferencia de datos, con la solucion,
-     * mensaje, valor de factibilidad y valor de finalizado indicados.
+     * Inicializa una instancia de un objeto de tranferencia de datos, con la
+     * solucion, mensaje, valor de factibilidad y valor de finalizado indicados.
+     *
      * @param solucion String que indica la solucion.
      * @param mensaje String con mensaje a mostrar.
      * @param factible Valor booleano que indica si el problema es factible.
-     * @param finalizado  Valor boolean que indica si el problema esta finalizado.
+     * @param finalizado Valor boolean que indica si el problema esta
+     * finalizado.
      */
-    public DtoSimplex(String solucion,String mensaje, boolean factible, boolean finalizado){
+    public DtoSimplex(String solucion, String mensaje, boolean factible, boolean finalizado) {
         this.mensaje = mensaje;
         this.solucion = solucion;
         this.factible = factible;
@@ -130,7 +133,7 @@ public class DtoSimplex implements Serializable{
             int[] listaDesigualdades, boolean maximizacion,
             int variablesBasicas, int variablesHolgura, boolean dosFases,
             boolean acotado, boolean factible, boolean finalizado,
-            boolean bloqueoDosFases, boolean formatoFraccional, 
+            boolean bloqueoDosFases, boolean formatoFraccional,
             int artificialActual) {
         this.matriz = matriz;
         this.nombreColumnas = nombreColumnas;
@@ -146,7 +149,7 @@ public class DtoSimplex implements Serializable{
         this.formatoFraccional = formatoFraccional;
         this.artificialActual = artificialActual;
     }
-    
+
     /**
      * Constructor privado utilizado para reaalizar un clonado profundo de la
      * instancia.
@@ -353,7 +356,7 @@ public class DtoSimplex implements Serializable{
         resultado.setEsMatriz(esMatriz);
         return resultado;
     }
-    
+
     /**
      * Obtiene un objeto identico pero con distintas referencia, inerta nulo el
      * valor de coordenada y nombre de filas..
@@ -361,7 +364,7 @@ public class DtoSimplex implements Serializable{
      * @return Nueva referencia del objeto.
      */
     public DtoSimplex clonarSinCompletarProfundo() {
-        DtoSimplex resultado = new DtoSimplex(clonarMatriz(), nombreColumnas.clone(),listaDesigualdades,
+        DtoSimplex resultado = new DtoSimplex(clonarMatriz(), nombreColumnas.clone(), listaDesigualdades,
                 maximizacion, variablesBasicas, variablesHolgura, dosfases, acotado,
                 factible, finalizado, bloqueoDosFases, formatoFraccional,
                 artificialActual);
@@ -398,7 +401,7 @@ public class DtoSimplex implements Serializable{
     public String toString() {
         AbstractFraccion[][] matriz = getMatriz();
         String resultado = "";
-        String lineaHorizontal="";
+        String lineaHorizontal = "";
         String[] arregloFilas = getNombreFilas();
         String[] arregloColumnas = getNombreColumnas();
         String[][] matrizString = new String[matriz.length][matriz[0].length];
@@ -407,21 +410,21 @@ public class DtoSimplex implements Serializable{
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[0].length; j++) {
                 String actual = matriz[i][j].toString(formatoFraccional);
-                matrizString[i][j]=actual;
+                matrizString[i][j] = actual;
                 anchoColumna = anchoColumna < actual.length() ? actual.length() : anchoColumna;
             }
         }
         anchoColumna += 4;
         anchoTotal = anchoColumna * (arregloColumnas.length + (esMatriz ? 1 : 2));
         for (int i = 0; i < anchoTotal; i++) {
-            lineaHorizontal+="-";
+            lineaHorizontal += "-";
         }
         int columnaActual = 0;
         int filaActual = 0;
-        resultado += lineaHorizontal+"\n"; 
+        resultado += lineaHorizontal + "\n";
         for (int i = 0; i <= arregloColumnas.length + 1; i++) {
-            if(i==arregloColumnas.length + 1 && esMatriz){
-                resultado = resultado.substring(0, resultado.length()-1);
+            if (i == arregloColumnas.length + 1 && esMatriz) {
+                resultado = resultado.substring(0, resultado.length() - 1);
                 resultado += " ";
                 break;
             }
@@ -434,13 +437,14 @@ public class DtoSimplex implements Serializable{
                 for (int j = 0; j < anchoColumna; j++) {
                     if (j < espacioIzq) {
                         resultado += " ";
+                    } else {
+                        if (j >= espacioIzq && j <= espacioDer) {
+                            resultado += "BVS ";
+                            j += 3;
+                        } else {
+                            resultado += " ";
+                        }
                     }
-                    else if (j >= espacioIzq && j <= espacioDer){
-                        resultado += "BVS ";
-                        j += 3;
-                    }
-                    else 
-                        resultado += " ";
                 }
                 resultado += " ";
                 columnaActual--;
@@ -449,23 +453,25 @@ public class DtoSimplex implements Serializable{
             for (int j = 0; j < anchoColumna; j++) {
                 if (j < espacioIzq) {
                     resultado += " ";
+                } else {
+                    if (j >= espacioIzq && j <= espacioDer) {
+                        resultado += variable;
+                        j += variable.length();
+                    } else {
+                        resultado += " ";
+                    }
                 }
-                else if (j >= espacioIzq && j <= espacioDer){
-                    resultado += variable;
-                    j += variable.length();
-                }
-                else 
-                    resultado += " ";
             }
             resultado += " ";
         }
         resultado += "\n" + lineaHorizontal + "\n";
-        
+
         for (int i = 0; i < arregloFilas.length; i++) {
-            resultado += " " ;
+            resultado += " ";
             for (int j = 0; j < arregloColumnas.length + 2; j++) {
-                if(j==arregloColumnas.length + 1 && esMatriz)
+                if (j == arregloColumnas.length + 1 && esMatriz) {
                     break;
+                }
                 String variable;
                 int espacioIzq;
                 int espacioDer;
@@ -476,36 +482,38 @@ public class DtoSimplex implements Serializable{
                     for (int k = 0; k < anchoColumna; k++) {
                         if (k < espacioIzq) {
                             resultado += " ";
+                        } else {
+                            if (k >= espacioIzq && k <= espacioDer) {
+                                resultado += variable;
+                                k += variable.length();
+                            } else {
+                                resultado += " ";
+                            }
                         }
-                        else if (k >= espacioIzq && k <= espacioDer){
-                            resultado += variable;
-                            k += variable.length();
-                        }
-                        else 
-                            resultado += " ";
                     }
                     resultado += " ";
                     continue;
                 }
-                variable = matrizString[i][j-1];
+                variable = matrizString[i][j - 1];
                 espacioIzq = (anchoColumna - variable.length()) / 2;
                 espacioDer = espacioIzq + variable.length();
                 for (int k = 0; k < anchoColumna; k++) {
                     if (k < espacioIzq) {
                         resultado += " ";
+                    } else {
+                        if (k >= espacioIzq && k <= espacioDer) {
+                            resultado += variable;
+                            k += variable.length();
+                        } else {
+                            resultado += " ";
+                        }
                     }
-                    else if (k >= espacioIzq && k <= espacioDer){
-                        resultado += variable;
-                        k += variable.length();
-                    }
-                    else 
-                        resultado += " ";
                 }
-                resultado += " "; 
+                resultado += " ";
             }
             resultado += "\n";
         }
-        return resultado+lineaHorizontal;
+        return resultado + lineaHorizontal;
     }
 
     public void setEntradaMatriz(int fila, int columna, int numerador, int denominador) {

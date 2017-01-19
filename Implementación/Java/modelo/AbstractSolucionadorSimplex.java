@@ -72,29 +72,33 @@ public abstract class AbstractSolucionadorSimplex {
     public abstract DtoSimplex siguientesOperaciones(DtoSimplex dto);
 
     /**
-     * Agrega una restricción &gt;=, &lt;= ó = al problema pasado por parametro. 
+     * Agrega una restricción &gt;=, &lt;= ó = al problema pasado por parametro.
      *
      * @param dto el objeto de transferencia de datos con el problema
-     * @param tipo valor numérico para identificar el tipo de restricción agregada
+     * @param tipo valor numérico para identificar el tipo de restricción
+     * agregada
      * @return dto con el problema actualizado
      */
     public abstract DtoSimplex agregarRestriccion(DtoSimplex dto, int tipo);
 
     /**
-     * Agrega un fila al Dto pasado por parámetro en la posición también 
-     * indicada por parametro. 
-     * @param dto el DTO que será modificado. 
+     * Agrega un fila al Dto pasado por parámetro en la posición también
+     * indicada por parametro.
+     *
+     * @param dto el DTO que será modificado.
      * @param posicion la posición en la matriz donde se ingresará la nueva fila
-     * @return el nuevo DTO con la fila agregada. 
+     * @return el nuevo DTO con la fila agregada.
      */
     public abstract DtoSimplex agregarFila(DtoSimplex dto, int posicion);
-    
+
     /**
-     * Agrega una columna al Dto pasado por parámetro en la posición también 
-     * indicada por parametro. 
-     * @param dto el DTO que será modificado. 
-     * @param posicion la posición en la matriz donde se ingresará la nueva columna
-     * @return el nuevo DTO con la columna agregada. 
+     * Agrega una columna al Dto pasado por parámetro en la posición también
+     * indicada por parametro.
+     *
+     * @param dto el DTO que será modificado.
+     * @param posicion la posición en la matriz donde se ingresará la nueva
+     * columna
+     * @return el nuevo DTO con la columna agregada.
      */
     public abstract DtoSimplex agregarColumna(DtoSimplex dto, int posicion);
 
