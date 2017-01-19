@@ -19,21 +19,13 @@
         android:textColor= "@android:color/black"
         android:id="@+id/textView10"/>
 
-    <TextView
-        android:text="2. Seleccione el modo de solución:"
-        android:layout_marginTop="305dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:id="@+id/textView11"/>
-
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/opciones_Solución"
         android:layout_width="match_parent"
-        android:layout_height="55px"
         android:layout_marginTop="330dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_height="65px">
 
         <RadioButton
             android:id="@+id/radio_directa"
@@ -65,10 +57,10 @@
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/opciones_Formato"
         android:layout_width="match_parent"
-        android:layout_height="55px"
         android:layout_marginTop="385dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_height="65px">
 
         <RadioButton
             android:id="@+id/radio_Fraccional"
@@ -136,6 +128,17 @@
         android:singleLine="false"
         android:selectAllOnFocus="false"
         android:layout_below="@+id/imageView4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="2. Seleccione el modo de solución:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:id="@+id/textView11"
+        android:layout_marginBottom="22dp"
+        android:layout_alignBottom="@+id/opciones_Solución"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
