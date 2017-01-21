@@ -713,23 +713,19 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
                             controlador.modificarEntradaMatriz(coordenada.y, coordenada.x, keyBuffer.toString());
                             JOptionPane.showMessageDialog(null, "Valor actualizado.", "Info", JOptionPane.INFORMATION_MESSAGE);
                             keyBuffer.setLength(0);
+                        } else if (esFraccion(keyBuffer.toString())) {
+                            matrizFracciones[coordenada.y][coordenada.x] = keyBuffer.toString();
+                            controlador.modificarEntradaMatriz(coordenada.y, coordenada.x, keyBuffer.toString());
+                            JOptionPane.showMessageDialog(null, "Valor actualizado.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                            keyBuffer.setLength(0);
+                        } else if (esDecimal(keyBuffer.toString())) {
+                            matrizFracciones[coordenada.y][coordenada.x] = keyBuffer.toString();
+                            controlador.modificarEntradaMatriz(coordenada.y, coordenada.x, keyBuffer.toString());
+                            JOptionPane.showMessageDialog(null, "Valor actualizado.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                            keyBuffer.setLength(0);
                         } else {
-                            if (esFraccion(keyBuffer.toString())) {
-                                matrizFracciones[coordenada.y][coordenada.x] = keyBuffer.toString();
-                                controlador.modificarEntradaMatriz(coordenada.y, coordenada.x, keyBuffer.toString());
-                                JOptionPane.showMessageDialog(null, "Valor actualizado.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                                keyBuffer.setLength(0);
-                            } else {
-                                if (esDecimal(keyBuffer.toString())) {
-                                    matrizFracciones[coordenada.y][coordenada.x] = keyBuffer.toString();
-                                    controlador.modificarEntradaMatriz(coordenada.y, coordenada.x, keyBuffer.toString());
-                                    JOptionPane.showMessageDialog(null, "Valor actualizado.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                                    keyBuffer.setLength(0);
-                                } else {
-                                    JOptionPane.showMessageDialog(null, "El numero ingresado no tiene formato valido.", "Error", JOptionPane.ERROR_MESSAGE);
-                                    keyBuffer.setLength(0);
-                                }
-                            }
+                            JOptionPane.showMessageDialog(null, "El numero ingresado no tiene formato valido.", "Error", JOptionPane.ERROR_MESSAGE);
+                            keyBuffer.setLength(0);
                         }
                 }
                 mostrarOperacion(controlador.siguientesOperaciones(coordenada));
@@ -793,7 +789,9 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
         int i;
         //rellenar la primera fila (nombres de variables)
         for (i = 0; i < nombresColumnas.length; i++) {
-            matrizLabels[0][i + 2].setText(nombresColumnas[i]);
+            if (!nombresColumnas[i].equals("-")) {
+                matrizLabels[0][i + 2].setText(nombresColumnas[i]);
+            }
         }
         matrizLabels[0][matrizLabels[0].length - 1].setText("RHS");
         //rellenar la primera columna (numero de restriccion)
@@ -811,7 +809,9 @@ public class PantallaPasoIntermedio extends javax.swing.JFrame implements IVista
 
         //rellenar la segunda columna (Variabls basicas)
         for (i = 1; i <= nombresFilas.length; i++) {
-            matrizLabels[i][1].setText(nombresFilas[i - 1]);
+            if (!nombresFilas[i - 1].equals("-")) {
+                matrizLabels[i][1].setText(nombresFilas[i - 1]);
+            }
         }
         //rellenar los valores numericos
         for (i = 1; i < matriz.length + 1; i++) {
