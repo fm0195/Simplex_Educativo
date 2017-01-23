@@ -521,6 +521,12 @@ public class DtoSimplex implements Serializable {
         nuevaFraccion = new Fraccion(numerador, denominador);
         matriz[fila][columna] = nuevaFraccion;
     }
+    
+    public void setEntradaMatriz(int fila, int columna, double numerador) {
+        AbstractFraccion nuevaFraccion;
+        nuevaFraccion = new Fraccion(numerador);
+        matriz[fila][columna] = nuevaFraccion;
+    }
 
     public int getArtificialActual() {
         return artificialActual;

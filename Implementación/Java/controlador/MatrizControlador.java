@@ -177,9 +177,13 @@ public class MatrizControlador extends AbstractControlador {
         if (valor.contains("/")) {
             String[] split = valor.split("/");
             nuevaFraccion = new Fraccion(Integer.valueOf(split[0]), Integer.valueOf(split[1]));
-        } else {
-            nuevaFraccion = new Fraccion(Double.valueOf(valor));
+        } else if(valor.contains(".")) {
+            nuevaFraccion = new Fraccion(Double.parseDouble(valor));
+            return;
         }
+        else {
+            nuevaFraccion = new Fraccion(Integer.valueOf(valor), 1);
+        } 
         listaPasos.get(pasoActual).getMatriz()[fila][columna] = nuevaFraccion;
     }
 

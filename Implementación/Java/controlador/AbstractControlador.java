@@ -226,7 +226,11 @@ public abstract class AbstractControlador {
             String[] split = valor.split("/");
             numerador = Integer.valueOf(split[0]);
             denominador = Integer.valueOf(split[1]);
-        } else {
+        } else if(valor.contains(".")) {
+            listaPasos.get(pasoActual).setEntradaMatriz(fila, columna, Double.parseDouble(valor));
+            return;
+        }
+        else {
             numerador = Integer.valueOf(valor);
         }
         listaPasos.get(pasoActual).setEntradaMatriz(fila, columna, numerador, denominador);
@@ -259,12 +263,12 @@ public abstract class AbstractControlador {
      */
     public void agregarRestriccion(int tipo) {
         DtoSimplex actual = listaPasos.get(pasoActual);
-        if (!actual.esDosfases() && (tipo == sym.MAYORIGUAL || tipo == sym.IGUAL)) {
-            vista.mostrarMensajeError("No puede agregar esta restricción en un problema de una fase.", "Problema de una fase");
-            return;
-        }
         if (pasoActual != 0) {
             vista.mostrarMensajeError("Solamente puede agregar restricciones al inicio del algoritmo.", "Problema iniciado");
+            return;
+        }
+        if (!actual.esDosfases() && (tipo == sym.MAYORIGUAL || tipo == sym.IGUAL)) {
+            vista.mostrarMensajeError("No puede agregar esta restricción en un problema de una fase.", "Problema de una fase");
             return;
         }
         DtoSimplex resultado = solucionador.agregarRestriccion(listaPasos.get(pasoActual), tipo);
