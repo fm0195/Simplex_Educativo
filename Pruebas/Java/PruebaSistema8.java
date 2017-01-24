@@ -132,7 +132,7 @@ public class PruebaSistema8 {
                 + "  z = 51/4\n"
                 + "  x1 = 9/4\n"
                 + "  x2 = 3/2\n"
-                + "  Restricción: No es necesario.\n"
+                + "  Restricción: No es necesario\n"
                 + "\n"
                 + "     Problema 1.1\n"
                 + "       z = 23/2\n"
