@@ -494,12 +494,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             controlador = new SimplexControlador();
             if (solucionDirecta) {
                 controlador.setVista(new PantallaPasoIntermedio(controlador));
-                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "").trim();
                 controlador.solucionar(texto, fraccionario);
                 this.dispose();
             } else {
                 controlador.setVista(new PantallaPasoIntermedio(controlador));
-                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "").trim();
                 controlador.siguientePaso(texto, fraccionario);
                 this.dispose();
             }
@@ -507,19 +507,19 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         if (matrizNumerica) {
             controlador = new MatrizControlador();
             controlador.setVista(new PantallaPasoIntermedio(controlador));
-            controlador.siguientePaso(areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", ""), fraccionario);
+            controlador.siguientePaso(areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "").trim(), fraccionario);
             this.dispose();
         }
         if (gomory) {
             controlador = new GomoryControlador();
             if (solucionDirecta) {
                 controlador.setVista(new PantallaPasoIntermedio(controlador));
-                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "").trim();
                 controlador.solucionar(texto, fraccionario);
                 this.dispose();
             } else {
                 controlador.setVista(new PantallaPasoIntermedio(controlador));
-                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "").trim();
                 controlador.siguientePaso(texto, fraccionario);
                 this.dispose();
             }
@@ -528,12 +528,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             controlador = new BranchAndBoundControlador();
             if (solucionDirecta) {
                 controlador.setVista(new PantallaPasoIntermedioBranchBound(controlador));
-                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "").trim();
                 controlador.solucionar(texto, fraccionario);
                 this.dispose();
             } else {
                 controlador.setVista(new PantallaPasoIntermedioBranchBound(controlador));
-                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "");
+                texto = areaTexto.getText().replaceAll("(?m)^[ \t]*\r?\n", "").trim();
                 controlador.siguientePaso(texto, fraccionario);
                 this.dispose();
             }
