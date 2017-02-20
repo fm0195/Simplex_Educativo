@@ -10,6 +10,10 @@ import controlador.BranchAndBoundControlador;
 import controlador.GomoryControlador;
 import controlador.SimplexControlador;
 import controlador.MatrizControlador;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.JScrollPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import modelo.Fraccion;
@@ -58,6 +62,97 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 insertUpdate(e);
             }
         });
+        setLayout(new GridBagLayout());
+        
+        GridBagConstraints propiedades = new GridBagConstraints();
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx=0;
+        propiedades.gridy=0;
+        propiedades.gridwidth=1;
+        propiedades.ipadx = 20;
+        propiedades.ipady = 20;
+        propiedades.weightx = 0.1;
+        propiedades.weighty = 0.1;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.fill = GridBagConstraints.BOTH;
+        propiedades.insets = new Insets(10, 10, 10, 10);
+        add(jPanel1, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx=1;
+        propiedades.gridy=0;
+        propiedades.gridwidth=1;
+        propiedades.ipadx = 20;
+        propiedades.ipady = 20;
+        propiedades.weightx = 0.000000000000001;
+        propiedades.weighty = 0.000000000000001;
+        propiedades.anchor = GridBagConstraints.LAST_LINE_START;
+        propiedades.fill = GridBagConstraints.BOTH;
+        add(jPanel3, propiedades);
+        
+        
+        /************************************************************************************/
+        
+        jPanel1.setLayout(new GridBagLayout());
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 0;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.fill = GridBagConstraints.VERTICAL;
+        propiedades.weighty = 0;        
+        jPanel1.add(labelFormato1, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 1;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.fill = GridBagConstraints.VERTICAL;
+        propiedades.weighty = 0;
+        jPanel1.add(labelFormato2, propiedades);
+                
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 2;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.fill = GridBagConstraints.BOTH;
+        propiedades.weighty = 0.1;
+        
+        JScrollPane scrolltxt = new JScrollPane(areaTexto);
+        scrolltxt.setWheelScrollingEnabled(true);
+        
+        jPanel1.add(scrolltxt, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 3;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.fill = GridBagConstraints.VERTICAL;
+        propiedades.weighty = 0;
+        jPanel1.add(jTextArea1, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 4;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.fill = GridBagConstraints.VERTICAL;
+        propiedades.weighty = 0;
+        jPanel1.add(panelSpinners, propiedades);
     }
 
     /**
@@ -86,8 +181,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         botonGenerar = new javax.swing.JButton();
-        botonBorrar = new javax.swing.JButton();
-        botonSimplex = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
         panelFormatoNumerico = new javax.swing.JPanel();
         radioDecimal = new javax.swing.JRadioButton();
         radioFraccion = new javax.swing.JRadioButton();
@@ -102,6 +196,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         radioSolucionDirecta = new javax.swing.JRadioButton();
         radioMostrarPasos = new javax.swing.JRadioButton();
         labelPasosIntermedios = new javax.swing.JLabel();
+        botonSimplex = new javax.swing.JButton();
+        botonBorrar = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -208,13 +304,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(labelFormato1)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-                        .addComponent(labelFormato2)
-                        .addComponent(jScrollPane2))
-                    .addComponent(panelSpinners, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelFormato1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                    .addComponent(labelFormato2)
+                    .addComponent(panelSpinners, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -232,22 +327,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 .addComponent(panelSpinners, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        botonBorrar.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
-        botonBorrar.setLabel("Borrar");
-        botonBorrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonBorrarActionPerformed(evt);
-            }
-        });
-
-        botonSimplex.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
-        botonSimplex.setText("Solucionar");
-        botonSimplex.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonSimplexActionPerformed(evt);
-            }
-        });
 
         grupoFormato.add(radioDecimal);
         radioDecimal.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
@@ -394,25 +473,78 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         panelPasosIntermediosLayout.setHorizontalGroup(
             panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPasosIntermediosLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelPasosIntermedios)
                     .addGroup(panelPasosIntermediosLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                        .addGap(18, 18, 18)
                         .addGroup(panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(radioMostrarPasos)
-                            .addComponent(radioSolucionDirecta)))))
+                            .addComponent(radioSolucionDirecta)
+                            .addComponent(radioMostrarPasos)))
+                    .addGroup(panelPasosIntermediosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(labelPasosIntermedios)))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         panelPasosIntermediosLayout.setVerticalGroup(
             panelPasosIntermediosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPasosIntermediosLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addGap(14, 14, 14)
                 .addComponent(labelPasosIntermedios)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(radioMostrarPasos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radioSolucionDirecta)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
+        );
+
+        botonSimplex.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
+        botonSimplex.setText("Solucionar");
+        botonSimplex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonSimplexActionPerformed(evt);
+            }
+        });
+
+        botonBorrar.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
+        botonBorrar.setLabel("Borrar");
+        botonBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonBorrarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(panelFormatoNumerico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelMetodoSolucion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelPasosIntermedios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(botonSimplex)
+                            .addComponent(botonBorrar))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelFormatoNumerico, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelMetodoSolucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelPasosIntermedios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(botonSimplex)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonBorrar)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -422,29 +554,18 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(botonBorrar)
-                    .addComponent(panelPasosIntermedios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(botonSimplex)
-                    .addComponent(panelFormatoNumerico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelMetodoSolucion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelFormatoNumerico, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelMetodoSolucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(panelPasosIntermedios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(botonSimplex)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(botonBorrar)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 14, Short.MAX_VALUE))
         );
 
         pack();
@@ -546,6 +667,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         panelMetodoSolucion.setVisible(false);
         panelPasosIntermedios.setVisible(false);
         botonBorrar.setVisible(false);
+        botonSimplex.setVisible(false);
     }//GEN-LAST:event_botonBorrarActionPerformed
 
     private void radioSimplexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioSimplexActionPerformed
@@ -626,6 +748,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;

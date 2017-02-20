@@ -22,6 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import dto.DtoSimplex;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import javax.swing.JEditorPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -89,38 +91,50 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
     public void initVariables() {
         panelBotonesResumen = new JPanel();
         panelBotonesResumen.setBounds(POSICION_X - 5, 320, 550, 140);
+        
         pestanaResumen = new JPanel(null);
         pestanaResumen.setFont(new Font("Courier New", Font.BOLD, 14));
+      
         etiquetaArbol = new JLabel("Arbol generado");
         etiquetaArbol.setFont(new Font("Courier New", Font.BOLD, 14));
         etiquetaArbol.setBounds(10, 10, 200, 15);
+        
         etiquetaMensaje = new JLabel("Mensaje.");
         etiquetaMensaje.setFont(new Font("Courier New", Font.BOLD, 14));
         etiquetaMensaje.setBounds(625, 10, 100, 15);
+        
         labelMensaje = new JTextArea();
         labelMensaje.setEditable(false);
         labelMensaje.setLineWrap(false);
         labelMensaje.setFont(new Font("Courier New", Font.BOLD, 14));
+        
         scrollMensaje = new JScrollPane(labelMensaje);
         scrollMensaje.setBounds(625, 40, 320, 300);
         scrollMensaje.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollMensaje.setFont(new Font("Courier New", Font.BOLD, 14));
+        
         labelResumen = new JTextArea();
         labelResumen.setEditable(false);
         labelResumen.setLineWrap(false);
         labelResumen.setFont(new Font("Courier New", Font.BOLD, 14));
+        
         scrollResumen = new JScrollPane(labelResumen);
         scrollResumen.setBounds(POSICION_X, 40, 600, 280);
         scrollResumen.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollResumen.setFont(new Font("Courier New", Font.BOLD, 14));
+        
         botonSiguienteResumen = new JButton("Siguiente Paso");
         botonSiguienteResumen.setFont(new Font("Courier New", Font.BOLD, 14));
+        
         botonAnteriorResumen = new JButton("Paso Anterior");
         botonAnteriorResumen.setFont(new Font("Courier New", Font.BOLD, 14));
+        
         botonCopiarArbol = new JButton("Copiar Arbol");
         botonCopiarArbol.setFont(new Font("Courier New", Font.BOLD, 14));
+        
         botonCopiarMensaje = new JButton("Copiar Mensaje");
         botonCopiarMensaje.setFont(new Font("Courier New", Font.BOLD, 14));
+        
         barraMenu = new JMenuBar();
         menuAyuda = new JMenu("Ayuda");
         itemMenuFAQ = new JMenuItem("FAQ");
@@ -213,16 +227,114 @@ public class PantallaPasoIntermedioBranchBound extends javax.swing.JFrame implem
      * componentes a la pantalla principal.
      */
     public void agregarComponentes() {
-        panelBotonesResumen.add(botonAnteriorResumen);
-        panelBotonesResumen.add(botonSiguienteResumen);
-        panelBotonesResumen.add(botonCopiarArbol);
-        panelBotonesResumen.add(botonCopiarMensaje);
+        pestanaResumen.setLayout(new GridBagLayout());
+        panelBotonesResumen.setLayout(new GridBagLayout());
+        
+        GridBagConstraints propiedades = new GridBagConstraints();
+
+        propiedades.gridx = 0;
+        propiedades.gridy = 0;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;   
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        panelBotonesResumen.add(botonAnteriorResumen, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 1;
+        propiedades.gridy = 0;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;   
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        panelBotonesResumen.add(botonSiguienteResumen, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 2;
+        propiedades.gridy = 0;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;   
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        panelBotonesResumen.add(botonCopiarArbol, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 1;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;   
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        panelBotonesResumen.add(botonCopiarMensaje, propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 0;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;     
+        propiedades.ipadx = 20;
+        propiedades.ipady = 20;        
+        propiedades.fill = GridBagConstraints.VERTICAL;   
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.weighty = 0;
+        pestanaResumen.add(etiquetaArbol,propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 1;
+        propiedades.gridy = 0;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;
+        propiedades.ipadx = 20;
+        propiedades.ipady = 20;
+        propiedades.fill = GridBagConstraints.VERTICAL;   
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.weighty = 0;
+        pestanaResumen.add(etiquetaMensaje,propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 1;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;        
+        propiedades.ipadx = 20;
+        propiedades.ipady = 20;           
+        propiedades.fill = GridBagConstraints.BOTH;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.weighty = 0.1;
+        pestanaResumen.add(scrollResumen,propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 1;
+        propiedades.gridy = 1;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 1;
+        propiedades.weightx = 0.1;
+        propiedades.ipadx = 20;
+        propiedades.ipady = 20;           
+        propiedades.fill = GridBagConstraints.BOTH;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.weighty = 0.1;
+        pestanaResumen.add(scrollMensaje,propiedades);
+        
+        propiedades = new GridBagConstraints();
+        propiedades.gridx = 0;
+        propiedades.gridy = 2;
+        propiedades.gridwidth = 1;
+        propiedades.gridheight = 2;
+        propiedades.weightx = 0.1;
+        propiedades.ipadx = 20;
+        propiedades.ipady = 20;        
+        propiedades.fill = GridBagConstraints.BOTH;
+        propiedades.anchor = GridBagConstraints.FIRST_LINE_START;
+        propiedades.weighty = 0.1;
+        pestanaResumen.add(panelBotonesResumen,propiedades);
+        
+        
         panelPestana.addTab("Branch and Bound", pestanaResumen);
-        pestanaResumen.add(scrollResumen);
-        pestanaResumen.add(scrollMensaje);
-        pestanaResumen.add(etiquetaArbol);
-        pestanaResumen.add(etiquetaMensaje);
-        pestanaResumen.add(panelBotonesResumen);
+
         menuAyuda.add(itemMenuAcercaDe);
         menuAyuda.add(itemMenuFAQ);
         barraMenu.add(menuAyuda);
