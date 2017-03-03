@@ -13,7 +13,7 @@ public class Fraccion extends AbstractFraccion implements Serializable {
         super(0, 1);
     }
 
-    public Fraccion(int numerador, int denominador) {
+    public Fraccion(long numerador, long denominador) {
         super(numerador, denominador);
     }
 
@@ -23,8 +23,8 @@ public class Fraccion extends AbstractFraccion implements Serializable {
 
     @Override
     public AbstractFraccion sumar(AbstractFraccion operando) {
-        int numerador = 0;
-        int denominador = 0;
+        long numerador = 0;
+        long denominador = 0;
         numerador = (this.getNumerador() * operando.getDenominador())
                 + (this.getDenominador() * operando.getNumerador());
 
@@ -34,8 +34,8 @@ public class Fraccion extends AbstractFraccion implements Serializable {
 
     @Override
     public AbstractFraccion restar(AbstractFraccion operando) {
-        int numerador = 0;
-        int denominador = 0;
+        long numerador = 0;
+        long denominador = 0;
         numerador = (this.getNumerador() * operando.getDenominador())
                 - (this.getDenominador() * operando.getNumerador());
 
@@ -45,8 +45,8 @@ public class Fraccion extends AbstractFraccion implements Serializable {
 
     @Override
     public AbstractFraccion multiplicar(AbstractFraccion operando) {
-        int numerador = 0;
-        int denominador = 0;
+        long numerador = 0;
+        long denominador = 0;
         numerador = this.getNumerador() * operando.getNumerador();
         denominador = this.getDenominador() * operando.getDenominador();
         return new Fraccion(numerador, denominador);
@@ -54,8 +54,8 @@ public class Fraccion extends AbstractFraccion implements Serializable {
 
     @Override
     public AbstractFraccion dividir(AbstractFraccion operando) {
-        int numerador = 0;
-        int denominador = 0;
+        long numerador = 0;
+        long denominador = 0;
         if (esCero(operando)) {
             throw new ArithmeticException("División entre 0 no permitida.");
         }
@@ -65,14 +65,14 @@ public class Fraccion extends AbstractFraccion implements Serializable {
     }
 
     @Override
-    protected int obtenerMayorDivisorComun(int numero1, int numero2) {
-        int valorTemporal;
+    protected long obtenerMayorDivisorComun(long numero1, long numero2) {
+        long valorTemporal;
         while (numero2 != 0) {
             valorTemporal = numero2;
             numero2 = numero1 % numero2;
             numero1 = valorTemporal;
         }
-        return (int) numero1;
+        return (long) numero1;
     }
 
     /**
@@ -128,7 +128,7 @@ public class Fraccion extends AbstractFraccion implements Serializable {
 
     @Override
     public AbstractFraccion obtenerParteDecimal() {
-        int nuevoNumerador = getNumerador() % getDenominador();
+        long nuevoNumerador = getNumerador() % getDenominador();
         return new Fraccion(nuevoNumerador, getDenominador());
     }
 

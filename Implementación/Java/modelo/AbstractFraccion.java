@@ -8,8 +8,8 @@ import java.io.Serializable;
  */
 public abstract class AbstractFraccion implements Serializable {
 
-    private int numerador;
-    private int denominador = 1;
+    private long numerador;
+    private long denominador = 1;
 
     /**
      * Inicializa una instancia de la clase fracción con ambos valores
@@ -18,11 +18,11 @@ public abstract class AbstractFraccion implements Serializable {
      * @param numerador Valor a insertar en el atributo numerador.
      * @param denominador Valor a insertar en el atributo denominador.
      */
-    public AbstractFraccion(int numerador, int denominador) {
+    public AbstractFraccion(long numerador, long denominador) {
         if (denominador == 0) {
             throw new ArithmeticException("División entre 0 no permitida.");
         }
-        int divisorComun = obtenerMayorDivisorComun(numerador, denominador);
+        long divisorComun = obtenerMayorDivisorComun(numerador, denominador);
         this.numerador = numerador / divisorComun;
         this.denominador = denominador / divisorComun;
         validarSignos();
@@ -47,8 +47,8 @@ public abstract class AbstractFraccion implements Serializable {
             numerador *= 10;
             denom *= 10;
         }
-        int divisorComun = obtenerMayorDivisorComun((int) (numerador), denom);
-        this.numerador = ((int) (numerador)) / divisorComun;
+        long divisorComun = obtenerMayorDivisorComun((int) (numerador), denom);
+        this.numerador = ((long) (numerador)) / divisorComun;
         this.denominador = denom / divisorComun;
         validarSignos();
     }
@@ -101,7 +101,7 @@ public abstract class AbstractFraccion implements Serializable {
      * @param numero2 Valor numérico para comparar.
      * @return Volor numérico que representa el divisor mayor existente.
      */
-    protected abstract int obtenerMayorDivisorComun(int numero1, int numero2);
+    protected abstract long obtenerMayorDivisorComun(long numero1, long numero2);
 
     /**
      * Compara la igualdad entre dos fracciones.
@@ -110,12 +110,12 @@ public abstract class AbstractFraccion implements Serializable {
      * @return Valor booleano que indica si son iguales o no.
      */
     public boolean iguales(AbstractFraccion fraccion2) {
-        double numerador1 = this.numerador;
-        double denominador1 = this.denominador;
-        double numerador2 = fraccion2.getNumerador();
-        int denominador2 = fraccion2.getDenominador();
-        return numerador1 / denominador1
-                == numerador2 / denominador2;
+        long numerador1 = this.numerador;
+        long denominador1 = this.denominador;
+        long numerador2 = fraccion2.getNumerador();
+        long denominador2 = fraccion2.getDenominador();
+        return (numerador1 * denominador2)
+                == (numerador2 * denominador1);
     }
 
     /**
@@ -126,12 +126,12 @@ public abstract class AbstractFraccion implements Serializable {
      * @return Valor booleano que indica si es menor o no.
      */
     public boolean menorQue(AbstractFraccion fraccion2) {
-        double numerador1 = this.numerador;
-        double denominador1 = this.denominador;
-        double numerador2 = fraccion2.getNumerador();
-        int denominador2 = fraccion2.getDenominador();
-        return numerador1 / denominador1
-                < numerador2 / denominador2;
+        long numerador1 = this.numerador;
+        long denominador1 = this.denominador;
+        long numerador2 = fraccion2.getNumerador();
+        long denominador2 = fraccion2.getDenominador();
+        return (numerador1 * denominador2)
+                < (numerador2 * denominador1);
     }
 
     /**
@@ -142,12 +142,12 @@ public abstract class AbstractFraccion implements Serializable {
      * @return Valor booleano que indica si es mayor o no.
      */
     public boolean mayorQue(AbstractFraccion fraccion2) {
-        double numerador1 = this.numerador;
-        double denominador1 = this.denominador;
-        double numerador2 = fraccion2.getNumerador();
-        int denominador2 = fraccion2.getDenominador();
-        return numerador1 / denominador1
-                > numerador2 / denominador2;
+        long numerador1 = this.numerador;
+        long denominador1 = this.denominador;
+        long numerador2 = fraccion2.getNumerador();
+        long denominador2 = fraccion2.getDenominador();
+        return (numerador1 * denominador2)
+                > (numerador2 * denominador1);
     }
 
     /**
@@ -158,12 +158,12 @@ public abstract class AbstractFraccion implements Serializable {
      * @return Valor booleano que indica si es mayor igual o no.
      */
     public boolean mayorIgualQue(AbstractFraccion fraccion2) {
-        double numerador1 = this.numerador;
-        double denominador1 = this.denominador;
-        double numerador2 = fraccion2.getNumerador();
-        int denominador2 = fraccion2.getDenominador();
-        return numerador1 / denominador1
-                >= numerador2 / denominador2;
+        long numerador1 = this.numerador;
+        long denominador1 = this.denominador;
+        long numerador2 = fraccion2.getNumerador();
+        long denominador2 = fraccion2.getDenominador();
+        return (numerador1 * denominador2)
+                >= (numerador2 * denominador1);
     }
 
     /**
@@ -174,12 +174,12 @@ public abstract class AbstractFraccion implements Serializable {
      * @return Valor booleano que indica si es mwnor igual o no.
      */
     public boolean menorIgualQue(AbstractFraccion fraccion2) {
-        double numerador1 = this.numerador;
-        double denominador1 = this.denominador;
-        double numerador2 = fraccion2.getNumerador();
-        int denominador2 = fraccion2.getDenominador();
-        return numerador1 / denominador1
-                <= numerador2 / denominador2;
+        long numerador1 = this.numerador;
+        long denominador1 = this.denominador;
+        long numerador2 = fraccion2.getNumerador();
+        long denominador2 = fraccion2.getDenominador();
+        return (numerador1 * denominador2)
+                <= (numerador2 * denominador1);
     }
 
     /**
@@ -204,7 +204,7 @@ public abstract class AbstractFraccion implements Serializable {
      *
      * @return Numerador de la fracción.
      */
-    public int getNumerador() {
+    public long getNumerador() {
         return numerador;
     }
 
@@ -213,7 +213,7 @@ public abstract class AbstractFraccion implements Serializable {
      *
      * @return Denominador de la fracción.
      */
-    public int getDenominador() {
+    public long getDenominador() {
         return denominador;
     }
 
@@ -248,7 +248,7 @@ public abstract class AbstractFraccion implements Serializable {
             this.denominador *= -1;
         }
     }
-
+    
     /**
      * Restorn el string con el siguiente formato. nuemrador/denominador
      *

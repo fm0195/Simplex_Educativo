@@ -172,15 +172,15 @@ public class FraccionTest {
         assertTrue(resultadoCorrecto.iguales(fraccion));
     }
 
-    public void testObtenerMayorDivisorComun(int numerador, int denominador, int resultadoCorrecto) {
+    public void testObtenerMayorDivisorComun(long numerador, long denominador, long resultadoCorrecto) {
         try {
             Object[] argumentos = new Object[]{numerador, denominador};
-            Class<?>[] tipoArgumentos = new Class[]{int.class, int.class};
+            Class<?>[] tipoArgumentos = new Class[]{long.class, long.class};
             Class<?> claseFraccion = Fraccion.class;
             Method metodo = claseFraccion.getDeclaredMethod(
                     "obtenerMayorDivisorComun", tipoArgumentos);
             metodo.setAccessible(true);
-            int resultado = (int) metodo.invoke(fraccion, argumentos);
+            long resultado = (long) metodo.invoke(fraccion, argumentos);
             assertTrue(resultado == resultadoCorrecto);
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(FraccionTest.class.getName()).log(Level.SEVERE, null, ex);
